@@ -160,15 +160,22 @@
             </div>
           </div>
 
-          <!-- system status -->
+          <!-- system process -->
           <div style="border:1px solid #1a3d1a; background:#020704; padding:7px 9px; flex:none;">
-            <div style="font-size:14px; color:#1f8f1f; letter-spacing:2px; margin-bottom:4px;">SYSTEM&nbsp;STATUS</div>
+            <div style="font-size:14px; color:#1f8f1f; letter-spacing:2px; margin-bottom:4px;">SYSTEM&nbsp;PROCESS</div>
             <div style="height:34px; overflow:hidden; position:relative;">
               <svg viewBox="0 0 200 34" preserveAspectRatio="none" style="width:200%; height:34px; animation:ekgmove 2.2s linear infinite; display:block;">
-                <polyline points="0,17 14,17 18,17 21,5 25,29 29,17 50,17 64,17 68,17 71,5 75,29 79,17 100,17 114,17 118,17 121,5 125,29 129,17 150,17 164,17 168,17 171,5 175,29 179,17 200,17" fill="none" stroke="#33ff00" stroke-width="1.5" style="filter:drop-shadow(0 0 3px #33ff00);"/>
+                <polyline points="0,17 14,17 18,17 21,5 25,29 29,17 50,17 64,17 68,17 71,5 75,29 79,17 100,17 114,17 118,17 121,5 125,29 129,17 150,17 164,17 168,17 171,5 175,29 179,17 200,17" fill="none" stroke="{{ hud.goalColor }}" stroke-width="1.5" style="filter:drop-shadow(0 0 3px {{ hud.goalColor }});"/>
               </svg>
             </div>
-            <div style="display:flex; justify-content:space-between; font-size:12px; color:#1f521f; margin-top:2px;"><span>FUNDS ${{ hud.money }} / {{ hud.quota }}</span><span style="color:#33ff00;">{{ hud.statusText }}</span></div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:#7aa884; margin-top:2px;">
+              <span>CASH ${{ hud.money }}</span>
+              <span style="color:{{ hud.goalColor }};">RUN ${{ hud.earned }} / ${{ hud.quota }}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:4px; color:#4d7a5b;">
+              <span>LEVEL GOAL</span>
+              <span style="color:{{ hud.goalColor }}; text-shadow:0 0 6px {{ hud.goalColor }};">{{ hud.goalText }}</span>
+            </div>
           </div>
 
           <!-- reputation / 醜值 (each complaint drops 2 bars; colour shifts green->yellow->red) -->
@@ -3869,7 +3876,7 @@ class Component extends DCLogic {
   hud() {
     const w = this.world;
     const dur = this.props.nightSeconds ?? 180;
-    if(!w)return{clock:'22:00',phase:'NIGHT',level:'01',mapTier:'I',doorTier:'I',alert:'STANDBY',alertColor:'#1f8f1f',panicPct:0,panicBar:'',panicColor:'#33ff00',basicCount:'0',rashCount:'0',sensorCount:'0',rotateCount:'0',chainCount:'0',statusText:'OK',showPrompt:false,doorPrompt:'',endStats:'',loseTitle:'',loseMsg:'',ghosts:0,guests:0,money:0,quota:0,repColor:'#33ff00',repText:'CLEAR',rep0:1,rep1:1,rep2:1,rep3:1,rep4:1,rep5:1,pw0:1,pw1:1,pw2:1,pw3:1,pw4:1,pw5:.15,pw6:.15};
+    if(!w)return{clock:'22:00',phase:'NIGHT',level:'01',mapTier:'I',doorTier:'I',alert:'STANDBY',alertColor:'#1f8f1f',panicPct:0,panicBar:'',panicColor:'#33ff00',basicCount:'0',rashCount:'0',sensorCount:'0',rotateCount:'0',chainCount:'0',statusText:'OK',showPrompt:false,doorPrompt:'',endStats:'',loseTitle:'',loseMsg:'',ghosts:0,guests:0,money:0,earned:0,quota:0,goalColor:'#ff5555',goalText:'SHORT',repColor:'#33ff00',repText:'CLEAR',rep0:1,rep1:1,rep2:1,rep3:1,rep4:1,rep5:1,pw0:1,pw1:1,pw2:1,pw3:1,pw4:1,pw5:.15,pw6:.15};
     const frac = Math.min(1, w.t / dur);
     const hour = 22 + frac * 8; const h = Math.floor(hour) % 24; const m = Math.floor((hour % 1) * 60);
     const pad = (n) => (n < 10 ? '0' : '') + n;
@@ -3905,6 +3912,9 @@ class Component extends DCLogic {
     else if (w.loseReason === 'panic') { lt = 'PANDEMONIUM'; lm = 'The hotel descended into supernatural chaos.'; }
     else if (w.loseReason === 'strikes') { lt = 'EXPOSED'; lm = 'Too many incidents drew fatal attention.'; }
     else if (w.loseReason === 'quota') { lt = 'INSOLVENT'; lm = 'Dawn came before the hotel made quota.'; }
+    const earned = Math.floor(w.earned || 0);
+    const quota = w.moneyTarget || 0;
+    const goalMet = earned >= quota;
     return {
       clock:pad(h)+':'+pad(m),phase:'NIGHT',level:pad(w.config.level),mapTier:['','I','II','III'][w.config.mapTier],doorTier:['','I','II','III','IV','V'][w.config.doorTier],
       alert, alertColor: ac,
@@ -3913,7 +3923,9 @@ class Component extends DCLogic {
       statusText: w.screenGlitch > 0 ? 'DISTORTION' : (w.panic > 50 ? 'UNSTABLE' : 'STABLE'),
       showPrompt: show, doorPrompt: prompt,
       endStats: w.endStats || '', loseTitle: lt, loseMsg: lm,
-      ghosts: w.ghosts.length, guests: w.guests.length, money: Math.floor(w.money || 0), quota: w.moneyTarget || 0,
+      ghosts: w.ghosts.length, guests: w.guests.length, money: Math.floor(w.money || 0), earned, quota,
+      goalColor: goalMet ? '#33ff00' : '#ff5555',
+      goalText: goalMet ? 'TARGET MET' : 'SHORT',
       repColor: ((w.strikes||0)>=2?'#ff3333':(w.strikes||0)===1?'#ffb000':'#33ff00'),
       repText: ((w.strikes||0)===0?'CLEAR':('醜'+(['','一','二','三'][w.strikes||0]||(w.strikes||0)))),
       rep0:(0<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep1:(1<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep2:(2<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep3:(3<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep4:(4<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep5:(5<Math.max(0,6-(w.strikes||0)*2)?1:0.12),
