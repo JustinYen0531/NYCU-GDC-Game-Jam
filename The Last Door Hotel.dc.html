@@ -393,11 +393,20 @@
       .lvl-mini-legend{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;color:#7ed69b;}
       .lvl-mini-tag{display:flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid rgba(102,214,140,.18);background:rgba(11,28,17,.46);}
       .lvl-mini-swatch{width:10px;height:10px;border-radius:2px;box-shadow:0 0 7px currentColor;}
-      .lvl-preview{position:absolute;right:92px;top:82px;z-index:8;width:364px;padding:16px 16px 14px;}
+      .lvl-preview-backdrop{position:absolute;inset:0;z-index:12;background:rgba(0,0,0,.52);display:flex;align-items:center;justify-content:center;padding:32px 24px;}
+      .lvl-preview{position:relative;z-index:13;width:min(560px, calc(100vw - 140px));max-height:min(78vh, 690px);padding:0;display:flex;flex-direction:column;overflow:hidden;}
+      .lvl-preview-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 16px 12px;border-bottom:1px solid rgba(102,214,140,.18);background:linear-gradient(180deg,rgba(8,20,14,.94),rgba(4,12,8,.92));}
+      .lvl-preview-close{cursor:pointer;flex:none;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,170,170,.35);color:#ffc8c8;background:rgba(45,11,11,.55);font-size:18px;line-height:1;border-radius:4px;transition:.16s;}
+      .lvl-preview-close:hover{background:#ff6e6e;color:#140303;border-color:#ff9e9e;box-shadow:0 0 18px rgba(255,110,110,.24);}
+      .lvl-preview-body{padding:14px 16px 16px;overflow-y:auto;display:flex;flex-direction:column;min-height:0;}
       .lvl-preview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0 12px;}
       .lvl-metric{padding:7px 8px;border:1px solid rgba(102,214,140,.18);background:rgba(8,24,15,.4);}
       .lvl-metric-label{font-size:11px;letter-spacing:1px;color:#79c893;}
       .lvl-metric-value{font-size:22px;color:#e8ffe8;line-height:1.05;}
+      .lvl-preview-cta{margin-top:18px;position:sticky;bottom:0;padding-top:10px;background:linear-gradient(180deg,rgba(2,7,4,0),rgba(2,7,4,.96) 42%,rgba(2,7,4,.98) 100%);}
+      .lvl-preview-lock{font-size:12px;letter-spacing:1px;color:#ffb000;margin-bottom:8px;text-align:center;}
+      .lvl-preview-btn{cursor:pointer;font-family:'Cinzel',serif;font-size:15px;font-weight:700;letter-spacing:3px;color:#031109;background:linear-gradient(180deg,#9dffb8 0%,#46db79 100%);border:1px solid #bfffd0;border-radius:4px;padding:10px 14px;text-align:center;box-shadow:0 0 18px rgba(80,255,140,.35);}
+      .lvl-preview-btn.is-disabled{cursor:not-allowed;color:#587563;background:linear-gradient(180deg,#2d4638 0%,#1a2a21 100%);border-color:#466655;box-shadow:none;}
       .lvl-elevator{position:absolute;right:26px;top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;align-items:center;gap:8px;background:rgba(2,10,6,.7);border:1px solid rgba(120,210,150,.3);border-radius:10px;padding:12px 10px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);}
       .lvl-elv-arrow{cursor:pointer;width:42px;height:28px;display:flex;align-items:center;justify-content:center;color:#8fd6a6;font-size:18px;border:1px solid rgba(120,210,150,.25);border-radius:5px;transition:.15s;}
       .lvl-elv-arrow:hover{color:#04110d;background:#33ff00;border-color:#33ff00;}
@@ -542,53 +551,70 @@
         </div>
       </div>
 
-      <div class="lvl-preview lvl-terminal" data-no-drag>
-        <div class="lvl-sec-head"><span>LEVEL PREVIEW</span><span class="lvl-chip">{{ previewLevelCode }}</span></div>
-        <div style="font-family:'Cinzel',serif;font-size:26px;letter-spacing:4px;color:{{ previewTitleColor }};text-shadow:0 0 10px {{ previewTitleGlow }};">{{ previewDisplayName }}</div>
-        <div style="font-size:14px;letter-spacing:1.4px;color:#9bdab3;margin-top:3px;">{{ previewWorldLine }}</div>
-        <div style="font-size:14px;letter-spacing:1px;color:{{ previewReviewColor }};margin-top:10px;">{{ previewReviewStatus }}</div>
-        <div style="font-size:13px;letter-spacing:.8px;color:#74bf8d;margin-top:2px;">{{ previewReviewNote }}</div>
-
-        <div class="lvl-preview-grid">
-          <sc-for list="{{ previewFacts }}" as="fact" hint-placeholder-count="4">
-            <div class="lvl-metric">
-              <div class="lvl-metric-label">{{ fact.label }}</div>
-              <div class="lvl-metric-value" style="color:{{ fact.color }};">{{ fact.value }}</div>
+      <sc-if value="{{ showLevelPreview }}" hint-placeholder-val="{{ false }}">
+        <div class="lvl-preview-backdrop" data-no-drag>
+          <div class="lvl-preview lvl-terminal" data-no-drag>
+            <div class="lvl-preview-head">
+              <div style="min-width:0;">
+                <div class="lvl-sec-head" style="margin-bottom:0;border-bottom:0;padding-bottom:0;"><span>LEVEL PREVIEW</span><span class="lvl-chip">{{ previewLevelCode }}</span></div>
+                <div style="font-family:'Cinzel',serif;font-size:26px;letter-spacing:4px;color:{{ previewTitleColor }};text-shadow:0 0 10px {{ previewTitleGlow }};margin-top:6px;">{{ previewDisplayName }}</div>
+                <div style="font-size:14px;letter-spacing:1.4px;color:#9bdab3;margin-top:3px;">{{ previewWorldLine }}</div>
+              </div>
+              <div class="lvl-preview-close" onClick="{{ onCloseLevelPreview }}">X</div>
             </div>
-          </sc-for>
-        </div>
 
-        <div class="lvl-blueprint" style="height:190px;">
-          <div class="lvl-grid"></div>
-          <sc-for list="{{ previewCorridors }}" as="zone" hint-placeholder-count="3">
-            <div class="lvl-zone" style="left:{{ zone.left }}; top:{{ zone.top }}; width:{{ zone.width }}; height:{{ zone.height }}; background:{{ zone.fill }}; border-color:{{ zone.border }};"></div>
-          </sc-for>
-          <sc-for list="{{ previewRooms }}" as="room" hint-placeholder-count="6">
-            <div class="lvl-zone" style="left:{{ room.left }}; top:{{ room.top }}; width:{{ room.width }}; height:{{ room.height }}; background:{{ room.fill }}; border-color:{{ room.border }};"></div>
-            <div class="lvl-zone-text" style="left:{{ room.textLeft }}; top:{{ room.textTop }}; width:{{ room.textWidth }}; color:{{ room.textColor }};">{{ room.label }}</div>
-          </sc-for>
-          <sc-for list="{{ previewLabels }}" as="label" hint-placeholder-count="3">
-            <div class="lvl-hall-text" style="left:{{ label.left }}; top:{{ label.top }};">{{ label.text }}</div>
-          </sc-for>
-          <sc-for list="{{ previewDoors }}" as="door" hint-placeholder-count="8">
-            <div class="lvl-door-dot" style="left:{{ door.left }}; top:{{ door.top }}; width:{{ door.width }}; height:{{ door.height }}; color:{{ door.color }}; background:{{ door.color }};" title="{{ door.name }}"></div>
-          </sc-for>
-        </div>
+            <div class="lvl-preview-body" ref="{{ previewScrollRef }}" onScroll="{{ onPreviewScroll }}">
+              <div style="font-size:14px;letter-spacing:1px;color:{{ previewReviewColor }};margin-top:2px;">{{ previewReviewStatus }}</div>
+              <div style="font-size:13px;letter-spacing:.8px;color:#74bf8d;margin-top:2px;">{{ previewReviewNote }}</div>
 
-        <div class="lvl-mini-legend" style="margin-top:8px;">
-          <sc-for list="{{ previewDoorLegend }}" as="tag" hint-placeholder-count="5">
-            <div class="lvl-mini-tag"><span class="lvl-mini-swatch" style="color:{{ tag.color }}; background:{{ tag.color }};"></span><span>{{ tag.label }}</span></div>
-          </sc-for>
-        </div>
+              <div class="lvl-preview-grid">
+                <sc-for list="{{ previewFacts }}" as="fact" hint-placeholder-count="4">
+                  <div class="lvl-metric">
+                    <div class="lvl-metric-label">{{ fact.label }}</div>
+                    <div class="lvl-metric-value" style="color:{{ fact.color }};">{{ fact.value }}</div>
+                  </div>
+                </sc-for>
+              </div>
 
-        <div class="lvl-stack" style="margin-top:10px;">
-          <sc-for list="{{ previewNotes }}" as="line" hint-placeholder-count="3">
-            <div class="lvl-line"><span class="lvl-dim">&gt;</span> {{ line }}</div>
-          </sc-for>
-        </div>
+              <div class="lvl-blueprint" style="height:190px;">
+                <div class="lvl-grid"></div>
+                <sc-for list="{{ previewCorridors }}" as="zone" hint-placeholder-count="3">
+                  <div class="lvl-zone" style="left:{{ zone.left }}; top:{{ zone.top }}; width:{{ zone.width }}; height:{{ zone.height }}; background:{{ zone.fill }}; border-color:{{ zone.border }};"></div>
+                </sc-for>
+                <sc-for list="{{ previewRooms }}" as="room" hint-placeholder-count="6">
+                  <div class="lvl-zone" style="left:{{ room.left }}; top:{{ room.top }}; width:{{ room.width }}; height:{{ room.height }}; background:{{ room.fill }}; border-color:{{ room.border }};"></div>
+                  <div class="lvl-zone-text" style="left:{{ room.textLeft }}; top:{{ room.textTop }}; width:{{ room.textWidth }}; color:{{ room.textColor }};">{{ room.label }}</div>
+                </sc-for>
+                <sc-for list="{{ previewLabels }}" as="label" hint-placeholder-count="3">
+                  <div class="lvl-hall-text" style="left:{{ label.left }}; top:{{ label.top }};">{{ label.text }}</div>
+                </sc-for>
+                <sc-for list="{{ previewDoors }}" as="door" hint-placeholder-count="8">
+                  <div class="lvl-door-dot" style="left:{{ door.left }}; top:{{ door.top }}; width:{{ door.width }}; height:{{ door.height }}; color:{{ door.color }}; background:{{ door.color }};" title="{{ door.name }}"></div>
+                </sc-for>
+              </div>
 
-        <div onClick="{{ onStartSelectedLevel }}" style="margin-top:14px;cursor:pointer;font-family:'Cinzel',serif;font-size:15px;font-weight:700;letter-spacing:3px;color:#031109;background:linear-gradient(180deg,#9dffb8 0%,#46db79 100%);border:1px solid #bfffd0;border-radius:4px;padding:10px 14px;text-align:center;box-shadow:0 0 18px rgba(80,255,140,.35);" style-hover="background:linear-gradient(180deg,#b7ffcb 0%,#58e68a 100%); box-shadow:0 0 24px rgba(80,255,140,.48);">BEGIN DEPLOYMENT &#8594;</div>
-      </div>
+              <div class="lvl-mini-legend" style="margin-top:8px;">
+                <sc-for list="{{ previewDoorLegend }}" as="tag" hint-placeholder-count="5">
+                  <div class="lvl-mini-tag"><span class="lvl-mini-swatch" style="color:{{ tag.color }}; background:{{ tag.color }};"></span><span>{{ tag.label }}</span></div>
+                </sc-for>
+              </div>
+
+              <div class="lvl-stack" style="margin-top:10px;">
+                <sc-for list="{{ previewNotes }}" as="line" hint-placeholder-count="3">
+                  <div class="lvl-line"><span class="lvl-dim">&gt;</span> {{ line }}</div>
+                </sc-for>
+              </div>
+
+              <div style="height:88px;"></div>
+
+              <div class="lvl-preview-cta">
+                <div class="lvl-preview-lock">{{ previewStartHint }}</div>
+                <div class="lvl-preview-btn {{ previewStartBtnClass }}" onClick="{{ onStartSelectedLevel }}" style-hover="background:linear-gradient(180deg,#b7ffcb 0%,#58e68a 100%); box-shadow:0 0 24px rgba(80,255,140,.48);">{{ previewStartLabel }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
 
       <!-- back to title -->
       <div class="lvl-back" data-no-drag onClick="{{ onCloseLevelSelect }}">&#8592; 返回</div>
@@ -931,17 +957,20 @@ class Component extends DCLogic {
       showOptions: false,
       optionsTab: 'rules', 
       showLevelSelect: false, 
+      showLevelPreview: false,
       showDevConsole: false, 
       currentLevel: 1,
       selectedLevel: 1,
       selFloor: 1,
       worldIntelWidth: 58,
+      previewReachedBottom: false,
       tick: 0,
       scale: 1
     };
     this.canvasRef = React.createRef();
     this.miniRef = React.createRef();
     this.floorsRef = React.createRef();
+    this.previewScrollRef = React.createRef();
     this.keys = {};
     this.logs = [];
     this.logId = 0;
@@ -1358,7 +1387,7 @@ class Component extends DCLogic {
         reviewFlag: window.label + (config.boss ? ' // BOSS' : ' // REVIEW'),
         footer: '旅客 ' + Math.min(30, Math.max(1, Math.floor(this.getMapLayout(config.mapTier).guestRoomCount / 2)) * 2 + config.level) + ' // 配額 $' + config.moneyTarget,
         nodeClass:(config.boss ? 'boss ' : '') + (level === selected ? 'is-selected' : ''),
-        onSelect: () => this.setState({ selectedLevel: level, selFloor: floor })
+        onSelect: () => this.openLevelPreview(level)
       };
     });
   }
@@ -1768,6 +1797,41 @@ class Component extends DCLogic {
     this.playSFX('keyboard');
   }
 
+  playUiClick() {
+    this.playSFX('keyboard');
+  }
+
+  openLevelPreview(level) {
+    const lv = Math.max(1, Math.min(15, Math.round(Number(level) || 1)));
+    this.playUiClick();
+    this.setState({ selectedLevel: lv, selFloor: this.levelToFloor(lv), showLevelPreview: true, previewReachedBottom: false }, () => {
+      if (this.previewScrollRef.current) this.previewScrollRef.current.scrollTop = 0;
+    });
+  }
+
+  closeLevelPreview() {
+    this.playUiClick();
+    this.setState({ showLevelPreview: false, previewReachedBottom: false }, () => {
+      if (this.previewScrollRef.current) this.previewScrollRef.current.scrollTop = 0;
+    });
+  }
+
+  onPreviewScroll(e) {
+    const el = e && e.target ? e.target : this.previewScrollRef.current;
+    if (!el) return;
+    const reached = el.scrollTop + el.clientHeight >= el.scrollHeight - 8;
+    if (reached !== !!this.state.previewReachedBottom) this.setState({ previewReachedBottom: reached });
+  }
+
+  tryStartSelectedLevel() {
+    if (!this.state.previewReachedBottom) {
+      this.playSFX('error');
+      return;
+    }
+    this.playUiClick();
+    this.startGame(this.state.selectedLevel || 1);
+  }
+
   // ---------- map ----------
   getLevelConfig(level) {
     const lv = Math.max(1, Math.min(15, Math.round(Number(level) || 1)));
@@ -1985,8 +2049,10 @@ class Component extends DCLogic {
       screen:'playing', 
       showOptions:false, 
       showLevelSelect:false, 
+      showLevelPreview:false,
       currentLevel:lv, 
-      selectedLevel:lv
+      selectedLevel:lv,
+      previewReachedBottom:false
     });
   }
 
@@ -2907,7 +2973,7 @@ class Component extends DCLogic {
     const picks = {};
     for (let i = 1; i <= 15; i++) {
       const lv = i;
-      picks['pickL' + lv] = () => this.setState({ selectedLevel: lv, selFloor: this.levelToFloor(lv) });
+      picks['pickL' + lv] = () => this.openLevelPreview(lv);
     }
     const elvOn = { bg: '#8effb4', fg: '#04110d', bd: '#8effb4' };
     const elvOff = { bg: 'transparent', fg: '#5f9f6f', bd: 'rgba(120,210,150,.2)' };
@@ -3001,6 +3067,12 @@ class Component extends DCLogic {
       previewRooms: preview.map.rooms,
       previewLabels: preview.map.labels,
       previewDoors: preview.map.doors,
+      previewScrollRef: this.previewScrollRef,
+      previewStartHint: s.previewReachedBottom
+        ? 'SCROLL COMPLETE // START KEY UNLOCKED'
+        : 'SCROLL DOWN TO THE BOTTOM TO UNLOCK DEPLOYMENT',
+      previewStartLabel: s.previewReachedBottom ? 'BEGIN DEPLOYMENT ->' : 'LOCKED UNTIL FULL REVIEW',
+      previewStartBtnClass: s.previewReachedBottom ? '' : 'is-disabled',
       titleGuestCards: this.getTitleGuestCards(),
       showDevConsole: s.showDevConsole,
       canvasRef: this.canvasRef,
@@ -3016,9 +3088,10 @@ class Component extends DCLogic {
       onNewGame: () => this.startGame(),
       onOpenLevelSelect: () => {
         const selected = s.selectedLevel || s.currentLevel || 1;
-        this.setState({ showLevelSelect: true, showOptions: false, selectedLevel: selected, selFloor: this.levelToFloor(selected), worldIntelWidth: 58 });
+        this.playUiClick();
+        this.setState({ showLevelSelect: true, showOptions: false, showLevelPreview: false, selectedLevel: selected, selFloor: this.levelToFloor(selected), worldIntelWidth: 58, previewReachedBottom: false });
       },
-      onCloseLevelSelect: () => this.setState({ showLevelSelect: false, worldIntelWidth: 58 }),
+      onCloseLevelSelect: () => { this.playUiClick(); this.setState({ showLevelSelect: false, showLevelPreview: false, worldIntelWidth: 58, previewReachedBottom: false }); },
       ...picks,
       floorsRef: this.floorsRef,
       selFloor: sf,
@@ -3026,13 +3099,16 @@ class Component extends DCLogic {
       f1Bg: e1.bg, f1Fg: e1.fg, f1Bd: e1.bd,
       f2Bg: e2.bg, f2Fg: e2.fg, f2Bd: e2.bd,
       f3Bg: e3.bg, f3Fg: e3.fg, f3Bd: e3.bd,
-      onFloorUp: () => this.changeFloor(1),
-      onFloorDown: () => this.changeFloor(-1),
-      onGotoFloor1: () => this.gotoFloor(1),
-      onGotoFloor2: () => this.gotoFloor(2),
-      onGotoFloor3: () => this.gotoFloor(3),
+      onFloorUp: () => { this.playUiClick(); this.changeFloor(1); },
+      onFloorDown: () => { this.playUiClick(); this.changeFloor(-1); },
+      onGotoFloor1: () => { this.playUiClick(); this.gotoFloor(1); },
+      onGotoFloor2: () => { this.playUiClick(); this.gotoFloor(2); },
+      onGotoFloor3: () => { this.playUiClick(); this.gotoFloor(3); },
       onContinue: () => this.startGame(s.currentLevel || 1),
-      onStartSelectedLevel: () => this.startGame(s.selectedLevel || 1),
+      showLevelPreview: s.showLevelPreview,
+      onCloseLevelPreview: () => this.closeLevelPreview(),
+      onPreviewScroll: (e) => this.onPreviewScroll(e),
+      onStartSelectedLevel: () => this.tryStartSelectedLevel(),
       onOptions: () => this.setState({ showOptions: !s.showOptions }),
       onEditor: () => this.setState({ showEditor: true }),
       onCloseEditor: () => this.setState({ showEditor: false }),
