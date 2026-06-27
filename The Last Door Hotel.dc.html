@@ -2841,6 +2841,9 @@ class Component extends DCLogic {
       showPrompt: show, doorPrompt: prompt,
       endStats: w.endStats || '', loseTitle: lt, loseMsg: lm,
       ghosts: w.ghosts.length, guests: w.guests.length, money: Math.floor(w.money || 0), quota: w.moneyTarget || 0,
+      repColor: ((w.strikes||0)>=2?'#ff3333':(w.strikes||0)===1?'#ffb000':'#33ff00'),
+      repText: ((w.strikes||0)===0?'CLEAR':('醜'+(['','一','二','三'][w.strikes||0]||(w.strikes||0)))),
+      rep0:(0<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep1:(1<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep2:(2<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep3:(3<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep4:(4<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep5:(5<Math.max(0,6-(w.strikes||0)*2)?1:0.12),
       pw0: seg(8), pw1: seg(24), pw2: seg(40), pw3: seg(56), pw4: seg(72), pw5: seg(86), pw6: seg(96)
     };
   }
