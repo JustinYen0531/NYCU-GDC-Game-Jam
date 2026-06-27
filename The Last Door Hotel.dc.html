@@ -633,28 +633,90 @@ class Component extends DCLogic {
 
   // ---------- map ----------
   buildWorld() {
-    const TILE = 28, COLS = 34, ROWS = 19;
+    const TILE = 21, COLS = 45, ROWS = 25;
     const grid = [];
     for (let r = 0; r < ROWS; r++) grid.push(new Array(COLS).fill('wall'));
     const carve = (x, y, w, h) => { for (let r = y; r < y + h; r++) for (let c = x; c < x + w; c++) if (grid[r] && grid[r][c] !== undefined) grid[r][c] = 'floor'; };
-    // top rooms (rows 1-5)
-    carve(1, 1, 9, 5); carve(11, 1, 9, 5); carve(21, 1, 12, 5);
-    // hallway (rows 7-9)
-    carve(1, 7, 32, 3);
-    // bottom rooms (rows 11-17)
-    carve(1, 11, 9, 7); carve(11, 11, 12, 7); carve(24, 11, 9, 7);
+
+    // A full villa plan: five northern rooms, three gallery spines,
+    // two side wings, a central great hall and a southern entrance gallery.
+    const rooms = [];
+    const room = (label, x, y, w, h, tint) => { carve(x, y, w, h); rooms.push({ label, x, y, w, h, tint }); };
+    room('ARCHIVE',        1,  1, 7, 5, 'rgba(88,64,32,.10)');
+    room('MASTER SUITE',  10,  1, 8, 5, 'rgba(74,49,72,.10)');
+    room('MUSIC SALON',   20,  1, 6, 5, 'rgba(86,57,32,.10)');
+    room('DINING HALL',   28,  1, 7, 5, 'rgba(102,64,28,.10)');
+    room('OBSERVATORY',   37,  1, 7, 5, 'rgba(32,78,95,.11)');
+    room('DRAWING ROOM',   1, 10, 6, 5, 'rgba(77,45,57,.10)');
+    room('KITCHEN',        1, 17, 6, 4, 'rgba(88,72,38,.09)');
+    room('WINTER GARDEN', 12, 10, 4, 5, 'rgba(32,91,53,.12)');
+    room('NURSERY',       12, 17, 4, 4, 'rgba(75,54,82,.10)');
+    room('GRAND FOYER',   17, 10,11,11, 'rgba(105,70,32,.09)');
+    room('STUDY',         29, 10, 4, 5, 'rgba(68,52,34,.11)');
+    room('GUEST SUITE',   29, 17, 4, 4, 'rgba(70,48,72,.10)');
+    room('CHAPEL',        38, 10, 6, 5, 'rgba(72,66,38,.10)');
+    room('SERVICE WING',  38, 17, 6, 4, 'rgba(58,67,62,.10)');
+
+    carve(2, 7, 41, 2);   // north gallery
+    carve(8, 7, 3, 16);   // west gallery spine
+    carve(21, 7, 3, 16);  // ceremonial central spine
+    carve(34, 7, 3, 16);  // east gallery spine
+    carve(8, 22, 29, 2);  // south gallery
 
     const doors = [];
     const doorMap = {};
-    const add = (c, r, type) => { grid[r][c] = 'door'; const d = { id: doors.length, c, r, type, open: true, locked: false, link: -1, timer: Math.random() * 5 }; doors.push(d); doorMap[c + ',' + r] = d; return d; };
-    add(5, 6, 'standard'); add(15, 6, 'standard'); add(26, 6, 'auto');
-    add(5, 10, 'linked'); add(16, 10, 'standard'); add(28, 10, 'auto');
-    add(10, 3, 'standard'); add(20, 3, 'standard');
-    const lA = add(10, 14, 'linked'); add(23, 14, 'standard');
-    add(16, 18, 'entrance');
-    // link the two 'linked' doors (ids 3 and 8)
-    doors[3].link = lA.id; lA.link = 3;
-    doors[3].open = false; lA.open = true; // start complementary
+    const add = (c, r, type, axis, name) => {
+      grid[r][c] = 'door';
+      const d = { id: doors.length, c, r, type, axis, name, open: true, locked: false, link: -1, timer: 2 + Math.random() * 5 };
+      doors.push(d); doorMap[c + ',' + r] = d; return d;
+    };
+    const link = (a, b) => { a.link = b.id; b.link = a.id; a.open = true; b.open = false; };
+
+    add(4,  6, 'standard', 'h', 'ARCHIVE');
+    add(14, 6, 'auto',     'h', 'MASTER SUITE');
+    add(22, 6, 'standard', 'h', 'MUSIC SALON');
+    const northLinked = add(31, 6, 'linked', 'h', 'DINING HALL');
+    add(40, 6, 'auto',     'h', 'OBSERVATORY');
+    add(9,  9, 'standard', 'h', 'WEST GALLERY');
+    add(22, 9, 'standard', 'h', 'GRAND FOYER NORTH');
+    add(35, 9, 'standard', 'h', 'EAST GALLERY');
+    add(7, 12, 'standard', 'v', 'DRAWING ROOM');
+    const westLinked = add(11, 12, 'linked', 'v', 'WINTER GARDEN WEST');
+    add(16,12, 'auto',     'v', 'WINTER GARDEN EAST');
+    add(28,12, 'standard', 'v', 'STUDY WEST');
+    const eastLinked = add(33, 12, 'linked', 'v', 'STUDY EAST');
+    add(37,12, 'standard', 'v', 'CHAPEL');
+    add(7, 19, 'auto',     'v', 'KITCHEN');
+    add(11,19, 'standard', 'v', 'NURSERY WEST');
+    add(16,19, 'standard', 'v', 'NURSERY EAST');
+    add(28,19, 'standard', 'v', 'GUEST SUITE WEST');
+    add(33,19, 'auto',     'v', 'GUEST SUITE EAST');
+    add(37,19, 'standard', 'v', 'SERVICE WING');
+    const southLinked = add(22, 21, 'linked', 'h', 'GRAND FOYER SOUTH');
+    const entranceDoor = add(22, 24, 'entrance', 'h', 'MAIN GATE');
+    link(northLinked, southLinked);
+    link(westLinked, eastLinked);
+
+    // Furniture also shapes the routes inside each room instead of acting as decoration only.
+    const fixtures = [];
+    const furnish = (c, r, w, h, kind) => {
+      fixtures.push({ c, r, w, h, kind });
+      for (let rr = r; rr < r + h; rr++) for (let cc = c; cc < c + w; cc++) if (grid[rr] && grid[rr][cc] === 'floor') grid[rr][cc] = 'obstacle';
+    };
+    furnish(2, 2, 1, 3, 'shelf'); furnish(6, 2, 1, 3, 'shelf');
+    furnish(12,2, 3, 2, 'bed'); furnish(16,2, 1, 2, 'wardrobe');
+    furnish(21,2, 2, 1, 'piano'); furnish(24,3, 1, 1, 'seat');
+    furnish(29,2, 5, 2, 'table');
+    furnish(40,2, 1, 1, 'telescope'); furnish(42,3, 1, 1, 'desk');
+    furnish(2,11, 3, 1, 'sofa'); furnish(5,13, 1, 1, 'lamp');
+    furnish(2,18, 3, 1, 'island');
+    furnish(13,11,1, 1, 'plant'); furnish(14,13,1, 1, 'plant');
+    furnish(13,18,2, 1, 'bed');
+    furnish(30,11,2, 1, 'desk'); furnish(31,13,1, 1, 'shelf');
+    furnish(30,18,2, 1, 'bed');
+    furnish(39,11,4, 1, 'pew'); furnish(39,13,4, 1, 'pew');
+    furnish(39,18,1, 1, 'crate'); furnish(42,19,1, 1, 'crate');
+    furnish(21,14,3, 3, 'fountain');
 
     // floor tiles for targeting
     const floorTiles = [];
@@ -668,40 +730,87 @@ class Component extends DCLogic {
     mx.fillStyle = C.bg; mx.fillRect(0, 0, mc.width, mc.height);
     // floors
     for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
-      if (grid[r][c] === 'floor' || grid[r][c] === 'door') {
+      if (grid[r][c] === 'floor' || grid[r][c] === 'door' || grid[r][c] === 'obstacle') {
         mx.fillStyle = ((c + r) % 2 === 0) ? C.floor : C.floor2;
         mx.fillRect(c * TILE, r * TILE, TILE, TILE);
         mx.strokeStyle = 'rgba(51,255,0,0.05)';
         mx.strokeRect(c * TILE + 0.5, r * TILE + 0.5, TILE - 1, TILE - 1);
       }
     }
+
+    // Subtle material changes make each room readable at a glance.
+    for (const z of rooms) {
+      mx.fillStyle = z.tint;
+      mx.fillRect(z.x * TILE + 2, z.y * TILE + 2, z.w * TILE - 4, z.h * TILE - 4);
+    }
+    mx.fillStyle = 'rgba(128,76,34,.16)';
+    mx.fillRect(19 * TILE, 12 * TILE, 7 * TILE, 7 * TILE);
+    mx.strokeStyle = 'rgba(212,154,72,.25)'; mx.lineWidth = 2;
+    mx.strokeRect(19 * TILE + 4, 12 * TILE + 4, 7 * TILE - 8, 7 * TILE - 8);
+
     // walls (only those touching floor)
-    const touches = (c, r) => { for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) { const g = grid[r + dr] && grid[r + dr][c + dc]; if (g === 'floor' || g === 'door') return true; } return false; };
+    const touches = (c, r) => { for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) { const g = grid[r + dr] && grid[r + dr][c + dc]; if (g === 'floor' || g === 'door' || g === 'obstacle') return true; } return false; };
     for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
       if (grid[r][c] === 'wall' && touches(c, r)) {
         mx.fillStyle = C.wall; mx.fillRect(c * TILE, r * TILE, TILE, TILE);
         mx.fillStyle = 'rgba(42,107,58,0.55)'; mx.fillRect(c * TILE, r * TILE, TILE, 3);
+        mx.fillStyle = 'rgba(0,0,0,.28)'; mx.fillRect(c * TILE + TILE - 3, r * TILE, 3, TILE);
         mx.strokeStyle = 'rgba(42,107,58,0.4)'; mx.strokeRect(c * TILE + 0.5, r * TILE + 0.5, TILE - 1, TILE - 1);
       }
     }
 
-    const mirrors = [{ c: 3, r: 12 }, { c: 30, r: 16 }];
-    const roomCenters = [{ c: 5, r: 3 }, { c: 15, r: 3 }, { c: 26, r: 3 }, { c: 5, r: 14 }, { c: 16, r: 13 }, { c: 28, r: 14 }, { c: 16, r: 8 }, { c: 6, r: 8 }, { c: 26, r: 8 }];
+    // Draw furniture with a compact pixel-art language.
+    for (const f of fixtures) {
+      const x = f.c * TILE + 3, y = f.r * TILE + 3, fw = f.w * TILE - 6, fh = f.h * TILE - 6;
+      const greenFixture = f.kind === 'plant' || f.kind === 'fountain';
+      mx.fillStyle = greenFixture ? '#173d29' : '#30251b';
+      mx.fillRect(x, y, fw, fh);
+      mx.strokeStyle = greenFixture ? '#397c55' : '#70513a'; mx.lineWidth = 1;
+      mx.strokeRect(x + .5, y + .5, fw - 1, fh - 1);
+      if (f.kind === 'bed') {
+        mx.fillStyle = '#59434e'; mx.fillRect(x + 2, y + 2, fw - 4, fh - 4);
+        mx.fillStyle = '#8b7773'; mx.fillRect(x + 4, y + 3, Math.max(8, fw * .25), fh - 6);
+      } else if (f.kind === 'shelf' || f.kind === 'wardrobe') {
+        mx.strokeStyle = '#9a7047';
+        for (let yy = y + 5; yy < y + fh - 2; yy += 7) { mx.beginPath(); mx.moveTo(x + 2, yy); mx.lineTo(x + fw - 2, yy); mx.stroke(); }
+      } else if (f.kind === 'table' || f.kind === 'island' || f.kind === 'pew') {
+        mx.fillStyle = '#68482d'; mx.fillRect(x + 3, y + 3, fw - 6, fh - 6);
+      } else if (f.kind === 'plant') {
+        mx.fillStyle = '#3e8750'; mx.beginPath(); mx.arc(x + fw / 2, y + fh / 2, Math.max(3, fw * .3), 0, 7); mx.fill();
+      } else if (f.kind === 'fountain') {
+        mx.fillStyle = '#1b6070'; mx.beginPath(); mx.arc(x + fw / 2, y + fh / 2, Math.min(fw, fh) * .36, 0, 7); mx.fill();
+        mx.strokeStyle = '#5bb6b2'; mx.beginPath(); mx.arc(x + fw / 2, y + fh / 2, Math.min(fw, fh) * .25, 0, 7); mx.stroke();
+      }
+    }
+
+    mx.font = '7px monospace'; mx.textBaseline = 'top'; mx.fillStyle = 'rgba(126,205,145,.44)';
+    for (const z of rooms) mx.fillText(z.label, z.x * TILE + 5, z.y * TILE + 5);
+    mx.fillStyle = 'rgba(91,173,115,.34)';
+    mx.fillText('NORTH GALLERY', 18 * TILE, 7 * TILE + 6);
+    mx.fillText('SOUTH GALLERY', 18 * TILE, 23 * TILE + 6);
+
+    const mirrors = [{ c: 16, r: 4 }, { c: 43, r: 12 }];
+    const roomCenters = rooms.map(z => ({ c: Math.floor(z.x + z.w / 2), r: Math.floor(z.y + z.h / 2) }));
 
     const cx = (c) => (c + 0.5) * TILE, cy = (r) => (r + 0.5) * TILE;
-    const player = { x: cx(16), y: cy(15), r: 8 };
-    const daughter = { x: cx(3), y: cy(13), r: 9, path: null, pi: 0, stuck: 0, channel: 0, mirrorCd: 8, bob: 0 };
+    const playerStart = { c: 19, r: 18 };
+    const daughterHome = { c: 4, r: 4 };
+    const exitApproach = { c: 22, r: 23 };
+    const inspectorSpawn = { c: 22, r: 23 };
+    const player = { x: cx(playerStart.c), y: cy(playerStart.r), r: 7 };
+    const daughter = { x: cx(daughterHome.c), y: cy(daughterHome.r), r: 8, path: null, pi: 0, stuck: 0, channel: 0, mirrorCd: 8, bob: 0 };
 
     // guests
     const gspec = [
-      { c: 15, r: 3, type: 'basic' }, { c: 26, r: 3, type: 'brave' }, { c: 5, r: 3, type: 'basic' },
-      { c: 28, r: 14, type: 'basic' }, { c: 24, r: 2, type: 'brave' }, { c: 18, r: 4, type: 'basic' }
+      { c: 17, r: 4, type: 'basic' }, { c: 35, r: 8, type: 'brave' }, { c: 4, r: 5, type: 'basic' },
+      { c: 29, r: 14, type: 'basic' }, { c: 24, r: 4, type: 'brave' }, { c: 40, r: 14, type: 'basic' }
     ];
     const n = Math.max(1, Math.min(6, Math.round(this.props.guestCount ?? 4)));
-    const guests = gspec.slice(0, n).map((g, i) => ({ x: cx(g.c), y: cy(g.r), r: 8, type: g.type, scare: 0, fleeing: false, path: null, pi: 0, stuck: 0, id: i }));
+    const guests = gspec.slice(0, n).map((g, i) => ({ x: cx(g.c), y: cy(g.r), r: 7, type: g.type, scare: 0, fleeing: false, path: null, pi: 0, stuck: 0, id: i }));
 
     this.world = {
       TILE, COLS, ROWS, grid, doors, doorMap, floorTiles, mapCanvas: mc, mirrors, roomCenters,
+      entranceDoor, exitApproach, inspectorSpawn, daughterHome, playerStart, mapOffsetX: 3, mapOffsetY: 3,
       player, daughter, guests, ghosts: [], inspector: null, inspectorDone: false,
       t: 0, panic: 0, power: 100, reported: false, lostGuests: 0, flash: 0, screenGlitch: 0,
       cx, cy
@@ -721,7 +830,7 @@ class Component extends DCLogic {
     const w = this.world;
     if (c < 0 || r < 0 || c >= w.COLS || r >= w.ROWS) return false;
     const g = w.grid[r][c];
-    if (g === 'wall') return false;
+    if (g === 'wall' || g === 'obstacle') return false;
     if (g === 'door') { const d = w.doorMap[c + ',' + r]; return d ? d.open : true; }
     return true;
   }
@@ -905,13 +1014,13 @@ class Component extends DCLogic {
         if (seen && !g.fleeing) { 
           g.fleeing = true; 
           this.log('BRAVE GUEST PANICS // RUNNING FOR THE DOOR!', '#ffb000'); 
-          this.retarget(g, { c: 16, r: 17 }); 
+          this.retarget(g, w.exitApproach);
           this.playSFX('gasping');
         }
         if (g.fleeing) {
           this.follow(g, dt, 52);
-          if (Math.hypot(g.x - w.cx(16), g.y - w.cy(17)) < 22) {
-            const ent = w.doorMap['16,18'];
+          if (Math.hypot(g.x - w.cx(w.exitApproach.c), g.y - w.cy(w.exitApproach.r)) < w.TILE) {
+            const ent = w.entranceDoor;
             if (ent && ent.open) {
               w.guests.splice(i, 1);
               this.log('GUEST ESCAPED // INSPECTOR INBOUND!', '#ff3333');
@@ -966,7 +1075,7 @@ class Component extends DCLogic {
 
   spawnInspector(early) {
     const w = this.world;
-    const ins = { x: w.cx(16), y: w.cy(16), r: 8, path: null, pi: 0, stuck: 0, caught: 0, speedMul: 1, dashCd: 2, dashT: 0, warned: false };
+    const ins = { x: w.cx(w.inspectorSpawn.c), y: w.cy(w.inspectorSpawn.r), r: 7, path: null, pi: 0, stuck: 0, caught: 0, speedMul: 1, dashCd: 2, dashT: 0, warned: false };
     w.inspector = ins;
     w.screenGlitch = 1.2; w.flash = 0.6;
     this.log(early ? 'THE INSPECTOR FORCES THE DOOR.' : 'KNOCKING AT THE GATE // INSPECTOR ARRIVES.', '#ff3333');
@@ -1050,7 +1159,7 @@ class Component extends DCLogic {
     ctx.clearRect(0, 0, cv.width, cv.height);
     let ox = 0, oy = 0;
     if (w.screenGlitch > 0) { ox = (Math.random() - 0.5) * 6 * w.screenGlitch * 3; oy = (Math.random() - 0.5) * 4 * w.screenGlitch * 3; }
-    ctx.save(); ctx.translate(ox, oy);
+    ctx.save(); ctx.translate(ox + w.mapOffsetX, oy + w.mapOffsetY);
     ctx.drawImage(w.mapCanvas, 0, 0);
 
     // mirrors
@@ -1066,7 +1175,7 @@ class Component extends DCLogic {
     // doors
     for (const d of w.doors) {
       const cx = (d.c + 0.5) * T, cy = (d.r + 0.5) * T;
-      const horiz = (w.grid[d.r - 1] && w.grid[d.r - 1][d.c] !== 'wall') && (w.grid[d.r + 1] && w.grid[d.r + 1][d.c] !== 'wall');
+      const horiz = d.axis ? d.axis === 'h' : (w.grid[d.r - 1] && w.grid[d.r - 1][d.c] !== 'wall') && (w.grid[d.r + 1] && w.grid[d.r + 1][d.c] !== 'wall');
       const col = d.type === 'auto' ? C.auto : d.type === 'linked' ? C.linked : d.type === 'entrance' ? C.entrance : C.std;
       ctx.save();
       if (d.open) {
@@ -1150,7 +1259,7 @@ class Component extends DCLogic {
     ctx.fillStyle = '#020806'; ctx.fillRect(0, 0, cv.width, cv.height);
     for (let r = 0; r < w.ROWS; r++) for (let c = 0; c < w.COLS; c++) {
       const g = w.grid[r][c];
-      if (g === 'floor' || g === 'door') { ctx.fillStyle = '#0d2416'; ctx.fillRect(c * sx, r * sy, sx, sy); }
+      if (g === 'floor' || g === 'door' || g === 'obstacle') { ctx.fillStyle = g === 'obstacle' ? '#17351f' : '#0d2416'; ctx.fillRect(c * sx, r * sy, sx, sy); }
     }
     const dot = (e, col, sz) => { ctx.fillStyle = col; ctx.fillRect(e.x / w.TILE * sx - sz / 2, e.y / w.TILE * sy - sz / 2, sz, sz); };
     for (const g of w.guests) dot(g, '#ffb000', 4);
@@ -1231,21 +1340,21 @@ class Component extends DCLogic {
         this.world.inspector = null;
         this.log("DEV: INSPECTOR DISMISSED", "#33ff00");
       } else {
-        const cx = (c) => (c + 0.5) * this.world.TILE, cy = (r) => (r + 0.5) * this.world.TILE;
-        this.world.inspector = { x: cx(16), y: cy(18), r: 8, target: null, path: null, pi: 0, stuck: 0, dashCd: 0, dashT: 0 };
+        const w = this.world;
+        this.world.inspector = { x: w.cx(w.inspectorSpawn.c), y: w.cy(w.inspectorSpawn.r), r: 7, target: null, path: null, pi: 0, stuck: 0, dashCd: 0, dashT: 0, caught: 0, speedMul: 1, warned: false };
         this.log("DEV: INSPECTOR SPAWNED", "#ff3333");
       }
     }
   }
   devCalmDaughter() {
     if (this.world) {
-      const T = this.world.TILE;
-      this.world.daughter.x = (5 + 0.5) * T;
-      this.world.daughter.y = (14 + 0.5) * T;
+      const w = this.world;
+      this.world.daughter.x = w.cx(w.daughterHome.c);
+      this.world.daughter.y = w.cy(w.daughterHome.r);
       this.world.daughter.path = null;
       this.world.daughter.stuck = 0;
       this.world.daughter.channel = 0;
-      this.log("DEV: DAUGHTER RESET TO ROOM 104", "#7dffb0");
+      this.log("DEV: DAUGHTER RESET TO ARCHIVE", "#7dffb0");
     }
   }
   devClearGhosts() {
