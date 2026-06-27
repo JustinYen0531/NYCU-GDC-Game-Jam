@@ -605,7 +605,8 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.state = { 
-      screen: (props.startScreen === 'game' ? 'playing' : 'title'), 
+      // Always land on the title screen first to avoid accidental auto-starts.
+      screen: 'title', 
       showOptions: false,
       optionsTab: 'rules', 
       showLevelSelect: false, 
