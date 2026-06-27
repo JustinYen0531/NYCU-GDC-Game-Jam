@@ -271,11 +271,54 @@
 
       <!-- small controls floating on a translucent glass strip -->
       <div class="title-control-float" data-ui="title-controls" style="position:absolute; left:50%; top:34%; transform:translate(-50%,-50%); z-index:12; padding:7px 9px; border:1px solid rgba(139,211,157,.28); background:rgba(2,12,8,.54); box-shadow:0 12px 34px rgba(0,0,0,.42), inset 0 1px 0 rgba(219,255,226,.08); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); display:flex; gap:6px; align-items:center; justify-content:center; border-radius:12px;">
-        <div class="title-control-button" onClick="{{ onNewGame }}" onMouseEnter="{{ onHoverOn }}" onMouseLeave="{{ onHoverOff }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:14px; line-height:1; letter-spacing:1.4px; color:#d7ffe3; background:rgba(29,92,49,.52); border:1px solid rgba(102,224,134,.72); box-shadow:0 0 10px rgba(51,255,136,.1); padding:5px 10px; text-shadow:0 0 5px rgba(51,255,136,.28); transition:.15s; border-radius:999px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d; text-shadow:none;">NEW GAME</div>
-        <div class="title-control-button" onClick="{{ onNewGame }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:14px; line-height:1; letter-spacing:1.4px; color:#9fcfaf; background:rgba(10,24,17,.32); border:1px solid rgba(72,112,81,.66); padding:5px 10px; transition:.15s; border-radius:999px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d;">CONTINUE</div>
+        <div class="title-control-button" onClick="{{ onOpenLevelSelect }}" onMouseEnter="{{ onHoverOn }}" onMouseLeave="{{ onHoverOff }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:14px; line-height:1; letter-spacing:1.4px; color:#d7ffe3; background:rgba(29,92,49,.52); border:1px solid rgba(102,224,134,.72); box-shadow:0 0 10px rgba(51,255,136,.1); padding:5px 10px; text-shadow:0 0 5px rgba(51,255,136,.28); transition:.15s; border-radius:999px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d; text-shadow:none;">NEW GAME</div>
+        <div class="title-control-button" onClick="{{ onContinue }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:14px; line-height:1; letter-spacing:1.4px; color:#9fcfaf; background:rgba(10,24,17,.32); border:1px solid rgba(72,112,81,.66); padding:5px 10px; transition:.15s; border-radius:999px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d;">CONTINUE</div>
         <div class="title-control-button" onClick="{{ onOptions }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:14px; line-height:1; letter-spacing:1.4px; color:#9fcfaf; background:rgba(10,24,17,.32); border:1px solid rgba(72,112,81,.66); padding:5px 10px; transition:.15s; border-radius:999px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d;">OPTIONS</div>
         <div class="title-control-button" onClick="{{ onExit }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:14px; line-height:1; letter-spacing:1.4px; color:#e5a8a8; background:rgba(43,13,13,.32); border:1px solid rgba(132,68,68,.66); padding:5px 10px; transition:.15s; border-radius:999px; white-space:nowrap;" style-hover="background:#ff3333; color:#04110d;">EXIT</div>
       </div>
+
+      <sc-if value="{{ showLevelSelect }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; inset:0; z-index:18; background:rgba(0,6,3,.78); display:flex; align-items:center; justify-content:center; padding:32px;">
+          <div style="width:min(1120px, calc(100vw - 64px)); border:1px solid rgba(90,255,142,.46); background:linear-gradient(180deg, rgba(2,16,10,.94) 0%, rgba(2,10,8,.97) 100%); box-shadow:0 0 36px rgba(51,255,136,.16), inset 0 0 0 1px rgba(186,255,209,.05); padding:24px 24px 20px; position:relative; overflow:hidden;">
+            <div style="position:absolute; inset:0; pointer-events:none; background:linear-gradient(135deg, rgba(51,255,136,.06) 0%, rgba(51,255,136,0) 32%), repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,20,8,.28) 3px, rgba(0,20,8,.28) 4px);"></div>
+            <div style="position:relative; z-index:1; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:18px;">
+              <div>
+                <div style="font-family:'Cinzel',serif; font-size:32px; color:#e3fbe8; letter-spacing:3px; text-shadow:0 0 16px rgba(80,255,140,.25);">START GAME // LEVEL ROUTER</div>
+                <div style="font-size:18px; color:#86d8a2; letter-spacing:2px;">SELECT A NIGHT PROTOCOL FROM THE 15-LEVEL ARCHIVE</div>
+              </div>
+              <div style="text-align:right; font-size:16px; color:#5e9d72; letter-spacing:1px;">
+                <div>CURRENT TARGET // LV {{ selectedLevel }}</div>
+                <div>{{ selectedLevelMeta }}</div>
+              </div>
+            </div>
+            <div style="position:relative; z-index:1; display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); gap:12px;">
+              <sc-for list="{{ levelSelectCards }}" as="levelCard" hint-placeholder-count="15">
+                <div onClick="{{ levelCard.onSelect }}" style="cursor:pointer; min-height:132px; padding:12px 12px 10px; border:1px solid {{ levelCard.border }}; background:{{ levelCard.bg }}; box-shadow:{{ levelCard.shadow }}; display:flex; flex-direction:column; justify-content:space-between; transition:.15s;" style-hover="transform:translateY(-2px); border-color:#8effb4;">
+                  <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
+                    <div>
+                      <div style="font-family:'Cinzel',serif; font-size:24px; color:{{ levelCard.numberColor }}; letter-spacing:1px;">LV {{ levelCard.level }}</div>
+                      <div style="font-size:16px; color:#d7ffe3; letter-spacing:1px;">{{ levelCard.label }}</div>
+                    </div>
+                    <div style="padding:2px 8px; border:1px solid {{ levelCard.badgeBorder }}; color:{{ levelCard.badgeColor }}; font-size:14px; letter-spacing:1px;">{{ levelCard.badge }}</div>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:4px; font-size:15px; line-height:1.15; color:#83bf96;">
+                    <div>MAP // {{ levelCard.map }}</div>
+                    <div>DOORS // {{ levelCard.doorMix }}</div>
+                    <div style="color:{{ levelCard.alertColor }};">{{ levelCard.alert }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:18px;">
+              <div style="font-size:16px; color:#5e9d72; letter-spacing:1px;">GRID FORMAT // 5 x 3 | MAP SHIFT // EVERY 5 NIGHTS</div>
+              <div style="display:flex; gap:10px;">
+                <div onClick="{{ onCloseLevelSelect }}" style="cursor:pointer; padding:7px 16px; border:1px solid #356346; color:#9fceae; font-size:18px;" style-hover="background:#163120; color:#dff7e6;">BACK</div>
+                <div onClick="{{ onStartSelectedLevel }}" style="cursor:pointer; padding:7px 16px; border:1px solid #5cff8d; color:#04110d; background:#33ff88; font-size:18px; box-shadow:0 0 18px rgba(51,255,136,.24);" style-hover="background:#8effb4;">START LV {{ selectedLevel }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
 
       <!-- options panel -->
       <sc-if value="{{ showOptions }}" hint-placeholder-val="{{ false }}">
@@ -467,7 +510,7 @@
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { screen: (props.startScreen === 'game' ? 'playing' : 'title'), showOptions: false, showDevConsole: false, tick: 0, scale: 1 };
+    this.state = { screen: (props.startScreen === 'game' ? 'playing' : 'title'), showOptions: false, showLevelSelect: false, showDevConsole: false, currentLevel: 1, selectedLevel: 1, tick: 0, scale: 1 };
     this.canvasRef = React.createRef();
     this.miniRef = React.createRef();
     this.keys = {};
@@ -653,6 +696,50 @@ class Component extends DCLogic {
     }));
   }
 
+  getSelectedLevelMeta(level) {
+    const config = this.getLevelConfig(level);
+    const layout = this.getMapLayout(config.mapTier);
+    const bossTag = config.boss ? ' // INSPECTOR BOSS NIGHT' : '';
+    return layout.name + ' // TIER ' + config.doorTier + bossTag;
+  }
+
+  getLevelSelectCards() {
+    const selected = this.state.selectedLevel || this.state.currentLevel || 1;
+    const mapNames = { 1:'PINE LODGE', 2:'TWIN-WING MANOR', 3:'BLACKTHORN VILLA' };
+    return Array.from({ length: 15 }, (_, index) => {
+      const level = index + 1;
+      const config = this.getLevelConfig(level);
+      const map = mapNames[config.mapTier] || 'UNKNOWN SITE';
+      const badge = config.boss ? 'BOSS' : ('TIER ' + config.doorTier);
+      const badgeColor = config.boss ? '#ffb38f' : '#89efab';
+      const badgeBorder = config.boss ? '#8a4f34' : '#2d7144';
+      const accent = level === selected ? '#8effb4' : (config.boss ? '#ff8f66' : '#56d97d');
+      const bg = level === selected
+        ? 'linear-gradient(180deg, rgba(15,52,29,.88) 0%, rgba(6,20,12,.94) 100%)'
+        : (config.boss
+          ? 'linear-gradient(180deg, rgba(32,16,12,.84) 0%, rgba(13,8,8,.94) 100%)'
+          : 'linear-gradient(180deg, rgba(6,22,13,.82) 0%, rgba(4,11,8,.94) 100%)');
+      const entries = [];
+      for (const type of ['basic','rashomon','sensor','rotating','chain']) if (config.counts[type]) entries.push(type.toUpperCase().slice(0,4) + ':' + config.counts[type]);
+      return {
+        level,
+        label: config.boss ? 'Inspector Confrontation' : 'Night Patrol',
+        map,
+        badge,
+        badgeColor,
+        badgeBorder,
+        numberColor: accent,
+        border: level === selected ? '#8effb4' : 'rgba(78,166,105,.58)',
+        bg,
+        shadow: level === selected ? '0 0 22px rgba(80,255,140,.18)' : 'inset 0 0 0 1px rgba(186,255,209,.03)',
+        doorMix: entries.join(' / '),
+        alert: config.boss ? 'ALERT // INSPECTOR DEPLOYED' : ('SECTOR // MAP ' + config.mapTier),
+        alertColor: config.boss ? '#ff9e7a' : '#71c58c',
+        onSelect: () => this.setState({ selectedLevel: level })
+      };
+    });
+  }
+
   makeInventory() {
     const inventory = {};
     for (const item of Object.values(this.itemDefs)) {
@@ -665,7 +752,7 @@ class Component extends DCLogic {
   COL() {
     return { bg:'#030608', floor:'#0d2018', floor2:'#102c1c', wall:'#0e2214', wallEdge:'#1e4a2a',
       green:'#33ff00', amber:'#ffb000', red:'#ff3333', white:'#e8ffe8', mirror:'#7fdfff',
-      std:'#ff4040', auto:'#ff8c00', linked:'#ffd000', entrance:'#3bd6ff' };
+      basic:'#ff4040', rashomon:'#ff8c00', sensor:'#3bd6ff', rotating:'#ffd000', chain:'#b061ff', entrance:'#d8f7ff' };
   }
 
   playMusic(type) {
@@ -721,7 +808,7 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
-    this.buildWorld();
+    this.buildWorld(this.state.currentLevel);
     this.fit();
 
     // Start title screen music
@@ -754,7 +841,7 @@ class Component extends DCLogic {
       } else if (k !== 'shift' && k !== 'e' && !['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) {
         this.devClickCount = 0;
       }
-      if (k === 'e' && this.state.screen === 'playing') { e.preventDefault(); this.operateDoor(); }
+      if (k === 'e' && this.state.screen === 'playing') { e.preventDefault(); this.operateDoor(!!e.shiftKey || !!this.keys['shift']); }
       if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k)) e.preventDefault();
     };
     this._onKeyUp = (e) => { this.keys[e.key.toLowerCase()] = false; };
@@ -795,91 +882,84 @@ class Component extends DCLogic {
   }
 
   // ---------- map ----------
-  buildWorld() {
+  getLevelConfig(level) {
+    const lv = Math.max(1, Math.min(15, Math.round(Number(level) || 1)));
+    if (lv <= 3) return { level:lv, mapTier:1, doorTier:1, counts:{ basic:9 }, boss:false };
+    if (lv <= 5) return { level:lv, mapTier:1, doorTier:2, counts:{ basic:5, rashomon:4 }, boss:lv===5 };
+    if (lv === 6) return { level:lv, mapTier:2, doorTier:2, counts:{ basic:9, rashomon:7 }, boss:false };
+    if (lv <= 9) return { level:lv, mapTier:2, doorTier:3, counts:{ basic:5, rashomon:5, sensor:6 }, boss:false };
+    if (lv === 10) return { level:lv, mapTier:2, doorTier:4, counts:{ basic:3, rashomon:3, sensor:4, rotating:6 }, boss:true };
+    if (lv <= 12) return { level:lv, mapTier:3, doorTier:4, counts:{ basic:4, rashomon:4, sensor:5, rotating:8 }, boss:false };
+    return { level:lv, mapTier:3, doorTier:5, counts:{ basic:3, rashomon:3, sensor:4, rotating:4, chain:7 }, boss:lv===15 };
+  }
+
+  getMapLayout(mapTier) {
+    const R=(label,role,x,y,w,h)=>({label,role,x,y,w,h}), D=(c,r,axis,name)=>({c,r,axis,name}), F=(c,r,w,h,kind)=>({c,r,w,h,kind});
+    if (mapTier === 1) return {
+      name:'PINE LODGE', guestRoomCount:4,
+      rooms:[R('ROOM 101','guest',2,2,8,5),R('LOUNGE','lounge',17,2,11,5),R('ROOM 102','guest',35,2,8,5),R('ROOM 103','guest',2,16,8,5),R('FRONT DESK','desk',17,16,11,5),R('ROOM 104','guest',35,16,8,5)],
+      corridors:[[2,8,41,3],[10,8,3,7],[21,7,3,9],[32,8,3,7],[10,13,25,2]],
+      hallLabels:[{text:'MAIN CORRIDOR',c:18,r:9},{text:'CHECK-IN',c:19,r:14}],
+      doorSlots:[D(5,7,'h','ROOM 101'),D(22,7,'h','LOUNGE'),D(39,7,'h','ROOM 102'),D(5,15,'h','ROOM 103'),D(22,15,'h','FRONT DESK'),D(39,15,'h','ROOM 104'),D(11,11,'h','WEST CORRIDOR'),D(22,11,'h','CENTRAL CORRIDOR'),D(33,11,'h','EAST CORRIDOR')],
+      fixtures:[F(3,3,3,2,'bed'),F(37,3,3,2,'bed'),F(3,17,3,2,'bed'),F(37,17,3,2,'bed'),F(19,3,3,1,'sofa'),F(24,5,2,1,'sofa'),F(19,17,7,1,'counter')],
+      mirrors:[{c:8,r:5},{c:41,r:19}],playerStart:{c:22,r:19},daughterHome:{c:5,r:5},exitApproach:{c:22,r:20},inspectorSpawn:{c:22,r:20},entrance:{c:22,r:21},
+      guestSpawns:[{c:22,r:5},{c:7,r:5},{c:39,r:5},{c:7,r:19},{c:39,r:19}]
+    };
+    if (mapTier === 2) return {
+      name:'TWIN-WING MANOR', guestRoomCount:8,
+      rooms:[R('ROOM 201','guest',1,1,7,5),R('ROOM 202','guest',10,1,7,5),R('LOUNGE','lounge',19,1,7,5),R('ROOM 203','guest',28,1,7,5),R('ROOM 204','guest',37,1,7,5),R('ROOM 205','guest',1,17,6,5),R('ROOM 206','guest',12,17,4,5),R('FRONT DESK','desk',17,10,11,11),R('ROOM 207','guest',29,17,4,5),R('ROOM 208','guest',38,17,6,5)],
+      corridors:[[2,7,41,2],[8,7,3,16],[21,7,3,16],[34,7,3,16],[8,22,29,2],[10,11,8,3]],
+      hallLabels:[{text:'NORTH CORRIDOR',c:17,r:7},{text:'WEST WING',c:8,r:13},{text:'EAST WING',c:34,r:13}],
+      doorSlots:[D(4,6,'h','ROOM 201'),D(13,6,'h','ROOM 202'),D(22,6,'h','LOUNGE'),D(31,6,'h','ROOM 203'),D(40,6,'h','ROOM 204'),D(9,9,'h','WEST WING NORTH'),D(22,9,'h','FRONT DESK NORTH'),D(35,9,'h','EAST WING NORTH'),D(7,19,'v','ROOM 205'),D(11,19,'v','ROOM 206 WEST'),D(16,19,'v','ROOM 206 EAST'),D(28,19,'v','ROOM 207 WEST'),D(33,19,'v','ROOM 207 EAST'),D(37,19,'v','ROOM 208'),D(22,21,'h','FRONT DESK SOUTH'),D(16,12,'v','WEST CROSS-CORRIDOR')],
+      fixtures:[F(2,2,3,2,'bed'),F(12,2,3,2,'bed'),F(30,2,3,2,'bed'),F(39,2,3,2,'bed'),F(2,18,3,2,'bed'),F(13,18,2,2,'bed'),F(30,18,2,2,'bed'),F(40,18,3,2,'bed'),F(20,2,2,1,'sofa'),F(23,4,2,1,'sofa'),F(19,11,7,1,'counter'),F(21,15,3,3,'fountain')],
+      mirrors:[{c:6,r:4},{c:42,r:19}],playerStart:{c:19,r:18},daughterHome:{c:4,r:4},exitApproach:{c:22,r:23},inspectorSpawn:{c:22,r:23},entrance:{c:22,r:24},
+      guestSpawns:[{c:22,r:4},{c:6,r:4},{c:14,r:4},{c:32,r:4},{c:40,r:4},{c:4,r:20},{c:14,r:20},{c:31,r:20}]
+    };
+    return {
+      name:'BLACKTHORN VILLA', guestRoomCount:12,
+      rooms:[R('ROOM 301','guest',1,1,7,5),R('ROOM 302','guest',10,1,8,5),R('LOUNGE','lounge',20,1,6,5),R('ROOM 303','guest',28,1,7,5),R('ROOM 304','guest',37,1,7,5),R('ROOM 305','guest',1,10,6,5),R('ROOM 306','guest',1,17,6,4),R('ROOM 307','guest',12,10,4,5),R('ROOM 308','guest',12,17,4,4),R('FRONT DESK','desk',17,10,11,11),R('ROOM 309','guest',29,10,4,5),R('ROOM 310','guest',29,17,4,4),R('ROOM 311','guest',38,10,6,5),R('ROOM 312','guest',38,17,6,4)],
+      corridors:[[2,7,41,2],[8,7,3,16],[21,7,3,16],[34,7,3,16],[8,22,29,2]],
+      hallLabels:[{text:'NORTH CORRIDOR',c:17,r:7},{text:'SOUTH CORRIDOR',c:17,r:23},{text:'CHECK-IN HALL',c:18,r:10}],
+      doorSlots:[D(4,6,'h','ROOM 301'),D(14,6,'h','ROOM 302'),D(22,6,'h','LOUNGE'),D(31,6,'h','ROOM 303'),D(40,6,'h','ROOM 304'),D(9,9,'h','WEST CORRIDOR'),D(22,9,'h','FRONT DESK NORTH'),D(35,9,'h','EAST CORRIDOR'),D(7,12,'v','ROOM 305'),D(11,12,'v','ROOM 307 WEST'),D(16,12,'v','ROOM 307 EAST'),D(28,12,'v','ROOM 309 WEST'),D(33,12,'v','ROOM 309 EAST'),D(37,12,'v','ROOM 311'),D(7,19,'v','ROOM 306'),D(11,19,'v','ROOM 308 WEST'),D(16,19,'v','ROOM 308 EAST'),D(28,19,'v','ROOM 310 WEST'),D(33,19,'v','ROOM 310 EAST'),D(37,19,'v','ROOM 312'),D(22,21,'h','FRONT DESK SOUTH')],
+      fixtures:[F(2,2,3,2,'bed'),F(12,2,3,2,'bed'),F(29,2,4,2,'bed'),F(39,2,3,2,'bed'),F(2,11,3,2,'bed'),F(2,18,3,1,'bed'),F(13,11,2,2,'bed'),F(13,18,2,1,'bed'),F(30,11,2,2,'bed'),F(30,18,2,1,'bed'),F(39,11,3,2,'bed'),F(39,18,3,1,'bed'),F(21,2,2,1,'sofa'),F(24,4,1,1,'sofa'),F(19,11,7,1,'counter'),F(21,15,3,3,'fountain')],
+      mirrors:[{c:16,r:4},{c:43,r:12}],playerStart:{c:19,r:18},daughterHome:{c:4,r:4},exitApproach:{c:22,r:23},inspectorSpawn:{c:22,r:23},entrance:{c:22,r:24},
+      guestSpawns:[{c:17,r:4},{c:35,r:8},{c:4,r:5},{c:29,r:14},{c:24,r:4},{c:40,r:14},{c:4,r:19},{c:31,r:19}]
+    };
+  }
+
+  buildWorld(level) {
+    const config = this.getLevelConfig(level);
+    const layout = this.getMapLayout(config.mapTier);
     const TILE = 21, COLS = 45, ROWS = 25;
     const grid = [];
     for (let r = 0; r < ROWS; r++) grid.push(new Array(COLS).fill('wall'));
     const carve = (x, y, w, h) => { for (let r = y; r < y + h; r++) for (let c = x; c < x + w; c++) if (grid[r] && grid[r][c] !== undefined) grid[r][c] = 'floor'; };
-
-    // A full villa plan: five northern rooms, three gallery spines,
-    // two side wings, a central great hall and a southern entrance gallery.
-    const rooms = [];
-    const room = (label, x, y, w, h, tint) => { carve(x, y, w, h); rooms.push({ label, x, y, w, h, tint }); };
-    room('ARCHIVE',        1,  1, 7, 5, 'rgba(88,64,32,.10)');
-    room('MASTER SUITE',  10,  1, 8, 5, 'rgba(74,49,72,.10)');
-    room('MUSIC SALON',   20,  1, 6, 5, 'rgba(86,57,32,.10)');
-    room('DINING HALL',   28,  1, 7, 5, 'rgba(102,64,28,.10)');
-    room('OBSERVATORY',   37,  1, 7, 5, 'rgba(32,78,95,.11)');
-    room('DRAWING ROOM',   1, 10, 6, 5, 'rgba(77,45,57,.10)');
-    room('KITCHEN',        1, 17, 6, 4, 'rgba(88,72,38,.09)');
-    room('WINTER GARDEN', 12, 10, 4, 5, 'rgba(32,91,53,.12)');
-    room('NURSERY',       12, 17, 4, 4, 'rgba(75,54,82,.10)');
-    room('GRAND FOYER',   17, 10,11,11, 'rgba(105,70,32,.09)');
-    room('STUDY',         29, 10, 4, 5, 'rgba(68,52,34,.11)');
-    room('GUEST SUITE',   29, 17, 4, 4, 'rgba(70,48,72,.10)');
-    room('CHAPEL',        38, 10, 6, 5, 'rgba(72,66,38,.10)');
-    room('SERVICE WING',  38, 17, 6, 4, 'rgba(58,67,62,.10)');
-
-    carve(2, 7, 41, 2);   // north gallery
-    carve(8, 7, 3, 16);   // west gallery spine
-    carve(21, 7, 3, 16);  // ceremonial central spine
-    carve(34, 7, 3, 16);  // east gallery spine
-    carve(8, 22, 29, 2);  // south gallery
+    const tint = role => role === 'desk' ? 'rgba(122,78,31,.16)' : role === 'lounge' ? 'rgba(47,92,67,.17)' : 'rgba(73,50,72,.10)';
+    const rooms = layout.rooms.map(z => ({ ...z, tint:tint(z.role) }));
+    for (const z of rooms) carve(z.x,z.y,z.w,z.h);
+    for (const h of layout.corridors) carve(h[0],h[1],h[2],h[3]);
 
     const doors = [];
     const doorMap = {};
-    const add = (c, r, type, axis, name) => {
-      grid[r][c] = 'door';
-      const d = { id: doors.length, c, r, type, axis, name, open: true, locked: false, link: -1, timer: 2 + Math.random() * 5 };
-      doors.push(d); doorMap[c + ',' + r] = d; return d;
+    const types = [];
+    for (const type of ['basic','rashomon','sensor','rotating','chain']) for (let i=0;i<(config.counts[type]||0);i++) types.push(type);
+    if (types.length !== layout.doorSlots.length) throw new Error('Door configuration mismatch for level ' + config.level);
+    const add = (s, type) => {
+      grid[s.r][s.c] = 'door';
+      const d = { id:doors.length, c:s.c, r:s.r, type, axis:s.axis, name:s.name, open:true, locked:false,
+        group:null, partner:-1, groupColor:null, timer:4.2+(doors.length%4)*.7, closeTimer:0, manualHold:0, forcePulse:0 };
+      doors.push(d); doorMap[s.c+','+s.r]=d; return d;
     };
-    const link = (a, b) => { a.link = b.id; b.link = a.id; a.open = true; b.open = false; };
-
-    add(4,  6, 'standard', 'h', 'ARCHIVE');
-    add(14, 6, 'auto',     'h', 'MASTER SUITE');
-    add(22, 6, 'standard', 'h', 'MUSIC SALON');
-    const northLinked = add(31, 6, 'linked', 'h', 'DINING HALL');
-    add(40, 6, 'auto',     'h', 'OBSERVATORY');
-    add(9,  9, 'standard', 'h', 'WEST GALLERY');
-    add(22, 9, 'standard', 'h', 'GRAND FOYER NORTH');
-    add(35, 9, 'standard', 'h', 'EAST GALLERY');
-    add(7, 12, 'standard', 'v', 'DRAWING ROOM');
-    const westLinked = add(11, 12, 'linked', 'v', 'WINTER GARDEN WEST');
-    add(16,12, 'auto',     'v', 'WINTER GARDEN EAST');
-    add(28,12, 'standard', 'v', 'STUDY WEST');
-    const eastLinked = add(33, 12, 'linked', 'v', 'STUDY EAST');
-    add(37,12, 'standard', 'v', 'CHAPEL');
-    add(7, 19, 'auto',     'v', 'KITCHEN');
-    add(11,19, 'standard', 'v', 'NURSERY WEST');
-    add(16,19, 'standard', 'v', 'NURSERY EAST');
-    add(28,19, 'standard', 'v', 'GUEST SUITE WEST');
-    add(33,19, 'auto',     'v', 'GUEST SUITE EAST');
-    add(37,19, 'standard', 'v', 'SERVICE WING');
-    const southLinked = add(22, 21, 'linked', 'h', 'GRAND FOYER SOUTH');
-    const entranceDoor = add(22, 24, 'entrance', 'h', 'MAIN GATE');
-    link(northLinked, southLinked);
-    link(westLinked, eastLinked);
+    layout.doorSlots.forEach((s,i)=>add(s,types[i]));
+    const rotating=doors.filter(d=>d.type==='rotating');
+    for(let i=0;i<rotating.length;i+=2){const a=rotating[i],b=rotating[i+1];if(!b)throw new Error('Rotating doors must be paired');a.group=b.group='ROT-'+(i/2+1);a.partner=b.id;b.partner=a.id;a.open=true;b.open=false;}
+    const chain=doors.filter(d=>d.type==='chain'), chainColors=['#b061ff','#ff5fa2','#58e6a9'];
+    for(let i=0;i<chain.length;i++){const gi=i<3?0:i<5?1:2;chain[i].group='CHAIN-'+gi;chain[i].groupColor=chainColors[gi];}
+    const entranceDoor=add({...layout.entrance,axis:'h',name:'MAIN GATE'},'entrance');
 
     // Furniture also shapes the routes inside each room instead of acting as decoration only.
-    const fixtures = [];
-    const furnish = (c, r, w, h, kind) => {
-      fixtures.push({ c, r, w, h, kind });
-      for (let rr = r; rr < r + h; rr++) for (let cc = c; cc < c + w; cc++) if (grid[rr] && grid[rr][cc] === 'floor') grid[rr][cc] = 'obstacle';
-    };
-    furnish(2, 2, 1, 3, 'shelf'); furnish(6, 2, 1, 3, 'shelf');
-    furnish(12,2, 3, 2, 'bed'); furnish(16,2, 1, 2, 'wardrobe');
-    furnish(21,2, 2, 1, 'piano'); furnish(24,3, 1, 1, 'seat');
-    furnish(29,2, 5, 2, 'table');
-    furnish(40,2, 1, 1, 'telescope'); furnish(42,3, 1, 1, 'desk');
-    furnish(2,11, 3, 1, 'sofa'); furnish(5,13, 1, 1, 'lamp');
-    furnish(2,18, 3, 1, 'island');
-    furnish(13,11,1, 1, 'plant'); furnish(14,13,1, 1, 'plant');
-    furnish(13,18,2, 1, 'bed');
-    furnish(30,11,2, 1, 'desk'); furnish(31,13,1, 1, 'shelf');
-    furnish(30,18,2, 1, 'bed');
-    furnish(39,11,4, 1, 'pew'); furnish(39,13,4, 1, 'pew');
-    furnish(39,18,1, 1, 'crate'); furnish(42,19,1, 1, 'crate');
-    furnish(21,14,3, 3, 'fountain');
+    const fixtures=layout.fixtures.slice();
+    for(const f of fixtures)for(let rr=f.r;rr<f.r+f.h;rr++)for(let cc=f.c;cc<f.c+f.w;cc++)if(grid[rr]&&grid[rr][cc]==='floor')grid[rr][cc]='obstacle';
 
     // floor tiles for targeting
     const floorTiles = [];
@@ -906,10 +986,8 @@ class Component extends DCLogic {
       mx.fillStyle = z.tint;
       mx.fillRect(z.x * TILE + 2, z.y * TILE + 2, z.w * TILE - 4, z.h * TILE - 4);
     }
-    mx.fillStyle = 'rgba(128,76,34,.16)';
-    mx.fillRect(19 * TILE, 12 * TILE, 7 * TILE, 7 * TILE);
-    mx.strokeStyle = 'rgba(212,154,72,.25)'; mx.lineWidth = 2;
-    mx.strokeRect(19 * TILE + 4, 12 * TILE + 4, 7 * TILE - 8, 7 * TILE - 8);
+    const deskRoom=rooms.find(z=>z.role==='desk');
+    if(deskRoom){mx.strokeStyle='rgba(212,154,72,.28)';mx.lineWidth=2;mx.strokeRect(deskRoom.x*TILE+4,deskRoom.y*TILE+4,deskRoom.w*TILE-8,deskRoom.h*TILE-8);}
 
     // walls (only those touching floor)
     const touches = (c, r) => { for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) { const g = grid[r + dr] && grid[r + dr][c + dc]; if (g === 'floor' || g === 'door' || g === 'obstacle') return true; } return false; };
@@ -936,7 +1014,7 @@ class Component extends DCLogic {
       } else if (f.kind === 'shelf' || f.kind === 'wardrobe') {
         mx.strokeStyle = '#9a7047';
         for (let yy = y + 5; yy < y + fh - 2; yy += 7) { mx.beginPath(); mx.moveTo(x + 2, yy); mx.lineTo(x + fw - 2, yy); mx.stroke(); }
-      } else if (f.kind === 'table' || f.kind === 'island' || f.kind === 'pew') {
+      } else if (f.kind === 'table' || f.kind === 'island' || f.kind === 'pew' || f.kind === 'counter' || f.kind === 'sofa') {
         mx.fillStyle = '#68482d'; mx.fillRect(x + 3, y + 3, fw - 6, fh - 6);
       } else if (f.kind === 'plant') {
         mx.fillStyle = '#3e8750'; mx.beginPath(); mx.arc(x + fw / 2, y + fh / 2, Math.max(3, fw * .3), 0, 7); mx.fill();
@@ -949,26 +1027,20 @@ class Component extends DCLogic {
     mx.font = '7px monospace'; mx.textBaseline = 'top'; mx.fillStyle = 'rgba(126,205,145,.44)';
     for (const z of rooms) mx.fillText(z.label, z.x * TILE + 5, z.y * TILE + 5);
     mx.fillStyle = 'rgba(91,173,115,.34)';
-    mx.fillText('NORTH GALLERY', 18 * TILE, 7 * TILE + 6);
-    mx.fillText('SOUTH GALLERY', 18 * TILE, 23 * TILE + 6);
+    for(const h of layout.hallLabels)mx.fillText(h.text,h.c*TILE+4,h.r*TILE+6);
 
-    const mirrors = [{ c: 16, r: 4 }, { c: 43, r: 12 }];
+    const mirrors = layout.mirrors;
     const roomCenters = rooms.map(z => ({ c: Math.floor(z.x + z.w / 2), r: Math.floor(z.y + z.h / 2) }));
 
     const cx = (c) => (c + 0.5) * TILE, cy = (r) => (r + 0.5) * TILE;
-    const playerStart = { c: 19, r: 18 };
-    const daughterHome = { c: 4, r: 4 };
-    const exitApproach = { c: 22, r: 23 };
-    const inspectorSpawn = { c: 22, r: 23 };
+    const playerStart=layout.playerStart,daughterHome=layout.daughterHome,exitApproach=layout.exitApproach,inspectorSpawn=layout.inspectorSpawn;
     const player = { x: cx(playerStart.c), y: cy(playerStart.r), r: 7 };
-    const daughter = { x: cx(daughterHome.c), y: cy(daughterHome.r), r: 8, path: null, pi: 0, stuck: 0, channel: 0, mirrorCd: 8, bob: 0 };
+    const daughter = { x: cx(daughterHome.c), y: cy(daughterHome.r), r: 8, path: null, pi: 0, stuck: 0, channel: 0, mirrorCd: 8, bob: 0, hostile:true, forceProgress:0 };
 
     // guests
-    const gspec = [
-      { c: 17, r: 4, type: 'timidWoman' }, { c: 35, r: 8, type: 'boldMan' }, { c: 4, r: 5, type: 'brat' },
-      { c: 29, r: 14, type: 'timidWoman' }, { c: 24, r: 4, type: 'boldMan' }, { c: 40, r: 14, type: 'brat' }
-    ];
-    const n = Math.max(1, Math.min(6, Math.round(this.props.guestCount ?? 4)));
+    const guestTypes=['timidWoman','boldMan','brat','timidWoman','boldMan','brat','timidWoman','brat'];
+    const gspec=layout.guestSpawns.map((p,i)=>({...p,type:guestTypes[i%guestTypes.length]}));
+    const n=Math.max(1,Math.min(Math.floor(layout.guestRoomCount/2),Math.round(this.props.guestCount??4),gspec.length));
     const guests = gspec.slice(0, n).map((g, i) => {
       const profile = this.getGuestProfile(g.type);
       return {
@@ -980,7 +1052,7 @@ class Component extends DCLogic {
     });
 
     this.world = {
-      TILE, COLS, ROWS, grid, doors, doorMap, floorTiles, mapCanvas: mc, mirrors, roomCenters,
+      TILE, COLS, ROWS, grid, doors, doorMap, floorTiles, mapCanvas: mc, mirrors, roomCenters, config, layoutName:layout.name, chainColors,
       entranceDoor, exitApproach, inspectorSpawn, daughterHome, playerStart, mapOffsetX: 3, mapOffsetY: 3,
       player, daughter, guests, ghosts: [], inspector: null, inspectorDone: false,
       itemDefs: this.itemDefs, inventory: this.makeInventory(),
@@ -988,22 +1060,23 @@ class Component extends DCLogic {
       cx, cy
     };
     this.logs = [];
-    this.log('NIGHT WATCH ONLINE. CAMERAS NOMINAL.', '#33ff00');
+    this.log('LEVEL '+config.level+' // '+layout.name+' ONLINE.', '#33ff00');
     this.log('KEEP HER OUT OF SIGHT. SURVIVE TO 06:00.', '#7dffb0');
   }
 
-  startGame() {
-    this.buildWorld();
-    this.setState({ screen: 'playing', showOptions: false });
+  startGame(level) {
+    const lv=Math.max(1,Math.min(15,Math.round(Number(level)||this.state.currentLevel||1)));
+    this.buildWorld(lv);
+    this.setState({ screen:'playing', showOptions:false, showLevelSelect:false, currentLevel:lv, selectedLevel:lv });
   }
 
   // ---------- helpers ----------
-  passable(c, r) {
+  passable(c, r, hostilePath) {
     const w = this.world;
     if (c < 0 || r < 0 || c >= w.COLS || r >= w.ROWS) return false;
     const g = w.grid[r][c];
     if (g === 'wall' || g === 'obstacle') return false;
-    if (g === 'door') { const d = w.doorMap[c + ',' + r]; return d ? d.open : true; }
+    if (g === 'door') { const d = w.doorMap[c + ',' + r]; return hostilePath ? true : (d ? d.open : true); }
     return true;
   }
   blockedAt(x, y, rad) {
@@ -1018,9 +1091,9 @@ class Component extends DCLogic {
   }
   tileOf(e) { const T = this.world.TILE; return { c: Math.floor(e.x / T), r: Math.floor(e.y / T) }; }
 
-  bfs(sc, sr, gc, gr) {
+  bfs(sc, sr, gc, gr, hostilePath) {
     const w = this.world;
-    if (!this.passable(gc, gr) || !this.passable(sc, sr)) return null;
+    if (!this.passable(gc, gr, hostilePath) || !this.passable(sc, sr, hostilePath)) return null;
     const key = (c, r) => c + ',' + r;
     const came = {}; came[key(sc, sr)] = null;
     const q = [[sc, sr]]; let head = 0;
@@ -1034,29 +1107,31 @@ class Component extends DCLogic {
       }
       for (const [dc, dr] of dirs) {
         const nc = c + dc, nr = r + dr, nk = key(nc, nr);
-        if (came[nk] === undefined && this.passable(nc, nr)) { came[nk] = key(c, r); q.push([nc, nr]); }
+        if (came[nk] === undefined && this.passable(nc, nr, hostilePath)) { came[nk] = key(c, r); q.push([nc, nr]); }
       }
     }
     return null;
   }
   randomFloor() { const f = this.world.floorTiles; return f[(Math.random() * f.length) | 0]; }
-  retarget(e, goal) {
+  retarget(e, goal, hostilePath) {
     const t = this.tileOf(e);
     const g = goal || this.randomFloor();
-    e.path = this.bfs(t.c, t.r, g.c, g.r);
+    e.path = this.bfs(t.c, t.r, g.c, g.r, hostilePath);
     e.pi = 0; e.goal = g;
   }
-  follow(e, dt, speed) {
-    if (!e.path || e.pi >= e.path.length) { this.retarget(e); return; }
+  follow(e, dt, speed, hostilePath) {
+    if (!e.path || e.pi >= e.path.length) { this.retarget(e, null, hostilePath); return; }
     const T = this.world.TILE, wp = e.path[e.pi];
     const tx = (wp.c + 0.5) * T, ty = (wp.r + 0.5) * T;
     const dx = tx - e.x, dy = ty - e.y, dist = Math.hypot(dx, dy);
+    const barrier=this.world.doorMap[wp.c+','+wp.r];
+    if(hostilePath&&barrier&&!barrier.open&&dist<T*1.25){this.forceDoor(e,barrier,dt);return;}
     if (dist < 5) { e.pi++; return; }
     const sp = speed * (e.speedMul || 1) * dt;
     const ox = e.x, oy = e.y;
     this.tryMove(e, dx / dist * sp, dy / dist * sp);
     const moved = Math.hypot(e.x - ox, e.y - oy);
-    if (moved < sp * 0.25) { e.stuck += dt; if (e.stuck > 0.4) { e.path = null; e.stuck = 0; } } else e.stuck = 0;
+    if (moved < sp * 0.25) { e.stuck += dt; if (e.stuck > 0.7) { e.path = null; e.stuck = 0; } } else e.stuck = 0;
   }
   canSee(ax, ay, bx, by, maxTiles) {
     const T = this.world.TILE, dx = bx - ax, dy = by - ay, dist = Math.hypot(dx, dy);
@@ -1075,39 +1150,42 @@ class Component extends DCLogic {
     return null;
   }
 
-  operateDoor() {
-    const w = this.world; if (!w) return;
-    let best = null, bd = 1e9;
-    let anyBest = null, abd = 1e9;
-    for (const d of w.doors) {
-      const dx = (d.c + 0.5) * w.TILE - w.player.x, dy = (d.r + 0.5) * w.TILE - w.player.y;
-      const dist = Math.hypot(dx, dy);
-      if (dist < abd) { abd = dist; anyBest = d; }
-      if (d.type === 'auto' || d.type === 'entrance') continue;
-      if (dist < bd) { bd = dist; best = d; }
+  doorGroup(d){if(!d||!d.group)return d?[d]:[];return this.world.doors.filter(x=>x.group===d.group);}
+  nearestDoor(){const w=this.world;if(!w)return null;let best=null,bd=1e9;for(const d of w.doors){if(d.type==='entrance')continue;const dist=Math.hypot((d.c+.5)*w.TILE-w.player.x,(d.r+.5)*w.TILE-w.player.y);if(dist<bd){bd=dist;best=d;}}return best&&bd<w.TILE*1.7?best:null;}
+  doorColor(d,C){return d.groupColor||C[d.type]||C.basic;}
+
+  operateDoor(lockMode) {
+    const d=this.nearestDoor();if(!d){this.playSFX('blocked');return;}
+    const group=this.doorGroup(d);
+    if(lockMode){
+      const unlocking=group.some(x=>x.locked);
+      if(unlocking){for(const x of group)x.locked=false;this.log(d.name+' UNLOCKED.','#7dffb0');this.playSFX('unlock');}
+      else{for(const x of group){x.locked=true;if(d.type!=='rotating')x.open=false;}this.log(d.name+' LOCKED.','#33ff00');this.playSFX('lock');}
+      return;
     }
-    if (best && bd < w.TILE * 1.7) {
-      // cycle: open -> closed -> locked -> open
-      if (best.open) { 
-        best.open = false; best.locked = false; 
-        this.log('DOOR ' + best.c + '-' + best.r + ' CLOSED.', '#ffb000'); 
-        this.playSFX('close');
-      }
-      else if (!best.locked) { 
-        best.locked = true; 
-        this.log('DOOR ' + best.c + '-' + best.r + ' LOCKED.', '#33ff00'); 
-        this.playSFX('lock');
-      }
-      else { 
-        best.open = true; best.locked = false; 
-        this.log('DOOR ' + best.c + '-' + best.r + ' OPENED.', '#7dffb0'); 
-        this.playSFX('unlock');
-      }
-      if (best.link >= 0) { const p = w.doors[best.link]; p.open = !best.open; p.locked = false; }
-    } else if (anyBest && abd < w.TILE * 1.7) {
-      // Auto or entrance door
-      this.playSFX('blocked');
+    if(group.some(x=>x.locked)){this.log(d.name+' // LOCKED.','#ff3333');this.playSFX('blocked');return;}
+    if(d.type==='rotating'){
+      for(const x of group)x.open=!x.open;
+      this.log(d.name+' ROTATED.','#ffd000');this.playSFX('close');return;
     }
+    if(d.type==='chain'){
+      const next=!d.open;for(const x of group)x.open=next;
+      this.log(d.name+' // CHAIN '+(next?'OPEN':'CLOSED')+'.',d.groupColor);this.playSFX(next?'unlock':'close');return;
+    }
+    d.open=!d.open;d.manualHold=d.type==='sensor'?.9:0;if(d.type==='rashomon')d.timer=4.2+(d.id%4)*.7;
+    this.log(d.name+' '+(d.open?'OPENED.':'CLOSED.'),d.open?'#7dffb0':'#ffb000');this.playSFX(d.open?'unlock':'close');
+  }
+
+  forceDoor(actor,d,dt){
+    const key=d.id+':'+d.locked;if(actor.forceDoorKey!==key){actor.forceDoorKey=key;actor.forceProgress=0;}
+    actor.forceProgress=(actor.forceProgress||0)+dt;d.forcePulse=Math.min(1,(d.forcePulse||0)+dt*2);
+    const group=this.doorGroup(d),threshold=group.some(x=>x.locked)?3:1.25;
+    if(actor.forceProgress<threshold)return;
+    for(const x of group)x.locked=false;
+    if(d.type==='rotating'){for(const x of group)x.open=x.id===d.id;}
+    else{for(const x of group)x.open=true;}
+    actor.forceProgress=0;actor.forceDoorKey=null;
+    this.log('FORCED ENTRY // '+d.name,'#ff3333');this.playSFX('breakIn');
   }
 
   // ---------- update ----------
@@ -1127,9 +1205,15 @@ class Component extends DCLogic {
     const run = (this.keys['shift']) ? 1.7 : 1;
     if (mvx || mvy) { const m = Math.hypot(mvx, mvy); const sp = 132 * run * dt; this.tryMove(w.player, mvx / m * sp, mvy / m * sp); w.player.dir = Math.atan2(mvy, mvx); }
 
-    // doors auto + timers
-    for (const d of w.doors) {
-      if (d.type === 'auto') { d.timer -= dt; if (d.timer <= 0) { d.open = !d.open; d.timer = 5; } }
+    // Five door families: periodic Rashomon doors and proximity sensor doors.
+    const sensorEntities=[w.player,w.daughter,...w.guests,...w.ghosts];if(w.inspector)sensorEntities.push(w.inspector);
+    for(const d of w.doors){
+      d.forcePulse=Math.max(0,(d.forcePulse||0)-dt);
+      if(d.type==='rashomon'&&!d.locked){d.timer-=dt;if(d.timer<=0){d.open=!d.open;d.timer=4.2+(d.id%4)*.7;}}
+      if(d.type==='sensor'&&!d.locked){
+        d.manualHold=Math.max(0,(d.manualHold||0)-dt);
+        if(d.manualHold<=0){const near=sensorEntities.some(e=>e&&Math.hypot(e.x-w.cx(d.c),e.y-w.cy(d.r))<w.TILE*1.35);if(near){d.open=true;d.closeTimer=1.1;}else{d.closeTimer-=dt;if(d.closeTimer<=0)d.open=false;}}
+      }
     }
 
     // daughter ghost wander + mirror teleport
@@ -1145,7 +1229,7 @@ class Component extends DCLogic {
         this.playSFX('teleport');
       }
     } else {
-      this.follow(dg, dt, 44);
+      this.follow(dg, dt, 44, true);
       if (Math.random() < 0.002) this.playSFX('sigh'); // random ghost wander sigh
       dg.mirrorCd -= dt;
       if (dg.mirrorCd <= 0) {
@@ -1156,7 +1240,7 @@ class Component extends DCLogic {
     }
 
     // extra ghosts wander
-    for (const gh of w.ghosts) this.follow(gh, dt, 40);
+    for (const gh of w.ghosts) this.follow(gh, dt, 40, true);
 
     // guests
     let scaredActive = 0;
@@ -1180,7 +1264,7 @@ class Component extends DCLogic {
         } else g.scare = Math.max(0, g.scare - dt * profile.scareRecover);
         if (g.scare > 25) scaredActive++;
         if (g.scare >= profile.scareThreshold) {
-          w.ghosts.push({ x: g.x, y: g.y, r: 9, path: null, pi: 0, stuck: 0, bob: 0 });
+          w.ghosts.push({ x:g.x,y:g.y,r:9,path:null,pi:0,stuck:0,bob:0,hostile:true,forceProgress:0 });
           w.guests.splice(i, 1); w.lostGuests++;
           this.log('TIMID WOMAN LOST // NEW APPARITION SPAWNED.', '#ff3333');
           w.flash = 0.5; 
@@ -1237,7 +1321,7 @@ class Component extends DCLogic {
         this.playSFX('dash');
       }
       if (ins.dashT > 0) { ins.dashT -= dt; if (ins.dashT <= 0) ins.speedMul = 1; }
-      this.follow(ins, dt, 78);
+      this.follow(ins, dt, 78, true);
       if (this.canSee(ins.x, ins.y, dg.x, dg.y, 7)) {
         ins.caught += dt; w.screenGlitch = 0.4;
         if (ins.caught > 1.0 && !ins.warned) { 
@@ -1568,6 +1652,10 @@ class Component extends DCLogic {
       isWon: s.screen === 'won',
       isLost: s.screen === 'lost',
       showOptions: s.showOptions,
+      showLevelSelect: s.showLevelSelect,
+      selectedLevel: s.selectedLevel,
+      selectedLevelMeta: this.getSelectedLevelMeta(s.selectedLevel),
+      levelSelectCards: this.getLevelSelectCards(),
       titleGuestCards: this.getTitleGuestCards(),
       showDevConsole: s.showDevConsole,
       canvasRef: this.canvasRef,
@@ -1575,6 +1663,10 @@ class Component extends DCLogic {
       hud: this.hud(),
       logLines: this.logs.map(l => ({ txt: l.txt, color: l.color })),
       onNewGame: () => this.startGame(),
+      onOpenLevelSelect: () => this.setState({ showLevelSelect: true, showOptions: false, selectedLevel: s.selectedLevel || s.currentLevel || 1 }),
+      onCloseLevelSelect: () => this.setState({ showLevelSelect: false }),
+      onContinue: () => this.startGame(s.currentLevel || 1),
+      onStartSelectedLevel: () => this.startGame(s.selectedLevel || 1),
       onOptions: () => this.setState({ showOptions: !s.showOptions }),
       onExit: () => { this.log('THERE IS NO WAY DOWN THE MOUNTAIN TONIGHT.', '#ff3333'); },
       onRestart: () => this.startGame(),
