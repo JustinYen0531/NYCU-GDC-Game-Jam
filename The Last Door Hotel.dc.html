@@ -393,17 +393,17 @@
       .lvl-mini-legend{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;color:#7ed69b;}
       .lvl-mini-tag{display:flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid rgba(102,214,140,.18);background:rgba(11,28,17,.46);}
       .lvl-mini-swatch{width:10px;height:10px;border-radius:2px;box-shadow:0 0 7px currentColor;}
-      .lvl-preview-backdrop{position:absolute;inset:0;z-index:12;background:rgba(0,0,0,.52);display:flex;align-items:center;justify-content:center;padding:32px 24px;}
-      .lvl-preview{position:relative;z-index:13;width:min(560px, calc(100vw - 140px));max-height:min(78vh, 690px);padding:0;display:flex;flex-direction:column;overflow:hidden;}
+      .lvl-preview-backdrop{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:32px 24px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
+      .lvl-preview{position:relative;z-index:13;width:min(560px, calc(100vw - 32px));max-height:min(88vh, 760px);padding:0;display:flex;flex-direction:column;overflow:hidden;}
       .lvl-preview-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 16px 12px;border-bottom:1px solid rgba(102,214,140,.18);background:linear-gradient(180deg,rgba(8,20,14,.94),rgba(4,12,8,.92));}
       .lvl-preview-close{cursor:pointer;flex:none;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,170,170,.35);color:#ffc8c8;background:rgba(45,11,11,.55);font-size:18px;line-height:1;border-radius:4px;transition:.16s;}
       .lvl-preview-close:hover{background:#ff6e6e;color:#140303;border-color:#ff9e9e;box-shadow:0 0 18px rgba(255,110,110,.24);}
-      .lvl-preview-body{padding:14px 16px 16px;overflow-y:auto;display:flex;flex-direction:column;min-height:0;}
+      .lvl-preview-body{padding:14px 16px 16px;overflow-y:auto;display:flex;flex-direction:column;min-height:0;flex:1;}
       .lvl-preview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0 12px;}
       .lvl-metric{padding:7px 8px;border:1px solid rgba(102,214,140,.18);background:rgba(8,24,15,.4);}
       .lvl-metric-label{font-size:11px;letter-spacing:1px;color:#79c893;}
       .lvl-metric-value{font-size:22px;color:#e8ffe8;line-height:1.05;}
-      .lvl-preview-cta{margin-top:18px;position:sticky;bottom:0;padding-top:10px;background:linear-gradient(180deg,rgba(2,7,4,0),rgba(2,7,4,.96) 42%,rgba(2,7,4,.98) 100%);}
+      .lvl-preview-cta{padding:14px 16px 16px;background:rgba(4,12,8,.98);border-top:1px solid rgba(102,214,140,.18);}
       .lvl-preview-lock{font-size:12px;letter-spacing:1px;color:#ffb000;margin-bottom:8px;text-align:center;}
       .lvl-preview-btn{cursor:pointer;font-family:'Cinzel',serif;font-size:15px;font-weight:700;letter-spacing:3px;color:#031109;background:linear-gradient(180deg,#9dffb8 0%,#46db79 100%);border:1px solid #bfffd0;border-radius:4px;padding:10px 14px;text-align:center;box-shadow:0 0 18px rgba(80,255,140,.35);}
       .lvl-preview-btn.is-disabled{cursor:not-allowed;color:#587563;background:linear-gradient(180deg,#2d4638 0%,#1a2a21 100%);border-color:#466655;box-shadow:none;}
@@ -576,21 +576,23 @@
                 </sc-for>
               </div>
 
-              <div class="lvl-blueprint" style="height:190px;">
-                <div class="lvl-grid"></div>
-                <sc-for list="{{ previewCorridors }}" as="zone" hint-placeholder-count="3">
-                  <div class="lvl-zone" style="left:{{ zone.left }}; top:{{ zone.top }}; width:{{ zone.width }}; height:{{ zone.height }}; background:{{ zone.fill }}; border-color:{{ zone.border }};"></div>
-                </sc-for>
-                <sc-for list="{{ previewRooms }}" as="room" hint-placeholder-count="6">
-                  <div class="lvl-zone" style="left:{{ room.left }}; top:{{ room.top }}; width:{{ room.width }}; height:{{ room.height }}; background:{{ room.fill }}; border-color:{{ room.border }};"></div>
-                  <div class="lvl-zone-text" style="left:{{ room.textLeft }}; top:{{ room.textTop }}; width:{{ room.textWidth }}; color:{{ room.textColor }};">{{ room.label }}</div>
-                </sc-for>
-                <sc-for list="{{ previewLabels }}" as="label" hint-placeholder-count="3">
-                  <div class="lvl-hall-text" style="left:{{ label.left }}; top:{{ label.top }};">{{ label.text }}</div>
-                </sc-for>
-                <sc-for list="{{ previewDoors }}" as="door" hint-placeholder-count="8">
-                  <div class="lvl-door-dot" style="left:{{ door.left }}; top:{{ door.top }}; width:{{ door.width }}; height:{{ door.height }}; color:{{ door.color }}; background:{{ door.color }};" title="{{ door.name }}"></div>
-                </sc-for>
+              <div style="width: 100%; overflow-x: auto; overflow-y: hidden; border: 1px solid rgba(102,214,140,.24); background: linear-gradient(180deg,rgba(3,10,8,.98),rgba(1,5,4,.98)); margin: 12px 0 6px; border-radius: 4px;">
+                <div class="lvl-blueprint" style="width: 540px; height: 300px; border: none; background: transparent; position: relative; overflow: hidden; flex-shrink: 0;">
+                  <div class="lvl-grid"></div>
+                  <sc-for list="{{ previewCorridors }}" as="zone" hint-placeholder-count="3">
+                    <div class="lvl-zone" style="left:{{ zone.left }}; top:{{ zone.top }}; width:{{ zone.width }}; height:{{ zone.height }}; background:{{ zone.fill }}; border-color:{{ zone.border }};"></div>
+                  </sc-for>
+                  <sc-for list="{{ previewRooms }}" as="room" hint-placeholder-count="6">
+                    <div class="lvl-zone" style="left:{{ room.left }}; top:{{ room.top }}; width:{{ room.width }}; height:{{ room.height }}; background:{{ room.fill }}; border-color:{{ room.border }};"></div>
+                    <div class="lvl-zone-text" style="left:{{ room.textLeft }}; top:{{ room.textTop }}; width:{{ room.textWidth }}; color:{{ room.textColor }};">{{ room.label }}</div>
+                  </sc-for>
+                  <sc-for list="{{ previewLabels }}" as="label" hint-placeholder-count="3">
+                    <div class="lvl-hall-text" style="left:{{ label.left }}; top:{{ label.top }};">{{ label.text }}</div>
+                  </sc-for>
+                  <sc-for list="{{ previewDoors }}" as="door" hint-placeholder-count="8">
+                    <div class="lvl-door-dot" style="left:{{ door.left }}; top:{{ door.top }}; width:{{ door.width }}; height:{{ door.height }}; color:{{ door.color }}; background:{{ door.color }};" title="{{ door.name }}"></div>
+                  </sc-for>
+                </div>
               </div>
 
               <div class="lvl-mini-legend" style="margin-top:8px;">
@@ -604,13 +606,11 @@
                   <div class="lvl-line"><span class="lvl-dim">&gt;</span> {{ line }}</div>
                 </sc-for>
               </div>
+            </div>
 
-              <div style="height:88px;"></div>
-
-              <div class="lvl-preview-cta">
-                <div class="lvl-preview-lock">{{ previewStartHint }}</div>
-                <div class="lvl-preview-btn {{ previewStartBtnClass }}" onClick="{{ onStartSelectedLevel }}" style-hover="background:linear-gradient(180deg,#b7ffcb 0%,#58e68a 100%); box-shadow:0 0 24px rgba(80,255,140,.48);">{{ previewStartLabel }}</div>
-              </div>
+            <div class="lvl-preview-cta">
+              <div class="lvl-preview-lock">{{ previewStartHint }}</div>
+              <div class="lvl-preview-btn {{ previewStartBtnClass }}" onClick="{{ onStartSelectedLevel }}" style-hover="background:linear-gradient(180deg,#b7ffcb 0%,#58e68a 100%); box-shadow:0 0 24px rgba(80,255,140,.48);">{{ previewStartLabel }}</div>
             </div>
           </div>
         </div>
@@ -1941,6 +1941,7 @@ class Component extends DCLogic {
     this._lvlWheelCd = 0;
     this._onWheel = (e) => {
       if (!this.state.showLevelSelect) return;
+      if (this.state.showLevelPreview) return; // Allow normal scrolling inside level preview modal
       e.preventDefault();
       const now = (typeof performance !== 'undefined' ? performance.now() : Date.now());
       if (now < this._lvlWheelCd) return;
@@ -1951,6 +1952,7 @@ class Component extends DCLogic {
     this._intelDrag = null;
     this._onPointerDown = (e) => {
       if (!this.state.showLevelSelect) return;
+      if (this.state.showLevelPreview) return; // Allow pointer interactions inside level preview modal
       if (e.target && e.target.closest && e.target.closest('[data-intel-handle]')) {
         this._intelDrag = { x: e.clientX, width: this.state.worldIntelWidth || 58, dragged: false };
         this._drag = null;
@@ -2074,10 +2076,6 @@ class Component extends DCLogic {
   }
 
   tryStartSelectedLevel() {
-    if (!this.state.previewReachedBottom) {
-      this.playSFX('error');
-      return;
-    }
     this.playUiClick();
     this.startGame(this.state.selectedLevel || 1);
   }
@@ -3341,11 +3339,9 @@ class Component extends DCLogic {
       previewLabels: preview.map.labels,
       previewDoors: preview.map.doors,
       previewScrollRef: this.previewScrollRef,
-      previewStartHint: s.previewReachedBottom
-        ? 'SCROLL COMPLETE // START KEY UNLOCKED'
-        : 'SCROLL DOWN TO THE BOTTOM TO UNLOCK DEPLOYMENT',
-      previewStartLabel: s.previewReachedBottom ? 'BEGIN DEPLOYMENT ->' : 'LOCKED UNTIL FULL REVIEW',
-      previewStartBtnClass: s.previewReachedBottom ? '' : 'is-disabled',
+      previewStartHint: 'DEPLOYMENT SYSTEM READY // READY TO BEGIN',
+      previewStartLabel: 'BEGIN DEPLOYMENT ->',
+      previewStartBtnClass: '',
       titleGuestCards: this.getTitleGuestCards(),
       showDevConsole: s.showDevConsole,
       canvasRef: this.canvasRef,
