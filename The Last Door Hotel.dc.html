@@ -168,7 +168,7 @@
                 <polyline points="0,17 14,17 18,17 21,5 25,29 29,17 50,17 64,17 68,17 71,5 75,29 79,17 100,17 114,17 118,17 121,5 125,29 129,17 150,17 164,17 168,17 171,5 175,29 179,17 200,17" fill="none" stroke="#33ff00" stroke-width="1.5" style="filter:drop-shadow(0 0 3px #33ff00);"/>
               </svg>
             </div>
-            <div style="display:flex; justify-content:space-between; font-size:12px; color:#1f521f; margin-top:2px;"><span>SIGNAL</span><span style="color:#33ff00;">{{ hud.statusText }}</span></div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:#1f521f; margin-top:2px;"><span>FUNDS ${{ hud.money }} / {{ hud.quota }}</span><span style="color:#33ff00;">{{ hud.statusText }}</span></div>
           </div>
 
           <!-- power -->
@@ -223,7 +223,8 @@
             <div style="width:42px; height:42px; overflow:hidden; position:relative; flex:none;">
               <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:0px 0px; filter:invert(1) brightness(0.85);"></div>
             </div>
-            <div style="font-size:10px; color:#33ff00; margin-top:2px; white-space:nowrap;">遮布 [{{ items.cloth }}]</div>
+            <div style="font-size:10px; color:{{ itemUi.clothColor }}; margin-top:2px; white-space:nowrap;">遮布 ${{ itemUi.clothCost }}</div>
+            <div style="font-size:9px; color:{{ itemUi.clothCdColor }}; white-space:nowrap;">{{ itemUi.clothCd }}</div>
             <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">1</div>
           </div>
 
@@ -232,7 +233,8 @@
             <div style="width:42px; height:42px; overflow:hidden; position:relative; flex:none;">
               <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:-42px 0px; filter:invert(1) brightness(0.85);"></div>
             </div>
-            <div style="font-size:10px; color:#33ff00; margin-top:2px; white-space:nowrap;">眼罩 [{{ items.blindfold }}]</div>
+            <div style="font-size:10px; color:{{ itemUi.blindfoldColor }}; margin-top:2px; white-space:nowrap;">眼罩 ${{ itemUi.blindfoldCost }}</div>
+            <div style="font-size:9px; color:{{ itemUi.blindfoldCdColor }}; white-space:nowrap;">{{ itemUi.blindfoldCd }}</div>
             <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">2</div>
           </div>
 
@@ -241,7 +243,8 @@
             <div style="width:42px; height:42px; overflow:hidden; position:relative; flex:none;">
               <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:-84px 0px; filter:invert(1) brightness(0.85);"></div>
             </div>
-            <div style="font-size:10px; color:#33ff00; margin-top:2px; white-space:nowrap;">勞術 [{{ items.phase }}]</div>
+            <div style="font-size:10px; color:{{ itemUi.phaseColor }}; margin-top:2px; white-space:nowrap;">勞術 ${{ itemUi.phaseCost }}</div>
+            <div style="font-size:9px; color:{{ itemUi.phaseCdColor }}; white-space:nowrap;">{{ itemUi.phaseCd }}</div>
             <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">3</div>
           </div>
 
@@ -250,7 +253,8 @@
             <div style="width:42px; height:42px; overflow:hidden; position:relative; flex:none;">
               <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:0px -42px; filter:invert(1) brightness(0.85);"></div>
             </div>
-            <div style="font-size:10px; color:#33ff00; margin-top:2px; white-space:nowrap;">門鎖 [{{ items.lock }}]</div>
+            <div style="font-size:10px; color:{{ itemUi.lockColor }}; margin-top:2px; white-space:nowrap;">門鎖 ${{ itemUi.lockCost }}</div>
+            <div style="font-size:9px; color:{{ itemUi.lockCdColor }}; white-space:nowrap;">{{ itemUi.lockCd }}</div>
             <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">4</div>
           </div>
 
@@ -259,7 +263,8 @@
             <div style="width:42px; height:42px; overflow:hidden; position:relative; flex:none;">
               <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:-42px -42px; filter:invert(1) brightness(0.85);"></div>
             </div>
-            <div style="font-size:10px; color:#33ff00; margin-top:2px; white-space:nowrap;">口哨 [{{ items.whistle }}]</div>
+            <div style="font-size:10px; color:{{ itemUi.whistleColor }}; margin-top:2px; white-space:nowrap;">口哨 ${{ itemUi.whistleCost }}</div>
+            <div style="font-size:9px; color:{{ itemUi.whistleCdColor }}; white-space:nowrap;">{{ itemUi.whistleCd }}</div>
             <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">5</div>
           </div>
         </div>
@@ -798,8 +803,7 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.state = { 
-      // Always land on the title screen first to avoid accidental auto-starts.
-      screen: 'title', 
+      screen: this.props.startScreen || 'title',
       showOptions: false,
       optionsTab: 'rules', 
       showLevelSelect: false, 
@@ -808,14 +812,7 @@ class Component extends DCLogic {
       selectedLevel: 1,
       selFloor: 1,
       tick: 0,
-      scale: 1,
-      items: {
-        cloth: 3,
-        blindfold: 2,
-        phase: 1,
-        lock: 2,
-        whistle: 1
-      }
+      scale: 1
     };
     this.canvasRef = React.createRef();
     this.miniRef = React.createRef();
@@ -931,7 +928,9 @@ class Component extends DCLogic {
         short: '蓋鏡',
         icon: 'MC',
         accent: '#bfa98a',
-        stock: 2,
+        stock: 999,
+        price: 12,
+        cooldown: 8,
         target: 'mirror',
         duration: 'permanent-until-moved',
         effect: '使鏡子永久無法被鬼魂穿透，可隨時拿走重新部署。'
@@ -942,7 +941,9 @@ class Component extends DCLogic {
         short: '眼罩',
         icon: 'BF',
         accent: '#7fd6ff',
-        stock: 3,
+        stock: 999,
+        price: 18,
+        cooldown: 16,
         target: 'guest',
         duration: 8,
         effect: '使住客暫時失去視野與行動能力，在此狀態下為無敵狀態，暫停住宿計時。'
@@ -953,7 +954,9 @@ class Component extends DCLogic {
         short: '穿牆',
         icon: 'WP',
         accent: '#c18cff',
-        stock: 3,
+        stock: 999,
+        price: 10,
+        cooldown: 6,
         target: 'self',
         duration: 0.45,
         effect: '允許玩家短距離穿透一面牆壁，用於快速支援門鎖。'
@@ -964,7 +967,9 @@ class Component extends DCLogic {
         short: '鎖門',
         icon: 'LK',
         accent: '#ffb000',
-        stock: 4,
+        stock: 999,
+        price: 15,
+        cooldown: 12,
         target: 'door',
         duration: 10,
         effect: '強行將門鎖定一段時間，即使是自動門也可以被強行封死。'
@@ -975,7 +980,9 @@ class Component extends DCLogic {
         short: '吸引',
         icon: 'WH',
         accent: '#ff7a7a',
-        stock: 3,
+        stock: 999,
+        price: 9,
+        cooldown: 14,
         target: 'ghost',
         duration: 5,
         radius: 160,
@@ -1055,6 +1062,36 @@ class Component extends DCLogic {
     return inventory;
   }
 
+  itemSlots() {
+    return ['cloth', 'blindfold', 'phase', 'lock', 'whistle'];
+  }
+
+  itemDefBySlot(slot) {
+    const map = {
+      cloth: this.itemDefs.mirrorCloth,
+      blindfold: this.itemDefs.blindfold,
+      phase: this.itemDefs.wallPass,
+      lock: this.itemDefs.lockSeal,
+      whistle: this.itemDefs.whistle
+    };
+    return map[slot] || null;
+  }
+
+  itemUi() {
+    const w = this.world;
+    const out = {};
+    for (const slot of this.itemSlots()) {
+      const def = this.itemDefBySlot(slot);
+      const cd = Math.max(0, (w && w.itemCooldowns && w.itemCooldowns[slot]) || 0);
+      const affordable = !!(w && (w.money || 0) >= def.price);
+      out[slot + 'Cost'] = def.price;
+      out[slot + 'Cd'] = cd > 0 ? ('CD ' + cd.toFixed(1) + 's') : 'READY';
+      out[slot + 'Color'] = affordable ? '#33ff00' : '#ff8c00';
+      out[slot + 'CdColor'] = cd > 0 ? '#ff5555' : '#7dffb0';
+    }
+    return out;
+  }
+
   // ---------- colors ----------
   COL() {
     return { bg:'#030608', floor:'#0d2018', floor2:'#102c1c', wall:'#0e2214', wallEdge:'#1e4a2a',
@@ -1108,28 +1145,34 @@ class Component extends DCLogic {
 
   useItem(index) {
     if (this.state.screen !== 'playing') return;
-    const names = ['cloth', 'blindfold', 'phase', 'lock', 'whistle'];
-    const name = names[index - 1];
-    const items = { ...this.state.items };
-    if (items[name] > 0) {
-      items[name]--;
-      this.setState({ items });
-      
-      if (name === 'cloth') {
-        this.placeCloth();
-      } else if (name === 'blindfold') {
-        this.useBlindfold();
-      } else if (name === 'phase') {
-        this.usePhase();
-      } else if (name === 'lock') {
-        this.useLock();
-      } else if (name === 'whistle') {
-        this.useWhistle();
-      }
-    } else {
-      this.log("NO " + name.toUpperCase() + " REMAINING!", "#ff3333");
+    const w = this.world; if (!w) return;
+    const name = this.itemSlots()[index - 1];
+    const def = this.itemDefBySlot(name);
+    if (!def) return;
+    const cd = Math.max(0, (w.itemCooldowns && w.itemCooldowns[name]) || 0);
+    if (cd > 0) {
+      this.log(def.title + ' COOLING DOWN // ' + cd.toFixed(1) + 's', '#ff8c00');
       this.playSFX('error');
+      return;
     }
+    if ((w.money || 0) < def.price) {
+      this.log('NOT ENOUGH CASH FOR ' + def.title + ' // NEED $' + def.price, '#ff3333');
+      this.playSFX('error');
+      return;
+    }
+
+    let used = false;
+    if (name === 'cloth') used = this.placeCloth();
+    else if (name === 'blindfold') used = this.useBlindfold();
+    else if (name === 'phase') used = this.usePhase();
+    else if (name === 'lock') used = this.useLock();
+    else if (name === 'whistle') used = this.useWhistle();
+
+    if (!used) return;
+    w.money -= def.price;
+    w.spent = (w.spent || 0) + def.price;
+    w.itemCooldowns[name] = def.cooldown || 0;
+    this.log(def.title + ' PURCHASED // -$' + def.price, '#ffd000');
   }
 
   placeCloth() {
@@ -1145,10 +1188,11 @@ class Component extends DCLogic {
       closest.covered = !closest.covered;
       this.log(closest.covered ? "MIRROR COVERED WITH CLOTH." : "CLOTH REMOVED FROM MIRROR.", "#33ff00");
       this.playSFX('lock');
+      return true;
     } else {
       this.log("TOO FAR FROM ANY MIRROR.", "#ff3333");
       this.playSFX('error');
-      const items = { ...this.state.items }; items.cloth++; this.setState({ items });
+      return false;
     }
   }
 
@@ -1165,10 +1209,11 @@ class Component extends DCLogic {
       closest.invulnerable = 10;
       this.log("GUEST BLINDFOLDED. INVULNERABLE FOR 10s.", "#33ff00");
       this.playSFX('lock');
+      return true;
     } else {
       this.log("TOO FAR FROM ANY GUEST.", "#ffb000");
       this.playSFX('error');
-      const items = { ...this.state.items }; items.blindfold++; this.setState({ items });
+      return false;
     }
   }
 
@@ -1181,10 +1226,11 @@ class Component extends DCLogic {
       w.player.x = tx; w.player.y = ty;
       this.log("PHASED THROUGH WALL.", "#33ff00");
       this.playSFX('teleport');
+      return true;
     } else {
       this.log("PHASE BLOCKED BY SOLID OBJECT.", "#ff3333");
       this.playSFX('error');
-      const items = { ...this.state.items }; items.phase++; this.setState({ items });
+      return false;
     }
   }
 
@@ -1202,10 +1248,11 @@ class Component extends DCLogic {
       closest.lockTimer = 10;
       this.log("DOOR FORCIBLY LOCKED FOR 10s.", "#33ff00");
       this.playSFX('lock');
+      return true;
     } else {
       this.log("TOO FAR FROM ANY DOOR.", "#ff3333");
       this.playSFX('error');
-      const items = { ...this.state.items }; items.lock++; this.setState({ items });
+      return false;
     }
   }
 
@@ -1215,6 +1262,7 @@ class Component extends DCLogic {
     this.playSFX('sigh');
     w.daughter.path = null;
     for (const gh of w.ghosts) gh.path = null;
+    return true;
   }
 
   componentDidMount() {
@@ -1350,13 +1398,32 @@ class Component extends DCLogic {
   // ---------- map ----------
   getLevelConfig(level) {
     const lv = Math.max(1, Math.min(15, Math.round(Number(level) || 1)));
-    if (lv <= 3) return { level:lv, mapTier:1, doorTier:1, counts:{ basic:9 }, boss:false };
-    if (lv <= 5) return { level:lv, mapTier:1, doorTier:2, counts:{ basic:5, rashomon:4 }, boss:lv===5 };
-    if (lv === 6) return { level:lv, mapTier:2, doorTier:2, counts:{ basic:9, rashomon:7 }, boss:false };
-    if (lv <= 9) return { level:lv, mapTier:2, doorTier:3, counts:{ basic:5, rashomon:5, sensor:6 }, boss:false };
-    if (lv === 10) return { level:lv, mapTier:2, doorTier:4, counts:{ basic:3, rashomon:3, sensor:4, rotating:6 }, boss:true };
-    if (lv <= 12) return { level:lv, mapTier:3, doorTier:4, counts:{ basic:4, rashomon:4, sensor:5, rotating:8 }, boss:false };
-    return { level:lv, mapTier:3, doorTier:5, counts:{ basic:3, rashomon:3, sensor:4, rotating:4, chain:7 }, boss:lv===15 };
+    // Per-night earnings quota the player must reach to clear the level.
+    const MT = [0, 60, 95, 130, 175, 220, 270, 320, 370, 420, 480, 540, 610, 680, 760, 850][lv];
+    if (lv <= 3) return { level:lv, mapTier:1, doorTier:1, counts:{ basic:9 }, boss:false, moneyTarget:MT };
+    if (lv <= 5) return { level:lv, mapTier:1, doorTier:2, counts:{ basic:5, rashomon:4 }, boss:lv===5, moneyTarget:MT };
+    if (lv === 6) return { level:lv, mapTier:2, doorTier:2, counts:{ basic:9, rashomon:7 }, boss:false, moneyTarget:MT };
+    if (lv <= 9) return { level:lv, mapTier:2, doorTier:3, counts:{ basic:5, rashomon:5, sensor:6 }, boss:false, moneyTarget:MT };
+    if (lv === 10) return { level:lv, mapTier:2, doorTier:4, counts:{ basic:3, rashomon:3, sensor:4, rotating:6 }, boss:true, moneyTarget:MT };
+    if (lv <= 12) return { level:lv, mapTier:3, doorTier:4, counts:{ basic:4, rashomon:4, sensor:5, rotating:8 }, boss:false, moneyTarget:MT };
+    return { level:lv, mapTier:3, doorTier:5, counts:{ basic:3, rashomon:3, sensor:4, rotating:4, chain:7 }, boss:lv===15, moneyTarget:MT };
+  }
+
+  // Base room fee per guest type (all three differ, per GDD).
+  guestFee(type) { return type === 'boldMan' ? 45 : type === 'brat' ? 20 : 30; }
+  // Income collected when a guest checks out at the gate.
+  guestIncome(g) {
+    const base = this.guestFee(g.type);
+    if (g.type === 'brat' && g.overtime) return -10;        // brat steals cash when handled late
+    let fee = (g.overtime || g.halfPay) ? Math.round(base * 0.5) : base; // late reception → half price
+    if (!g.everScared && g.type !== 'brat') fee += Math.round(base * 0.4); // calm stay → tip
+    return fee;
+  }
+  addStrike(label) {
+    const w = this.world; w.strikes = (w.strikes || 0) + 1;
+    this.log('醜值 +1 // ' + label + '  (' + w.strikes + '/3)', '#ff8c00');
+    w.flash = Math.max(w.flash, 0.35); this.playSFX('error');
+    if (w.strikes >= 3) this.lose('strikes');
   }
 
   getMapLayout(mapTier) {
@@ -1514,7 +1581,7 @@ class Component extends DCLogic {
     // guests now arrive one-by-one through the main gate (see updateArrivals)
     const guestTypes=['timidWoman','boldMan','brat','timidWoman','boldMan','brat','timidWoman','brat'];
     const maxConcurrent=Math.max(1,Math.floor(layout.guestRoomCount/2));
-    const totalArrivals=Math.max(1,Math.min(guestTypes.length, maxConcurrent + 3));
+    const totalArrivals=Math.min(30, maxConcurrent*2 + config.level); // a steady stream to earn the quota from
     const queue=[];
     for(let i=0;i<totalArrivals;i++)queue.push({type:guestTypes[i%guestTypes.length], id:i});
     const roomTargets = rooms.filter(z=>z.role==='guest').map(z=>({c:Math.floor(z.x+z.w/2),r:Math.floor(z.y+z.h/2)}));
@@ -1524,14 +1591,18 @@ class Component extends DCLogic {
       entranceDoor, exitApproach, inspectorSpawn, daughterHome, playerStart, mapOffsetX: 3, mapOffsetY: 3,
       player, daughter, guests: [], ghosts: [], inspector: null, inspectorDone: false,
       queue, arrival: null, maxConcurrent, nextArrivalT: 1.2, admitted: 0, turnedAway: 0, checkedOut: 0, roomTargets,
+      earned: 0, money: 25, spent: 0, strikes: 0, moneyTarget: config.moneyTarget,
       itemDefs: this.itemDefs, inventory: this.makeInventory(),
+      itemCooldowns: { cloth: 0, blindfold: 0, phase: 0, lock: 0, whistle: 0 },
       t: 0, panic: 0, power: 100, reported: false, lostGuests: 0, flash: 0, screenGlitch: 0,
       cx, cy
     };
     if(typeof window!=='undefined')window.__game=this;
     this.logs = [];
     this.log('LEVEL '+config.level+' // '+layout.name+' ONLINE.', '#33ff00');
-    this.log('KEEP HER OUT OF SIGHT. SURVIVE TO 06:00.', '#7dffb0');
+    this.log('QUOTA: EARN $'+config.moneyTarget+' BEFORE 06:00.', '#ffd000');
+    this.log('STARTING FLOAT // $25 FOR EMERGENCY TOOL USE.', '#7fd6ff');
+    this.log('KEEP HER OUT OF SIGHT // 醜三 OR PANIC = GAME OVER.', '#7dffb0');
   }
 
   startGame(level) {
@@ -1542,14 +1613,7 @@ class Component extends DCLogic {
       showOptions:false, 
       showLevelSelect:false, 
       currentLevel:lv, 
-      selectedLevel:lv,
-      items: {
-        cloth: 3,
-        blindfold: 2,
-        phase: 1,
-        lock: 2,
-        whistle: 1
-      }
+      selectedLevel:lv
     });
   }
 
@@ -1714,7 +1778,8 @@ class Component extends DCLogic {
       x: w.cx(c), y: w.cy(r), r: 7, type: spec.type, profile,
       facing: -Math.PI/2, scare: 0, fleeing: false, path: null, pi: 0, stuck: 0, id: spec.id,
       sightShape: profile.sightShape, timeoutRule: profile.timeoutRule, ghostRule: profile.ghostRule,
-      blinded: 0, invulnerable: 0, visitTimer: 0, spotted: false, checkingOut: false
+      blinded: 0, invulnerable: 0, visitTimer: 0, spotted: false, checkingOut: false,
+      waited: 0, overtime: false, halfPay: false, everScared: false
     };
   }
   updateArrivals(dt) {
@@ -1724,13 +1789,26 @@ class Component extends DCLogic {
       a.facing = -Math.PI/2; // looking in through the gate
       if (ent && ent.open && !ent.locked) {
         if (w.guests.length < w.maxConcurrent) {
+          const overtime = a.waited > 2.5; // kept knocking at a shut gate too long
+          // GDD overtime reception rules per guest type
+          if (overtime) {
+            if (a.type === 'timidWoman' && Math.random() < 0.5) {
+              w.arrival = null; w.turnedAway++; w.nextArrivalT = 1.8 + Math.random()*1.4;
+              this.log('膽小女人逾時離開 // 沒收到客人。', '#ffb000'); return;
+            }
+            if (a.type === 'boldMan' && Math.random() < 0.5) {
+              w.arrival = null; w.turnedAway++; w.nextArrivalT = 1.8 + Math.random()*1.4;
+              this.addStrike('大膽男人逾時通報'); return;
+            }
+            a.overtime = true; a.halfPay = true;
+          }
           // admit: becomes a resident heading for a room
           a.visitTimer = 16 + Math.random()*12;
           const tgt = w.roomTargets.length ? w.roomTargets[(Math.random()*w.roomTargets.length)|0] : this.randomFloor();
           this.retarget(a, tgt);
           w.guests.push(a); w.arrival = null; w.admitted++;
           w.nextArrivalT = 2.4 + Math.random()*2.2;
-          this.log('GUEST CHECKS IN // '+a.profile.title+'.', '#7dffb0');
+          this.log('GUEST CHECKS IN // '+a.profile.title+(overtime?' (逾時/半價)':'')+'.', overtime?'#ffb000':'#7dffb0');
           this.playSFX('unlock');
         } else {
           // gate open but hotel full — wait, then give up
@@ -1738,7 +1816,8 @@ class Component extends DCLogic {
           if (a.patience <= 0) { w.arrival = null; w.turnedAway++; w.nextArrivalT = 2.0 + Math.random()*1.5; this.log('GUEST LEAVES // NO VACANCY.', '#ffb000'); }
         }
       } else {
-        // gate closed: a guest who sees a shut door waits only briefly, then leaves
+        // gate closed: a guest waits (knocking), accruing "late reception" time, then leaves
+        a.waited += dt;
         a.patience -= dt;
         if (a.patience <= 0) { w.arrival = null; w.turnedAway++; w.nextArrivalT = 1.8 + Math.random()*1.6; this.log('GUEST TURNED AWAY // GATE WAS SHUT.', '#ffb000'); }
       }
@@ -1764,6 +1843,7 @@ class Component extends DCLogic {
     w.t += dt;
     w.flash = Math.max(0, w.flash - dt);
     w.screenGlitch = Math.max(0, w.screenGlitch - dt);
+    for (const slot of this.itemSlots()) w.itemCooldowns[slot] = Math.max(0, (w.itemCooldowns[slot] || 0) - dt);
 
     // player
     let mvx = 0, mvy = 0;
@@ -1821,6 +1901,7 @@ class Component extends DCLogic {
       const profile = g.profile || this.getGuestProfile(g.type);
       const seen = this.visibleGhost(g);
       g.spotted = !!seen;
+      if (g.scare > 8) g.everScared = true; // a frightened guest won't leave a tip
       if (g.blinded > 0) {
         g.blinded = Math.max(0, g.blinded - dt);
         g.invulnerable = Math.max(0, g.invulnerable - dt);
@@ -1835,7 +1916,12 @@ class Component extends DCLogic {
         this.follow(g, dt, (profile.moveSpeed||34)*1.05);
         if (Math.hypot(g.x - w.cx(w.exitApproach.c), g.y - w.cy(w.exitApproach.r)) < w.TILE) {
           const ent = w.entranceDoor;
-          if (ent && ent.open) { w.guests.splice(i, 1); w.checkedOut++; continue; }
+          if (ent && ent.open) {
+            const inc = this.guestIncome(g); w.earned += inc; w.money = Math.max(0, w.money + inc); w.checkedOut++;
+            this.log('GUEST CHECKS OUT // ' + (inc >= 0 ? '+$' : '-$') + Math.abs(inc) + '  ('+profile.title+').', inc > 0 ? '#33ff00' : '#ffb000');
+            this.playSFX('unlock');
+            w.guests.splice(i, 1); continue;
+          }
         }
       }
       if (g.type === 'timidWoman') {
@@ -1852,8 +1938,9 @@ class Component extends DCLogic {
           w.ghosts.push({ x:g.x,y:g.y,r:9,path:null,pi:0,stuck:0,bob:0,hostile:true,forceProgress:0 });
           w.guests.splice(i, 1); w.lostGuests++;
           this.log('TIMID WOMAN LOST // NEW APPARITION SPAWNED.', '#ff3333');
-          w.flash = 0.5; 
+          w.flash = 0.5;
           this.playSFX('transform');
+          this.addStrike('膽小女人變鬼逃出');
           continue;
         }
         if (!g.checkingOut) this.follow(g, dt, profile.moveSpeed);
@@ -1886,7 +1973,8 @@ class Component extends DCLogic {
             const ent = w.entranceDoor;
             if (ent && ent.open) {
               w.guests.splice(i, 1);
-              this.log(w.config.boss?'BOLD MAN ESCAPED // INSPECTOR INBOUND!':'BOLD MAN ESCAPED // NO INSPECTOR SIGNAL.',w.config.boss?'#ff3333':'#ffb000');
+              this.log(w.config.boss?'BOLD MAN ESCAPED // INSPECTOR INBOUND!':'BOLD MAN ESCAPED // FILED A COMPLAINT.',w.config.boss?'#ff3333':'#ffb000');
+              this.addStrike('大膽男人通報稽查');
               if(w.config.boss&&!w.inspector&&!w.inspectorDone)this.spawnInspector(true);
             }
           }
@@ -1932,8 +2020,9 @@ class Component extends DCLogic {
       if (this.powerWarnCd <= 0) { this.playSFX('error'); this.powerWarnCd = 8; }
     }
 
-    // win
-    if (w.t >= dur) { this.win(); return; }
+    // win / lose by quota
+    if (w.earned >= w.moneyTarget) { this.win(); return; }     // hit the night's earnings goal
+    if (w.t >= dur) { this.lose('quota'); return; }            // dawn arrived short of quota
   }
 
   spawnInspector(early) {
@@ -1944,16 +2033,18 @@ class Component extends DCLogic {
     this.log(early ? 'THE INSPECTOR FORCES THE DOOR.' : 'KNOCKING AT THE GATE // INSPECTOR ARRIVES.', '#ff3333');
     this.playSFX('breakIn');
   }
-  win() { 
-    if (this.state.screen !== 'playing') return; 
-    this.world.endStats = 'GUESTS SAVED: ' + this.world.guests.length + '  /  APPARITIONS: ' + this.world.ghosts.length; 
-    this.setState({ screen: 'won' }); 
+  win() {
+    if (this.state.screen !== 'playing') return;
+    const w = this.world;
+    w.endStats = 'EARNED $' + w.earned + ' / QUOTA $' + w.moneyTarget + '  //  CASH $' + Math.floor(w.money || 0) + '  //  SPENT $' + (w.spent || 0);
+    this.setState({ screen: 'won' });
     this.playSFX('winSFX');
   }
   lose(reason) {
     if (this.state.screen !== 'playing') return;
-    this.world.loseReason = reason;
-    this.world.endStats = 'PANIC: ' + Math.round(this.world.panic) + '%  /  GUESTS LOST: ' + this.world.lostGuests;
+    const w = this.world;
+    w.loseReason = reason;
+    w.endStats = 'EARNED $' + w.earned + ' / QUOTA $' + w.moneyTarget + '  //  CASH $' + Math.floor(w.money || 0) + '  //  SPENT $' + (w.spent || 0);
     this.setState({ screen: 'lost' });
     this.playSFX('loseSFX');
   }
@@ -2340,7 +2431,7 @@ class Component extends DCLogic {
   hud() {
     const w = this.world;
     const dur = this.props.nightSeconds ?? 180;
-    if(!w)return{clock:'22:00',phase:'NIGHT',level:'01',mapTier:'I',doorTier:'I',alert:'STANDBY',alertColor:'#1f8f1f',panicPct:0,panicBar:'',panicColor:'#33ff00',basicCount:'0',rashCount:'0',sensorCount:'0',rotateCount:'0',chainCount:'0',statusText:'OK',showPrompt:false,doorPrompt:'',endStats:'',loseTitle:'',loseMsg:'',ghosts:0,guests:0,pw0:1,pw1:1,pw2:1,pw3:1,pw4:1,pw5:.15,pw6:.15};
+    if(!w)return{clock:'22:00',phase:'NIGHT',level:'01',mapTier:'I',doorTier:'I',alert:'STANDBY',alertColor:'#1f8f1f',panicPct:0,panicBar:'',panicColor:'#33ff00',basicCount:'0',rashCount:'0',sensorCount:'0',rotateCount:'0',chainCount:'0',statusText:'OK',showPrompt:false,doorPrompt:'',endStats:'',loseTitle:'',loseMsg:'',ghosts:0,guests:0,money:0,quota:0,pw0:1,pw1:1,pw2:1,pw3:1,pw4:1,pw5:.15,pw6:.15};
     const frac = Math.min(1, w.t / dur);
     const hour = 22 + frac * 8; const h = Math.floor(hour) % 24; const m = Math.floor((hour % 1) * 60);
     const pad = (n) => (n < 10 ? '0' : '') + n;
@@ -2363,6 +2454,8 @@ class Component extends DCLogic {
     let lt = 'GAME OVER', lm = '';
     if (w.loseReason === 'caught') { lt = 'DISCOVERED'; lm = 'The inspector found her. They take everything.'; }
     else if (w.loseReason === 'panic') { lt = 'PANDEMONIUM'; lm = 'The hotel descended into supernatural chaos.'; }
+    else if (w.loseReason === 'strikes') { lt = 'EXPOSED'; lm = 'Too many incidents drew fatal attention.'; }
+    else if (w.loseReason === 'quota') { lt = 'INSOLVENT'; lm = 'Dawn came before the hotel made quota.'; }
     return {
       clock:pad(h)+':'+pad(m),phase:'NIGHT',level:pad(w.config.level),mapTier:['','I','II','III'][w.config.mapTier],doorTier:['','I','II','III','IV','V'][w.config.doorTier],
       alert, alertColor: ac,
@@ -2371,7 +2464,7 @@ class Component extends DCLogic {
       statusText: w.screenGlitch > 0 ? 'DISTORTION' : (w.panic > 50 ? 'UNSTABLE' : 'STABLE'),
       showPrompt: show, doorPrompt: prompt,
       endStats: w.endStats || '', loseTitle: lt, loseMsg: lm,
-      ghosts: w.ghosts.length, guests: w.guests.length,
+      ghosts: w.ghosts.length, guests: w.guests.length, money: Math.floor(w.money || 0), quota: w.moneyTarget || 0,
       pw0: seg(8), pw1: seg(24), pw2: seg(40), pw3: seg(56), pw4: seg(72), pw5: seg(86), pw6: seg(96)
     };
   }
@@ -2498,7 +2591,7 @@ class Component extends DCLogic {
       canvasRef: this.canvasRef,
       miniRef: this.miniRef,
       hud: this.hud(),
-      items: s.items || { cloth: 0, blindfold: 0, phase: 0, lock: 0, whistle: 0 },
+      itemUi: this.itemUi(),
       onUseItem1: () => this.useItem(1),
       onUseItem2: () => this.useItem(2),
       onUseItem3: () => this.useItem(3),
