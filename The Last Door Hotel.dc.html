@@ -3286,8 +3286,8 @@ class Component extends DCLogic {
   getQueueGuests() {
     const w = this.world;
     if (!w) return [];
-    const queued = w.guests.filter(g => ['queueing','checkinReady','returnQueue','payReady','paying'].includes(g.state) && !g.fleeing);
-    const priority = (g) => (g.state === 'returnQueue' || g.state === 'payReady' || g.state === 'paying') ? 0 : 1;
+    const queued = w.guests.filter(g => ['queueing','checkinReady','returnQueue','payReady'].includes(g.state) && !g.fleeing);
+    const priority = (g) => (g.state === 'returnQueue' || g.state === 'payReady') ? 0 : 1;
     return queued.sort((a, b) => priority(a) - priority(b) || (a.queueOrder || 0) - (b.queueOrder || 0));
   }
 
