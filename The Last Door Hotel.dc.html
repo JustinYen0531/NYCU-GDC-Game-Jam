@@ -2259,8 +2259,8 @@ class Component extends DCLogic {
       mx.fillStyle = z.tint;
       mx.fillRect(z.x * TILE + 2, z.y * TILE + 2, z.w * TILE - 4, z.h * TILE - 4);
     }
-    const deskRoom=rooms.find(z=>z.role==='desk');
-    if(deskRoom){mx.strokeStyle='rgba(212,154,72,.28)';mx.lineWidth=2;mx.strokeRect(deskRoom.x*TILE+4,deskRoom.y*TILE+4,deskRoom.w*TILE-8,deskRoom.h*TILE-8);}
+    const deskHighlightRoom=rooms.find(z=>z.role==='desk');
+    if(deskHighlightRoom){mx.strokeStyle='rgba(212,154,72,.28)';mx.lineWidth=2;mx.strokeRect(deskHighlightRoom.x*TILE+4,deskHighlightRoom.y*TILE+4,deskHighlightRoom.w*TILE-8,deskHighlightRoom.h*TILE-8);}
 
     // walls (only those touching floor)
     const touches = (c, r) => { for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) { const g = grid[r + dr] && grid[r + dr][c + dc]; if (g === 'floor' || g === 'door' || g === 'obstacle') return true; } return false; };
@@ -3167,7 +3167,9 @@ class Component extends DCLogic {
       facing: -Math.PI/2, scare: 0, fleeing: false, path: null, pi: 0, stuck: 0, id: spec.id,
       sightShape: profile.sightShape, timeoutRule: profile.timeoutRule, ghostRule: profile.ghostRule,
       blinded: 0, invulnerable: 0, visitTimer: 0, spotted: false, checkingOut: false,
-      waited: 0, overtime: false, halfPay: false, everScared: false
+      waited: 0, overtime: false, halfPay: false, everScared: false,
+      state: 'waitingGate', queueOrder: ++w.guestSequence, assignedRoomIndex: this.nextGuestRoomIndex(),
+      assignedRoomLabel: null, assignedRoomTarget: null, stayDuration: 0, stayElapsed: 0, progress: 0, payTimer: 0, goalKey: null
     };
   }
   updateArrivals(dt) {
@@ -3190,13 +3192,12 @@ class Component extends DCLogic {
             }
             a.overtime = true; a.halfPay = true;
           }
-          // admit: becomes a resident heading for a room
-          a.visitTimer = 16 + Math.random()*12;
-          const tgt = w.roomTargets.length ? w.roomTargets[(Math.random()*w.roomTargets.length)|0] : this.randomFloor();
-          this.retarget(a, tgt);
-          w.guests.push(a); w.arrival = null; w.admitted++;
+          // admit: joins the front-desk queue and waits for a room assignment
+          a.state = 'queueing';
+          a.path = null; a.pi = 0; a.goal = null; a.goalKey = null;
+          w.guests.push(a); w.arrival = null;
           w.nextArrivalT = 2.4 + Math.random()*2.2;
-          this.log('GUEST CHECKS IN // '+a.profile.title+(overtime?' (逾時/半價)':'')+'.', overtime?'#ffb000':'#7dffb0');
+          this.log('GUEST ENTERED LOBBY // ' + a.profile.title + ' QUEUING AT DESK' + (overtime ? ' (逾時/半價)' : '') + '.', overtime?'#ffb000':'#7dffb0');
           this.playSFX('unlock');
         } else {
           // gate open but hotel full — wait, then give up
@@ -3235,10 +3236,11 @@ class Component extends DCLogic {
 
     // player
     let mvx = 0, mvy = 0;
+    const deskControl = this.canUseDeskControls();
     if (this.keys['w'] || this.keys['arrowup']) mvy -= 1;
     if (this.keys['s'] || this.keys['arrowdown']) mvy += 1;
-    if (this.keys['a'] || this.keys['arrowleft']) mvx -= 1;
-    if (this.keys['d'] || this.keys['arrowright']) mvx += 1;
+    if (this.keys['a'] || (this.keys['arrowleft'] && !deskControl)) mvx -= 1;
+    if (this.keys['d'] || (this.keys['arrowright'] && !deskControl)) mvx += 1;
     const run = (this.keys['shift']) ? 1.7 : 1;
     if (mvx || mvy) { const m = Math.hypot(mvx, mvy); const sp = 132 * run * dt; this.tryMove(w.player, mvx / m * sp, mvy / m * sp); w.player.dir = Math.atan2(mvy, mvx); }
 
@@ -3278,6 +3280,7 @@ class Component extends DCLogic {
 
     // guests queue up outside and enter one-by-one through the main gate
     this.updateArrivals(dt);
+    this.updateDeskQueue(dt);
 
     // guests
     let scaredActive = 0;
@@ -3292,21 +3295,22 @@ class Component extends DCLogic {
         g.invulnerable = Math.max(0, g.invulnerable - dt);
         continue;
       }
-      // visit timer -> head back to the gate and check out (keeps the queue flowing)
-      if (!g.fleeing && !g.checkingOut) {
-        g.visitTimer -= dt;
-        if (g.visitTimer <= 0) { g.checkingOut = true; this.retarget(g, w.exitApproach); this.log('GUEST CHECKS OUT // '+profile.title+'.', '#7dffb0'); }
+      const inDeskQueue = ['queueing','checkinReady','returnQueue','payReady','paying'].includes(g.state);
+      if (!g.fleeing && g.state === 'toRoom' && g.assignedRoomTarget) {
+        this.setGuestGoal(g, g.assignedRoomTarget, 'room:' + g.assignedRoomLabel);
+        this.follow(g, dt, profile.moveSpeed);
+        if (Math.hypot(g.x - w.cx(g.assignedRoomTarget.c), g.y - w.cy(g.assignedRoomTarget.r)) < w.TILE * 0.55) {
+          g.state = 'staying';
+          g.path = null; g.pi = 0; g.goal = null; g.goalKey = null;
+        }
       }
-      if (g.checkingOut) {
-        this.follow(g, dt, (profile.moveSpeed||34)*1.05);
-        if (Math.hypot(g.x - w.cx(w.exitApproach.c), g.y - w.cy(w.exitApproach.r)) < w.TILE) {
-          const ent = w.entranceDoor;
-          if (ent && ent.open) {
-            const inc = this.guestIncome(g); w.earned += inc; w.money = Math.max(0, w.money + inc); w.checkedOut++;
-            this.log('GUEST CHECKS OUT // ' + (inc >= 0 ? '+$' : '-$') + Math.abs(inc) + '  ('+profile.title+').', inc > 0 ? '#33ff00' : '#ffb000');
-            this.playSFX('unlock');
-            w.guests.splice(i, 1); continue;
-          }
+      if (!g.fleeing && g.state === 'staying') {
+        g.stayElapsed += dt;
+        g.progress = Math.max(0, Math.min(1, g.stayDuration > 0 ? g.stayElapsed / g.stayDuration : 1));
+        if (g.progress >= 1) {
+          g.state = 'returnQueue';
+          g.path = null; g.pi = 0; g.goal = null; g.goalKey = null;
+          this.log('ROOM COMPLETE // ' + profile.title + ' RETURNING TO DESK FOR PAYMENT.', '#7fd6ff');
         }
       }
       if (g.type === 'timidWoman') {
@@ -3328,7 +3332,7 @@ class Component extends DCLogic {
           this.addStrike('膽小女人變鬼逃出');
           continue;
         }
-        if (!g.checkingOut) this.follow(g, dt, profile.moveSpeed);
+        if (!inDeskQueue && g.state !== 'staying' && g.state !== 'toRoom') this.follow(g, dt, profile.moveSpeed);
       } else if (g.type === 'brat') {
         if (seen) {
           if (g.scare < 1) {
@@ -3344,7 +3348,7 @@ class Component extends DCLogic {
           }
         } else g.scare = Math.max(0, g.scare - dt * profile.scareRecover);
         if (g.scare > 25) scaredActive++;
-        if (!g.checkingOut) this.follow(g, dt, profile.moveSpeed);
+        if (!inDeskQueue && g.state !== 'staying' && g.state !== 'toRoom') this.follow(g, dt, profile.moveSpeed);
       } else { // boldMan
         if (seen && !g.fleeing) { 
           g.fleeing = true; 
@@ -3363,7 +3367,7 @@ class Component extends DCLogic {
               if(w.config.boss&&!w.inspector&&!w.inspectorDone)this.spawnInspector(true);
             }
           }
-        } else if (!g.checkingOut) this.follow(g, dt, profile.moveSpeed);
+        } else if (!inDeskQueue && g.state !== 'staying' && g.state !== 'toRoom') this.follow(g, dt, profile.moveSpeed);
       }
     }
 
@@ -3752,6 +3756,20 @@ class Component extends DCLogic {
         ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(g.x - 10, g.y - 16, 20, 4);
         ctx.fillStyle = g.scare > 70 ? C.red : C.amber; ctx.fillRect(g.x - 10, g.y - 16, 20 * g.scare / 100, 4);
       }
+      if (g.state === 'staying' || g.state === 'returnQueue' || g.state === 'paying') {
+        const prog = Math.max(0, Math.min(1, g.progress || 0));
+        ctx.fillStyle = 'rgba(0,0,0,0.66)'; ctx.fillRect(g.x - 12, g.y - 24, 24, 4);
+        ctx.fillStyle = g.state === 'paying' ? '#7fd6ff' : '#7dffb0'; ctx.fillRect(g.x - 12, g.y - 24, 24 * prog, 4);
+      }
+      if (g.state === 'checkinReady' || g.state === 'queueing' || g.state === 'toRoom' || g.state === 'staying') {
+        const roomText = g.assignedRoomLabel || ((w.roomTargets && w.roomTargets[g.assignedRoomIndex]) ? w.roomTargets[g.assignedRoomIndex].label : 'ROOM ?');
+        ctx.save();
+        ctx.font = '10px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = g.state === 'checkinReady' ? '#ffd060' : '#7fd6ff';
+        ctx.fillText(roomText, g.x, g.y - 28);
+        ctx.restore();
+      }
     }
 
     // inspector
@@ -3861,13 +3879,24 @@ class Component extends DCLogic {
     const pc = w.panic > 70 ? '#ff3333' : w.panic > 40 ? '#ffb000' : '#33ff00';
     // door counts
     const cnt = (type) => { let o = 0, x = 0; for (const d of w.doors) if (d.type === type) { if (d.open) o++; else x++; } return o + 'O/' + x + 'C'; };
+    const deskGuest = this.getFrontDeskGuest();
+    const deskActive = this.canUseDeskControls();
     // alert
     let alert = 'ALL CLEAR', ac = '#33ff00';
     if (w.inspector) { alert = 'INSPECTOR ON SITE'; ac = '#ff3333'; }
     else if (w.ghosts.length > 0) { alert = w.ghosts.length + ' LOOSE APPARITION(S)'; ac = '#ffb000'; }
     else if (w.guests.some(g => g.scare > 25)) { alert = 'GUEST DISTURBED'; ac = '#ffb000'; }
     // nearest door prompt
-    const best=this.nearestDoor(),show=!!best;let prompt='';if(best){const action=best.type==='rotating'?'ROTATE':best.type==='chain'?'TOGGLE CHAIN':best.open?'CLOSE':'OPEN';prompt='[E] '+action+'  [SHIFT+E] '+(best.locked?'UNLOCK':'LOCK');}
+    const best=this.nearestDoor();let show=false;let prompt='';
+    if (deskGuest && deskGuest.state === 'checkinReady') {
+      const roomLine = (w.roomTargets && w.roomTargets[deskGuest.assignedRoomIndex]) ? w.roomTargets[deskGuest.assignedRoomIndex].label : 'ROOM ?';
+      show = true;
+      prompt = deskActive ? ('[<- / ->] ROOM ' + roomLine + '  [E] CHECK IN') : ('MOVE TO DESK // NEXT ROOM ' + roomLine);
+    } else if(best) {
+      show = true;
+      const action=best.type==='rotating'?'ROTATE':best.type==='chain'?'TOGGLE CHAIN':best.open?'CLOSE':'OPEN';
+      prompt='[E] '+action+'  [SHIFT+E] '+(best.locked?'UNLOCK':'LOCK');
+    }
     // power segments
     const pwr = w.power; const seg = (th) => pwr >= th ? 1 : 0.12;
     // lose strings
