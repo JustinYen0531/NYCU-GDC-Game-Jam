@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THE LAST DOOR // MAP EDITOR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#020604; --panel:#020a06; --line:#1a3d1a; --line2:#122a12;
+    --green:#33ff00; --dim:#1f8f1f; --dim2:#1f521f; --soft:#7dffb0;
+    --std:#ff4040; --auto:#ff8c00; --linked:#ffd000; --entrance:#3bd6ff; --mirror:#b061ff;
+    --g-basic:#9be38f; --g-brave:#ff8da1; --g-reckless:#ffe066;
+    --player:#33ff00; --daughter:#e8ffe8;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;height:100%;}
+  body{
+    background:radial-gradient(120% 100% at 50% 30%, #061a10 0%, #020806 55%, #000 100%);
+    font-family:'VT323', ui-monospace, monospace; color:var(--green);
+    display:flex; flex-direction:column; height:100vh; overflow:hidden;
+    -webkit-font-smoothing:none;
+  }
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    border-bottom:1px solid var(--line); background:var(--panel);
+    padding:6px 16px; font-size:22px; letter-spacing:1px; flex:none;
+    text-shadow:0 0 6px rgba(51,255,0,.4);
+  }
+  header .v{color:var(--green);}
+  header .sub{color:var(--dim); font-size:18px;}
+  main{flex:1; display:flex; min-height:0;}
+
+  /* ===== left palette ===== */
+  .palette{
+    width:240px; flex:none; border-right:1px solid var(--line);
+    background:var(--panel); overflow-y:auto; padding:10px 12px;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .grp{}
+  .grp h3{
+    margin:0 0 7px; font-size:16px; letter-spacing:2px; color:var(--dim);
+    border-bottom:1px solid var(--line2); padding-bottom:3px; font-weight:normal;
+  }
+  .tools{display:flex; flex-direction:column; gap:5px;}
+  .tool{
+    display:flex; align-items:center; gap:9px; padding:5px 8px; cursor:pointer;
+    border:1px solid transparent; font-size:18px; color:var(--soft); user-select:none;
+    transition:background .1s;
+  }
+  .tool:hover{background:#0a1c10;}
+  .tool.active{border-color:var(--green); background:#0d2414; color:var(--green); box-shadow:0 0 10px rgba(51,255,0,.15) inset;}
+  .swatch{width:16px; height:20px; flex:none; border:2px solid currentColor; position:relative;}
+  .swatch.bar::after{content:''; position:absolute; top:50%; left:0; right:0; height:3px; background:currentColor; transform:translateY(-50%);}
+  .swatch.dot{border-radius:50%; width:18px; height:18px;}
+  .swatch.tri{border:none; width:0;height:0; border-left:9px solid transparent; border-right:9px solid transparent; border-bottom:18px solid currentColor;}
+  .swatch.solid{background:currentColor;}
+  .swatch.hollow{}
+  .key{margin-left:auto; font-size:14px; color:var(--dim2); border:1px solid var(--line2); padding:0 5px; border-radius:2px;}
+
+  /* swatch colors */
+  .c-wall{color:#2e6b3e;} .c-floor{color:#13351f;} .c-erase{color:#ff5555;}
+  .c-std{color:var(--std);} .c-auto{color:var(--auto);} .c-linked{color:var(--linked);}
+  .c-entrance{color:var(--entrance);} .c-mirror{color:var(--mirror);}
+  .c-gbasic{color:var(--g-basic);} .c-gbrave{color:var(--g-brave);} .c-greckless{color:var(--g-reckless);}
+  .c-player{color:var(--player);} .c-daughter{color:var(--daughter);}
+
+  /* ===== center canvas ===== */
+  .stage{
+    flex:1; min-width:0; display:flex; flex-direction:column;
+    background:#010402; position:relative;
+  }
+  .stagebar{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    padding:7px 14px; border-bottom:1px solid var(--line); background:var(--panel); flex:none;
+    font-size:17px;
+  }
+  .stagebar label{color:var(--dim); letter-spacing:1px;}
+  .stagebar input[type=number]{
+    width:56px; background:#010604; border:1px solid var(--line); color:var(--green);
+    font-family:inherit; font-size:17px; padding:2px 5px; text-align:center;
+  }
+  .stagebar input[type=number]:focus{outline:none; border-color:var(--green);}
+  .btn{
+    background:#010604; border:1px solid var(--dim); color:var(--soft);
+    font-family:inherit; font-size:16px; padding:3px 12px; cursor:pointer; letter-spacing:1px;
+    transition:.1s;
+  }
+  .btn:hover{background:var(--green); color:#04110d; border-color:var(--green);}
+  .btn.danger{border-color:#6b2020; color:#ff8888;}
+  .btn.danger:hover{background:#ff3333; color:#1a0404; border-color:#ff3333;}
+  .canvaswrap{
+    flex:1; min-height:0; overflow:auto; padding:18px;
+    display:flex; align-items:flex-start; justify-content:center;
+    background:
+      linear-gradient(#010604 0 0) padding-box;
+  }
+  #grid{
+    image-rendering:pixelated; cursor:crosshair;
+    box-shadow:0 0 0 1px var(--line), 0 0 40px rgba(51,255,0,.1);
+    background:#04080a;
+  }
+
+  /* ===== right info ===== */
+  .info{
+    width:250px; flex:none; border-left:1px solid var(--line);
+    background:var(--panel); overflow-y:auto; padding:10px 12px;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .info h3{margin:0 0 7px; font-size:16px; letter-spacing:2px; color:var(--dim); border-bottom:1px solid var(--line2); padding-bottom:3px; font-weight:normal;}
+  .stat{display:flex; justify-content:space-between; font-size:17px; color:var(--soft);}
+  .stat span:last-child{color:var(--green);}
+  .hintbox{font-size:15px; color:var(--dim); line-height:1.5;}
+  .hintbox b{color:var(--soft);}
+  #io{
+    width:100%; height:140px; background:#010604; border:1px solid var(--line);
+    color:var(--soft); font-family:inherit; font-size:14px; padding:6px; resize:vertical;
+    white-space:pre; overflow:auto;
+  }
+  #io:focus{outline:none; border-color:var(--green);}
+  .iorow{display:flex; gap:6px; flex-wrap:wrap;}
+  footer{
+    flex:none; border-top:1px solid var(--line); background:var(--panel);
+    padding:4px 16px; font-size:16px; color:var(--dim); letter-spacing:1px;
+    display:flex; gap:22px;
+  }
+  footer b{color:var(--green);}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-track{background:#020806;}
+  ::-webkit-scrollbar-thumb{background:#143a14;border:1px solid #0a1c10;}
+</style>
+</head>
+<body>
+  <header>
+    <span>THE&nbsp;LAST&nbsp;DOOR // MAP&nbsp;EDITOR&nbsp;<span class="v">v1.0</span></span>
+    <span class="sub" id="hdrStatus">READY</span>
+  </header>
+
+  <main>
+    <!-- ================= PALETTE ================= -->
+    <div class="palette">
+      <div class="grp">
+        <h3>地形 TERRAIN</h3>
+        <div class="tools" id="grpTerrain">
+          <div class="tool" data-tool="wall"><span class="swatch solid c-wall"></span>牆 WALL<span class="key">Q</span></div>
+          <div class="tool" data-tool="floor"><span class="swatch hollow c-floor" style="background:#0c2016;"></span>地板 FLOOR<span class="key">W</span></div>
+          <div class="tool" data-tool="erase"><span class="swatch c-erase" style="border-style:dashed;"></span>橡皮擦 ERASE<span class="key">E</span></div>
+        </div>
+      </div>
+
+      <div class="grp">
+        <h3>門 DOORS（五種）</h3>
+        <div class="tools" id="grpDoors">
+          <div class="tool" data-tool="door:standard"><span class="swatch bar c-std"></span>標準門 STANDARD<span class="key">1</span></div>
+          <div class="tool" data-tool="door:auto"><span class="swatch bar c-auto"></span>自動門 AUTO<span class="key">2</span></div>
+          <div class="tool" data-tool="door:linked"><span class="swatch bar c-linked"></span>連動門 LINKED<span class="key">3</span></div>
+          <div class="tool" data-tool="door:entrance"><span class="swatch bar c-entrance"></span>入口門 ENTRANCE<span class="key">4</span></div>
+          <div class="tool" data-tool="door:mirror"><span class="swatch bar c-mirror"></span>鏡子門 MIRROR<span class="key">5</span></div>
+        </div>
+      </div>
+
+      <div class="grp">
+        <h3>顧客 GUESTS（三種）</h3>
+        <div class="tools" id="grpGuests">
+          <div class="tool" data-tool="guest:basic"><span class="swatch dot solid c-gbasic"></span>普通旅客 BASIC<span class="key">A</span></div>
+          <div class="tool" data-tool="guest:brave"><span class="swatch dot solid c-gbrave"></span>大膽旅客 BRAVE<span class="key">S</span></div>
+          <div class="tool" data-tool="guest:reckless"><span class="swatch dot solid c-greckless"></span>莽撞旅客 RECKLESS<span class="key">D</span></div>
+        </div>
+      </div>
+
+      <div class="grp">
+        <h3>實體 ENTITIES</h3>
+        <div class="tools" id="grpEntities">
+          <div class="tool" data-tool="player"><span class="swatch dot solid c-player"></span>玩家 PLAYER<span class="key">Z</span></div>
+          <div class="tool" data-tool="daughter"><span class="swatch tri c-daughter"></span>女兒鬼魂 DAUGHTER<span class="key">X</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= STAGE ================= -->
+    <div class="stage">
+      <div class="stagebar">
+        <label>寬 W</label><input type="number" id="inW" min="3" max="120" value="34">
+        <label>高 H</label><input type="number" id="inH" min="3" max="80" value="19">
+        <button class="btn" id="btnResize">重設尺寸 RESIZE</button>
+        <button class="btn" id="btnBorder">外牆 BORDER</button>
+        <button class="btn" id="btnFill">全填地板 FILL</button>
+        <button class="btn danger" id="btnClear">清空 CLEAR</button>
+        <label style="margin-left:auto;">格 TILE</label><input type="number" id="inTile" min="8" max="48" value="26">
+      </div>
+      <div class="canvaswrap">
+        <canvas id="grid"></canvas>
+      </div>
+    </div>
+
+    <!-- ================= INFO / IO ================= -->
+    <div class="info">
+      <div class="grp">
+        <h3>狀態 STATUS</h3>
+        <div class="stat"><span>尺寸 SIZE</span><span id="stSize">34 × 19</span></div>
+        <div class="stat"><span>游標 CURSOR</span><span id="stCur">--, --</span></div>
+        <div class="stat"><span>工具 TOOL</span><span id="stTool">WALL</span></div>
+        <div class="stat"><span>門 DOORS</span><span id="stDoors">0</span></div>
+        <div class="stat"><span>鏡子 MIRROR</span><span id="stMirror">0</span></div>
+        <div class="stat"><span>顧客 GUESTS</span><span id="stGuests">0</span></div>
+        <div class="stat"><span>玩家 PLAYER</span><span id="stPlayer">無</span></div>
+        <div class="stat"><span>女兒 DAUGHTER</span><span id="stDaughter">無</span></div>
+      </div>
+
+      <div class="grp">
+        <h3>說明 HINTS</h3>
+        <div class="hintbox">
+          <b>左鍵</b>放置 / 繪製<br>
+          <b>右鍵</b>抹除該格<br>
+          <b>拖曳</b>連續繪製<br>
+          連動門會依放置順序<b>兩兩配對</b><br>
+          玩家 / 女兒只能各<b>一個</b>
+        </div>
+      </div>
+
+      <div class="grp">
+        <h3>資料 DATA I/O</h3>
+        <div class="iorow">
+          <button class="btn" id="btnExport">匯出 EXPORT</button>
+          <button class="btn" id="btnImport">匯入 IMPORT</button>
+          <button class="btn" id="btnCopy">複製 COPY</button>
+          <button class="btn" id="btnDownload">下載 .json</button>
+        </div>
+        <textarea id="io" spellcheck="false" placeholder="EXPORT 會把地圖 JSON 顯示在這裡；貼上後按 IMPORT 載入。"></textarea>
+        <div class="iorow">
+          <button class="btn" id="btnSave">儲存草稿 SAVE</button>
+          <button class="btn" id="btnLoad">讀取草稿 LOAD</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span>MODE: <b id="ftMode">PAINT</b></span>
+    <span>AUTOSAVE: <b id="ftAuto">ON</b></span>
+    <span>NYCU GAME JAM · THE LAST DOOR HOTEL</span>
+  </footer>
+
+<script>
+(function(){
+  'use strict';
+
+  // ---------- type tables ----------
+  const DOOR_TYPES = ['standard','auto','linked','entrance','mirror'];
+  const GUEST_TYPES = ['basic','brave','reckless'];
+  const DOOR_COL = { standard:'#ff4040', auto:'#ff8c00', linked:'#ffd000', entrance:'#3bd6ff', mirror:'#b061ff' };
+  const GUEST_COL = { basic:'#9be38f', brave:'#ff8da1', reckless:'#ffe066' };
+  const GUEST_LABEL = { basic:'B', brave:'V', reckless:'R' };
+
+  const KEYMAP = {
+    'q':'wall','w':'floor','e':'erase',
+    '1':'door:standard','2':'door:auto','3':'door:linked','4':'door:entrance','5':'door:mirror',
+    'a':'guest:basic','s':'guest:brave','d':'guest:reckless',
+    'z':'player','x':'daughter'
+  };
+
+  // ---------- state ----------
+  const S = {
+    cols:34, rows:19, tile:26,
+    grid:[],                 // rows × cols : 'wall' | 'floor'
+    doors:new Map(),         // 'c,r' -> type (includes mirror)
+    guests:new Map(),        // 'c,r' -> type
+    player:null,             // {c,r}
+    daughter:null,           // {c,r}
+    tool:'wall',
+    painting:false,
+    eraseDrag:false,
+    cur:null                 // {c,r} hover
+  };
+  const key = (c,r)=>c+','+r;
+
+  // ---------- dom ----------
+  const cv = document.getElementById('grid');
+  const ctx = cv.getContext('2d');
+  const $ = id => document.getElementById(id);
+
+  function newGrid(cols, rows, fill='wall'){
+    const g = [];
+    for(let r=0;r<rows;r++){ g.push(new Array(cols).fill(fill)); }
+    return g;
+  }
+
+  function initGrid(){
+    S.grid = newGrid(S.cols, S.rows, 'wall');
+    // start with an interior floor + border wall for convenience
+    border();
+  }
+
+  function inBounds(c,r){ return c>=0 && r>=0 && c<S.cols && r<S.rows; }
+
+  // ---------- tool application ----------
+  function applyTool(c,r,isRight){
+    if(!inBounds(c,r)) return;
+    const t = isRight ? 'erase' : S.tool;
+    if(t==='wall'){ S.grid[r][c]='wall'; clearMarkers(c,r); }
+    else if(t==='floor'){ S.grid[r][c]='floor'; }
+    else if(t==='erase'){ S.grid[r][c]='wall'; clearMarkers(c,r); }
+    else if(t.startsWith('door:')){
+      const type=t.split(':')[1];
+      S.grid[r][c]='floor';
+      S.doors.set(key(c,r), type);
+      S.guests.delete(key(c,r));
+    }
+    else if(t.startsWith('guest:')){
+      const type=t.split(':')[1];
+      S.grid[r][c]='floor';
+      S.guests.set(key(c,r), type);
+      S.doors.delete(key(c,r));
+    }
+    else if(t==='player'){ S.grid[r][c]='floor'; S.player={c,r}; }
+    else if(t==='daughter'){ S.grid[r][c]='floor'; S.daughter={c,r}; }
+  }
+  function clearMarkers(c,r){
+    S.doors.delete(key(c,r));
+    S.guests.delete(key(c,r));
+    if(S.player && S.player.c===c && S.player.r===r) S.player=null;
+    if(S.daughter && S.daughter.c===c && S.daughter.r===r) S.daughter=null;
+  }
+
+  // ---------- rendering ----------
+  function resizeCanvas(){
+    cv.width = S.cols*S.tile;
+    cv.height = S.rows*S.tile;
+  }
+  function render(){
+    const T=S.tile;
+    ctx.clearRect(0,0,cv.width,cv.height);
+    // tiles
+    for(let r=0;r<S.rows;r++){
+      for(let c=0;c<S.cols;c++){
+        const x=c*T, y=r*T, g=S.grid[r][c];
+        if(g==='wall'){
+          ctx.fillStyle = ((c+r)%2===0)?'#0e2417':'#0c2014';
+          ctx.fillRect(x,y,T,T);
+          ctx.fillStyle='rgba(46,107,62,0.5)'; ctx.fillRect(x,y,T,3);
+        } else {
+          ctx.fillStyle = ((c+r)%2===0)?'#08130c':'#0a1810';
+          ctx.fillRect(x,y,T,T);
+        }
+        ctx.strokeStyle='rgba(51,255,0,0.06)';
+        ctx.strokeRect(x+0.5,y+0.5,T-1,T-1);
+      }
+    }
+    // doors / mirrors
+    S.doors.forEach((type,k)=>{
+      const [c,r]=k.split(',').map(Number);
+      const col=DOOR_COL[type];
+      const cx=(c+0.5)*T, cy=(r+0.5)*T;
+      if(type==='mirror'){
+        ctx.save();
+        ctx.shadowColor=col; ctx.shadowBlur=10;
+        const grd=ctx.createLinearGradient(c*T,r*T,(c+1)*T,(r+1)*T);
+        grd.addColorStop(0,'rgba(176,97,255,0.45)');
+        grd.addColorStop(.5,'rgba(60,30,90,0.35)');
+        grd.addColorStop(1,'rgba(176,97,255,0.4)');
+        ctx.fillStyle=grd; ctx.fillRect(c*T+4,r*T+4,T-8,T-8);
+        ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.strokeRect(c*T+4,r*T+4,T-8,T-8);
+        ctx.restore();
+      } else {
+        const horiz = orientHoriz(c,r);
+        ctx.save();
+        ctx.shadowColor=col; ctx.shadowBlur=8; ctx.fillStyle=col;
+        if(horiz) ctx.fillRect(c*T+3, cy-4, T-6, 8);
+        else      ctx.fillRect(cx-4, r*T+3, 8, T-6);
+        ctx.restore();
+      }
+    });
+    // guests
+    S.guests.forEach((type,k)=>{
+      const [c,r]=k.split(',').map(Number);
+      const cx=(c+0.5)*T, cy=(r+0.5)*T, col=GUEST_COL[type];
+      ctx.save();
+      ctx.shadowColor=col; ctx.shadowBlur=8; ctx.fillStyle=col;
+      ctx.beginPath(); ctx.arc(cx,cy,Math.min(8,T*0.32),0,7); ctx.fill();
+      ctx.shadowBlur=0; ctx.fillStyle='#04110d';
+      ctx.font='bold '+Math.floor(T*0.42)+'px VT323, monospace';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(GUEST_LABEL[type], cx, cy+1);
+      ctx.restore();
+    });
+    // player
+    if(S.player){
+      const cx=(S.player.c+0.5)*T, cy=(S.player.r+0.5)*T;
+      ctx.save(); ctx.shadowColor='#33ff00'; ctx.shadowBlur=12; ctx.fillStyle='#33ff00';
+      ctx.beginPath(); ctx.arc(cx,cy,Math.min(9,T*0.34),0,7); ctx.fill();
+      ctx.shadowBlur=0; ctx.fillStyle='#04110d'; ctx.beginPath(); ctx.arc(cx,cy,T*0.14,0,7); ctx.fill();
+      ctx.restore();
+    }
+    // daughter
+    if(S.daughter){
+      const cx=(S.daughter.c+0.5)*T, cy=(S.daughter.r+0.5)*T, sz=Math.min(8,T*0.32);
+      ctx.save(); ctx.shadowColor='#bfffd0'; ctx.shadowBlur=14; ctx.fillStyle='#e8ffe8';
+      ctx.beginPath(); ctx.arc(cx,cy-sz*0.5,sz*0.7,0,7); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(cx-sz,cy+sz); ctx.lineTo(cx,cy-sz*0.3); ctx.lineTo(cx+sz,cy+sz); ctx.closePath(); ctx.fill();
+      ctx.restore();
+    }
+    // hover highlight
+    if(S.cur && inBounds(S.cur.c,S.cur.r)){
+      ctx.save(); ctx.strokeStyle='rgba(51,255,0,0.6)'; ctx.lineWidth=2;
+      ctx.strokeRect(S.cur.c*T+1, S.cur.r*T+1, T-2, T-2); ctx.restore();
+    }
+  }
+  // door bar orientation: horizontal bar when up/down are open passages
+  function orientHoriz(c,r){
+    const open = (cc,rr)=> inBounds(cc,rr) && S.grid[rr][cc]!=='wall';
+    const vertPass = open(c,r-1) && open(c,r+1);   // passage runs vertically -> draw horizontal bar
+    const horzPass = open(c-1,r) && open(c+1,r);
+    if(vertPass && !horzPass) return true;
+    if(horzPass && !vertPass) return false;
+    return true;
+  }
+
+  // ---------- stats ----------
+  function updateStats(){
+    let mir=0; S.doors.forEach(t=>{ if(t==='mirror') mir++; });
+    $('stSize').textContent = S.cols+' × '+S.rows;
+    $('stTool').textContent = labelOf(S.tool);
+    $('stDoors').textContent = (S.doors.size - mir);
+    $('stMirror').textContent = mir;
+    $('stGuests').textContent = S.guests.size;
+    $('stPlayer').textContent = S.player ? (S.player.c+','+S.player.r) : '無';
+    $('stDaughter').textContent = S.daughter ? (S.daughter.c+','+S.daughter.r) : '無';
+    $('stCur').textContent = S.cur ? (S.cur.c+', '+S.cur.r) : '--, --';
+  }
+  function labelOf(t){
+    if(t.startsWith('door:')) return t.split(':')[1].toUpperCase()+' DOOR';
+    if(t.startsWith('guest:')) return t.split(':')[1].toUpperCase()+' GUEST';
+    return t.toUpperCase();
+  }
+
+  // ---------- pointer ----------
+  function tileFromEvent(e){
+    const rect=cv.getBoundingClientRect();
+    const x=(e.clientX-rect.left)*(cv.width/rect.width);
+    const y=(e.clientY-rect.top)*(cv.height/rect.height);
+    return { c:Math.floor(x/S.tile), r:Math.floor(y/S.tile) };
+  }
+  cv.addEventListener('contextmenu', e=>e.preventDefault());
+  cv.addEventListener('mousedown', e=>{
+    e.preventDefault();
+    const {c,r}=tileFromEvent(e);
+    S.painting=true; S.eraseDrag=(e.button===2);
+    applyTool(c,r,S.eraseDrag); render(); updateStats(); scheduleAutosave();
+  });
+  cv.addEventListener('mousemove', e=>{
+    const t=tileFromEvent(e);
+    S.cur=t;
+    if(S.painting){ applyTool(t.c,t.r,S.eraseDrag); }
+    render(); updateStats();
+    if(S.painting) scheduleAutosave();
+  });
+  cv.addEventListener('mouseleave', ()=>{ S.cur=null; render(); updateStats(); });
+  window.addEventListener('mouseup', ()=>{ if(S.painting){ S.painting=false; } });
+
+  // keyboard tool select
+  window.addEventListener('keydown', e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+    const k=e.key.toLowerCase();
+    if(KEYMAP[k]){ selectTool(KEYMAP[k]); }
+  });
+
+  // ---------- palette ----------
+  function selectTool(tool){
+    S.tool=tool;
+    document.querySelectorAll('.tool').forEach(el=>{
+      el.classList.toggle('active', el.dataset.tool===tool);
+    });
+    updateStats();
+  }
+  document.querySelectorAll('.tool').forEach(el=>{
+    el.addEventListener('click', ()=>selectTool(el.dataset.tool));
+  });
+
+  // ---------- stage buttons ----------
+  function border(){
+    for(let r=0;r<S.rows;r++) for(let c=0;c<S.cols;c++){
+      S.grid[r][c] = (c===0||r===0||c===S.cols-1||r===S.rows-1) ? 'wall' : 'floor';
+    }
+  }
+  $('btnBorder').onclick = ()=>{ border(); render(); updateStats(); scheduleAutosave(); };
+  $('btnFill').onclick = ()=>{ S.grid=newGrid(S.cols,S.rows,'floor'); render(); updateStats(); scheduleAutosave(); };
+  $('btnClear').onclick = ()=>{
+    if(!confirm('清空整張地圖？此動作無法復原。')) return;
+    S.grid=newGrid(S.cols,S.rows,'wall');
+    S.doors.clear(); S.guests.clear(); S.player=null; S.daughter=null;
+    render(); updateStats(); scheduleAutosave();
+  };
+  $('btnResize').onclick = ()=>{
+    const w=clampInt($('inW').value,3,120), h=clampInt($('inH').value,3,80);
+    // preserve existing content within new bounds
+    const ng=newGrid(w,h,'wall');
+    for(let r=0;r<Math.min(h,S.rows);r++) for(let c=0;c<Math.min(w,S.cols);c++) ng[r][c]=S.grid[r][c];
+    S.cols=w; S.rows=h; S.grid=ng;
+    // drop out-of-bounds markers
+    [S.doors,S.guests].forEach(m=>{ m.forEach((v,k)=>{ const [c,r]=k.split(',').map(Number); if(c>=w||r>=h) m.delete(k); }); });
+    if(S.player && (S.player.c>=w||S.player.r>=h)) S.player=null;
+    if(S.daughter && (S.daughter.c>=w||S.daughter.r>=h)) S.daughter=null;
+    $('inW').value=w; $('inH').value=h;
+    resizeCanvas(); render(); updateStats(); scheduleAutosave();
+  };
+  $('inTile').onchange = ()=>{
+    S.tile=clampInt($('inTile').value,8,48); $('inTile').value=S.tile;
+    resizeCanvas(); render();
+  };
+  function clampInt(v,lo,hi){ v=parseInt(v,10); if(isNaN(v)) v=lo; return Math.max(lo,Math.min(hi,v)); }
+
+  // ---------- serialize ----------
+  function serialize(){
+    const gridStr = S.grid.map(row=>row.map(g=>g==='wall'?'#':'.').join(''));
+    const doors=[], mirrors=[];
+    const linkedOrder=[];
+    S.doors.forEach((type,k)=>{
+      const [c,r]=k.split(',').map(Number);
+      if(type==='mirror'){ mirrors.push({c,r}); }
+      else {
+        const d={c,r,type};
+        if(type==='linked') linkedOrder.push(d);
+        doors.push(d);
+      }
+    });
+    // auto-pair linked doors two by two -> add link as index in doors[]
+    for(let i=0;i+1<linkedOrder.length;i+=2){
+      const a=linkedOrder[i], b=linkedOrder[i+1];
+      a.link=doors.indexOf(b); b.link=doors.indexOf(a);
+    }
+    const guests=[]; S.guests.forEach((type,k)=>{ const [c,r]=k.split(',').map(Number); guests.push({c,r,type}); });
+    return {
+      version:1, cols:S.cols, rows:S.rows, tile:S.tile,
+      grid:gridStr, doors, mirrors, guests,
+      player:S.player, daughter:S.daughter
+    };
+  }
+  function deserialize(obj){
+    if(!obj||!obj.grid||!obj.cols||!obj.rows) throw new Error('格式不符');
+    S.cols=obj.cols; S.rows=obj.rows; S.tile=obj.tile||S.tile;
+    S.grid=newGrid(S.cols,S.rows,'wall');
+    obj.grid.forEach((row,r)=>{ for(let c=0;c<row.length && c<S.cols;c++){ S.grid[r][c]= row[c]==='#'?'wall':'floor'; } });
+    S.doors.clear(); S.guests.clear();
+    (obj.doors||[]).forEach(d=>{ if(DOOR_TYPES.includes(d.type)) S.doors.set(key(d.c,d.r), d.type); });
+    (obj.mirrors||[]).forEach(m=>{ S.doors.set(key(m.c,m.r),'mirror'); });
+    (obj.guests||[]).forEach(g=>{ S.guests.set(key(g.c,g.r), GUEST_TYPES.includes(g.type)?g.type:'basic'); });
+    S.player=obj.player||null; S.daughter=obj.daughter||null;
+    $('inW').value=S.cols; $('inH').value=S.rows; $('inTile').value=S.tile;
+    resizeCanvas(); render(); updateStats();
+  }
+
+  // ---------- IO buttons ----------
+  $('btnExport').onclick = ()=>{ $('io').value = JSON.stringify(serialize(), null, 2); flash('EXPORTED'); };
+  $('btnImport').onclick = ()=>{
+    try{ deserialize(JSON.parse($('io').value)); flash('IMPORTED'); scheduleAutosave(); }
+    catch(err){ flash('IMPORT 失敗: '+err.message, true); }
+  };
+  $('btnCopy').onclick = async()=>{
+    const txt=JSON.stringify(serialize());
+    $('io').value=JSON.stringify(serialize(),null,2);
+    try{ await navigator.clipboard.writeText(txt); flash('已複製到剪貼簿'); }
+    catch(e){ $('io').select(); flash('已選取，請手動 Ctrl+C'); }
+  };
+  $('btnDownload').onclick = ()=>{
+    const blob=new Blob([JSON.stringify(serialize(),null,2)],{type:'application/json'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob); a.download='lastdoor_map.json'; a.click();
+    URL.revokeObjectURL(a.href); flash('已下載 lastdoor_map.json');
+  };
+  $('btnSave').onclick = ()=>{ localStorage.setItem('lastdoor_map_draft', JSON.stringify(serialize())); flash('草稿已儲存'); };
+  $('btnLoad').onclick = ()=>{
+    const raw=localStorage.getItem('lastdoor_map_draft');
+    if(!raw){ flash('沒有草稿', true); return; }
+    try{ deserialize(JSON.parse(raw)); flash('草稿已讀取'); }catch(e){ flash('草稿損毀', true); }
+  };
+
+  // ---------- autosave ----------
+  let saveTimer=null;
+  function scheduleAutosave(){
+    clearTimeout(saveTimer);
+    saveTimer=setTimeout(()=>{ localStorage.setItem('lastdoor_map_auto', JSON.stringify(serialize())); }, 600);
+  }
+  function flash(msg,bad){
+    const el=$('hdrStatus'); el.textContent=msg; el.style.color=bad?'#ff5555':'#33ff00';
+    clearTimeout(flash._t); flash._t=setTimeout(()=>{ el.textContent='READY'; el.style.color=''; },2200);
+  }
+
+  // ---------- boot ----------
+  function boot(){
+    const auto=localStorage.getItem('lastdoor_map_auto');
+    if(auto){
+      try{ deserialize(JSON.parse(auto)); }
+      catch(e){ initGrid(); resizeCanvas(); render(); }
+    } else {
+      initGrid(); resizeCanvas(); render();
+    }
+    selectTool('wall');
+    updateStats();
+  }
+  boot();
+})();
+</script>
+</body>
+</html>
