@@ -374,9 +374,11 @@
       .lvlnode.boss:hover{border-color:#ff8f66;box-shadow:0 14px 30px rgba(0,0,0,.6),0 0 26px rgba(255,120,60,.3);}
       .lvlnode.boss .lvl-no,.lvlnode.boss .lvl-name{color:#ffd0bd;}
       .lvlnode.boss .lvl-badge{color:#ff9e7a;border-color:#8a4f34;}
-      .lvl-intel{position:absolute;left:0;top:0;bottom:0;z-index:9;overflow:visible;border-right:1px solid rgba(102,214,140,.28);background:linear-gradient(180deg,rgba(3,10,7,.96) 0%,rgba(2,7,4,.95) 100%);box-shadow:16px 0 38px rgba(0,0,0,.55);transition:width .22s ease;}
+      .lvl-intel{position:absolute;left:0;top:0;bottom:0;z-index:9;overflow:visible;border-right:1px solid rgba(102,214,140,.28);background:linear-gradient(180deg,rgba(3,10,7,.96) 0%,rgba(2,7,4,.95) 100%);box-shadow:16px 0 38px rgba(0,0,0,.55);transition:width .22s ease;container-type:inline-size;}
       .lvl-intel-shell{position:relative;width:100%;height:100%;overflow:hidden;}
-      .lvl-intel-content{width:420px;height:100%;padding:22px 22px 18px;display:flex;flex-direction:column;gap:14px;}
+      .lvl-intel-content{width:420px;height:100%;padding:22px 22px 18px;display:flex;flex-direction:column;gap:14px;transition:opacity .18s ease;}
+      /* While the panel is collapsed, hide its text so it can't leak a sliver at the page's left edge */
+      @container (max-width: 150px){ .lvl-intel-content{opacity:0;pointer-events:none;} }
       .lvl-intel-handle{position:absolute;right:0;top:50%;transform:translate(100%,-50%);width:36px;padding:14px 0;border:1px solid rgba(102,214,140,.32);border-left:0;border-radius:0 8px 8px 0;background:linear-gradient(180deg,rgba(8,20,14,.95),rgba(4,12,8,.95));color:#8fffb4;font-size:14px;letter-spacing:2px;writing-mode:vertical-rl;text-orientation:mixed;text-align:center;cursor:ew-resize;user-select:none;box-shadow:8px 0 18px rgba(0,0,0,.35);}
       .lvl-terminal{border:1px solid rgba(102,214,140,.28);background:linear-gradient(180deg,rgba(4,14,10,.88),rgba(1,7,5,.94));box-shadow:inset 0 0 0 1px rgba(175,255,212,.04),0 8px 24px rgba(0,0,0,.32);}
       .lvl-sec-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px;letter-spacing:2px;color:#9ff0b8;border-bottom:1px solid rgba(102,214,140,.18);padding-bottom:6px;margin-bottom:7px;}
@@ -398,7 +400,7 @@
       .lvl-preview-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 16px 12px;border-bottom:1px solid rgba(102,214,140,.18);background:linear-gradient(180deg,rgba(8,20,14,.94),rgba(4,12,8,.92));}
       .lvl-preview-close{cursor:pointer;flex:none;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,170,170,.35);color:#ffc8c8;background:rgba(45,11,11,.55);font-size:18px;line-height:1;border-radius:4px;transition:.16s;}
       .lvl-preview-close:hover{background:#ff6e6e;color:#140303;border-color:#ff9e9e;box-shadow:0 0 18px rgba(255,110,110,.24);}
-      .lvl-preview-body{padding:14px 16px 16px;overflow-y:auto;display:flex;flex-direction:column;min-height:0;flex:1;}
+      .lvl-preview-body{padding:14px 16px 16px;overflow-y:auto;overflow-x:hidden;display:block;min-height:0;flex:1 1 auto;}
       .lvl-preview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0 12px;}
       .lvl-metric{padding:7px 8px;border:1px solid rgba(102,214,140,.18);background:rgba(8,24,15,.4);}
       .lvl-metric-label{font-size:11px;letter-spacing:1px;color:#79c893;}
@@ -576,8 +578,8 @@
                 </sc-for>
               </div>
 
-              <div style="width: 100%; overflow-x: auto; overflow-y: hidden; border: 1px solid rgba(102,214,140,.24); background: linear-gradient(180deg,rgba(3,10,8,.98),rgba(1,5,4,.98)); margin: 12px 0 6px; border-radius: 4px;">
-                <div class="lvl-blueprint" style="width: 540px; height: 300px; border: none; background: transparent; position: relative; overflow: hidden; flex-shrink: 0;">
+              <div style="width: 100%; overflow: hidden; border: 1px solid rgba(102,214,140,.24); background: linear-gradient(180deg,rgba(3,10,8,.98),rgba(1,5,4,.98)); margin: 12px 0 6px; border-radius: 4px;">
+                <div class="lvl-blueprint" style="width: 100%; height: 300px; border: none; background: transparent; position: relative; overflow: hidden; flex-shrink: 0;">
                   <div class="lvl-grid"></div>
                   <sc-for list="{{ previewCorridors }}" as="zone" hint-placeholder-count="3">
                     <div class="lvl-zone" style="left:{{ zone.left }}; top:{{ zone.top }}; width:{{ zone.width }}; height:{{ zone.height }}; background:{{ zone.fill }}; border-color:{{ zone.border }};"></div>
@@ -1425,9 +1427,26 @@ class Component extends DCLogic {
   }
 
   levelDisplayName(level) {
-    const floorText = ['一', '二', '三'][this.levelToFloor(level) - 1] || '一';
-    const stepText = ['一', '二', '三', '四', '五'][(Math.max(1, Math.min(15, level)) - 1) % 5] || '一';
-    return floorText + '之' + stepText;
+    // Per-level custom names (titles drawn from 關卡劇情.md), instead of the old "X之X" pattern.
+    const names = [
+      '雪夜的叮嚀',       // 1
+      '消失的糖果',       // 2
+      '櫃檯的影子',       // 3
+      '風中的哭聲',       // 4
+      '稽查的陰影',       // 5
+      '失蹤的紅線',       // 6
+      '搖籃曲的破綻',     // 7
+      '崩解的防線',       // 8
+      '控制不住的靈魂',   // 9
+      '軍方的最後通牒',   // 10
+      '照片中的陌生人',   // 11
+      '不存在的紅色風箏', // 12
+      '吞噬靈魂的真相',   // 13
+      '殘酷的對峙',       // 14
+      '最後的黎明'        // 15
+    ];
+    const lv = Math.max(1, Math.min(15, Math.round(Number(level) || 1)));
+    return names[lv - 1] || ('關卡 ' + this.pad2(lv));
   }
 
   levelPatternKey(level) {
@@ -1693,6 +1712,26 @@ class Component extends DCLogic {
     return inventory;
   }
 
+  makeGhostActor(base) {
+    return Object.assign({
+      path: null,
+      pi: 0,
+      stuck: 0,
+      bob: 0,
+      hostile: true,
+      forceProgress: 0,
+      forceDoorKey: null,
+      channel: 0,
+      channelMode: null,
+      channelSource: null,
+      channelTarget: null,
+      mirrorCd: 5,
+      roomHold: 4 + Math.random() * 2,
+      roomId: null,
+      lingerGoal: null
+    }, base || {});
+  }
+
   itemSlots() {
     return ['cloth', 'blindfold', 'phase', 'lock', 'whistle'];
   }
@@ -1809,7 +1848,7 @@ class Component extends DCLogic {
   placeCloth() {
     const w = this.world; if (!w) return;
     let closest = null, bd = 1e9;
-    for (const m of w.mirrors) {
+    for (const m of [...w.mirrors, ...w.wallGlass]) {
       const dx = (m.c + 0.5) * w.TILE - w.player.x;
       const dy = (m.r + 0.5) * w.TILE - w.player.y;
       const d = Math.hypot(dx, dy);
@@ -1817,7 +1856,8 @@ class Component extends DCLogic {
     }
     if (closest && bd < w.TILE * 1.8) {
       closest.covered = !closest.covered;
-      this.log(closest.covered ? "MIRROR COVERED WITH CLOTH." : "CLOTH REMOVED FROM MIRROR.", "#33ff00");
+      const label = closest.kind === 'wall' ? 'WALL MIRROR' : 'MIRROR';
+      this.log(closest.covered ? (label + " COVERED WITH CLOTH.") : ("CLOTH REMOVED FROM " + label + "."), "#33ff00");
       this.playSFX('lock');
       return true;
     } else {
@@ -1930,7 +1970,14 @@ class Component extends DCLogic {
       } else if (k !== 'shift' && k !== 'e' && !['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','1','2','3','4','5'].includes(k)) {
         this.devClickCount = 0;
       }
-      if (k === 'e' && this.state.screen === 'playing') { e.preventDefault(); this.operateDoor(!!e.shiftKey || !!this.keys['shift']); }
+      if (this.state.screen === 'playing' && (k === 'arrowleft' || k === 'arrowright') && this.canUseDeskControls()) {
+        e.preventDefault();
+        this.cycleDeskRoom(k === 'arrowleft' ? -1 : 1);
+      }
+      if (k === 'e' && this.state.screen === 'playing') {
+        e.preventDefault();
+        if (!this.tryDeskConfirm()) this.operateDoor(!!e.shiftKey || !!this.keys['shift']);
+      }
       if (['1','2','3','4','5'].includes(k) && this.state.screen === 'playing') { e.preventDefault(); this.useItem(parseInt(k)); }
       if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k)) e.preventDefault();
     };
@@ -2120,7 +2167,7 @@ class Component extends DCLogic {
       hallLabels:[{text:'MAIN CORRIDOR',c:6,r:9},{text:'CHECK-IN HALL',c:16,r:12}],
       doorSlots:[D(5,8,'h','ROOM 101'),D(15,8,'h','ROOM 102'),D(25,8,'h','LOUNGE'),D(37,8,'h','ROOM 103'),D(12,16,'v','ROOM 104'),D(29,16,'v','FRONT DESK'),D(10,9,'v','WEST GATEWAY'),D(20,9,'v','CENTRAL GATEWAY'),D(31,9,'v','EAST GATEWAY')],
       fixtures:[F(3,3,3,2,'bed'),F(12,3,3,2,'bed'),F(38,3,3,2,'bed'),F(3,14,3,2,'bed'),F(23,3,3,1,'sofa'),F(31,17,7,1,'counter')],
-      mirrors:[{c:7,r:5},{c:35,r:4}],playerStart:{c:20,r:18},daughterHome:{c:7,r:3},exitApproach:{c:20,r:19},inspectorSpawn:{c:20,r:19},entrance:{c:20,r:20},
+      mirrors:[{c:7,r:5},{c:35,r:4}],wallGlass:[{c:9,r:4,dir:'v'},{c:36,r:8,dir:'h'},{c:12,r:16,dir:'v'}],playerStart:{c:20,r:18},daughterHome:{c:7,r:3},exitApproach:{c:20,r:19},inspectorSpawn:{c:20,r:19},entrance:{c:20,r:20},
       guestSpawns:[{c:20,r:18},{c:5,r:5}]
     };
     if (mapTier === 2) return {
@@ -2130,7 +2177,7 @@ class Component extends DCLogic {
       hallLabels:[{text:'NORTH CORRIDOR',c:17,r:7},{text:'WEST WING',c:8,r:13},{text:'EAST WING',c:34,r:13}],
       doorSlots:[D(4,6,'h','ROOM 201'),D(13,6,'h','ROOM 202'),D(22,6,'h','LOUNGE'),D(31,6,'h','ROOM 203'),D(40,6,'h','ROOM 204'),D(9,9,'h','WEST WING NORTH'),D(22,9,'h','FRONT DESK NORTH'),D(35,9,'h','EAST WING NORTH'),D(7,19,'v','ROOM 205'),D(11,19,'v','ROOM 206 WEST'),D(16,19,'v','ROOM 206 EAST'),D(28,19,'v','ROOM 207 WEST'),D(33,19,'v','ROOM 207 EAST'),D(37,19,'v','ROOM 208'),D(22,21,'h','FRONT DESK SOUTH'),D(16,12,'v','WEST CROSS-CORRIDOR')],
       fixtures:[F(2,2,3,2,'bed'),F(12,2,3,2,'bed'),F(30,2,3,2,'bed'),F(39,2,3,2,'bed'),F(2,18,3,2,'bed'),F(13,18,2,2,'bed'),F(30,18,2,2,'bed'),F(40,18,3,2,'bed'),F(20,2,2,1,'sofa'),F(23,4,2,1,'sofa'),F(19,11,7,1,'counter'),F(21,15,3,3,'fountain')],
-      mirrors:[{c:6,r:4},{c:42,r:19}],playerStart:{c:19,r:18},daughterHome:{c:4,r:4},exitApproach:{c:22,r:23},inspectorSpawn:{c:22,r:23},entrance:{c:22,r:24},
+      mirrors:[{c:6,r:4},{c:42,r:19}],wallGlass:[{c:8,r:3,dir:'v'},{c:17,r:3,dir:'v'},{c:27,r:3,dir:'v'},{c:11,r:19,dir:'v'}],playerStart:{c:19,r:18},daughterHome:{c:4,r:4},exitApproach:{c:22,r:23},inspectorSpawn:{c:22,r:23},entrance:{c:22,r:24},
       guestSpawns:[{c:22,r:4},{c:6,r:4},{c:14,r:4},{c:32,r:4},{c:40,r:4},{c:4,r:20},{c:14,r:20},{c:31,r:20}]
     };
     return {
@@ -2140,7 +2187,7 @@ class Component extends DCLogic {
       hallLabels:[{text:'NORTH CORRIDOR',c:17,r:7},{text:'SOUTH CORRIDOR',c:17,r:23},{text:'CHECK-IN HALL',c:18,r:10}],
       doorSlots:[D(4,6,'h','ROOM 301'),D(14,6,'h','ROOM 302'),D(22,6,'h','LOUNGE'),D(31,6,'h','ROOM 303'),D(40,6,'h','ROOM 304'),D(9,9,'h','WEST CORRIDOR'),D(22,9,'h','FRONT DESK NORTH'),D(35,9,'h','EAST CORRIDOR'),D(7,12,'v','ROOM 305'),D(11,12,'v','ROOM 307 WEST'),D(16,12,'v','ROOM 307 EAST'),D(28,12,'v','ROOM 309 WEST'),D(33,12,'v','ROOM 309 EAST'),D(37,12,'v','ROOM 311'),D(7,19,'v','ROOM 306'),D(11,19,'v','ROOM 308 WEST'),D(16,19,'v','ROOM 308 EAST'),D(28,19,'v','ROOM 310 WEST'),D(33,19,'v','ROOM 310 EAST'),D(37,19,'v','ROOM 312'),D(22,21,'h','FRONT DESK SOUTH')],
       fixtures:[F(2,2,3,2,'bed'),F(12,2,3,2,'bed'),F(29,2,4,2,'bed'),F(39,2,3,2,'bed'),F(2,11,3,2,'bed'),F(2,18,3,1,'bed'),F(13,11,2,2,'bed'),F(13,18,2,1,'bed'),F(30,11,2,2,'bed'),F(30,18,2,1,'bed'),F(39,11,3,2,'bed'),F(39,18,3,1,'bed'),F(21,2,2,1,'sofa'),F(24,4,1,1,'sofa'),F(19,11,7,1,'counter'),F(21,15,3,3,'fountain')],
-      mirrors:[{c:16,r:4},{c:43,r:12}],playerStart:{c:19,r:18},daughterHome:{c:4,r:4},exitApproach:{c:22,r:23},inspectorSpawn:{c:22,r:23},entrance:{c:22,r:24},
+      mirrors:[{c:16,r:4},{c:43,r:12}],wallGlass:[{c:8,r:3,dir:'v'},{c:18,r:3,dir:'v'},{c:35,r:3,dir:'v'},{c:7,r:12,dir:'v'},{c:16,r:12,dir:'v'}],playerStart:{c:19,r:18},daughterHome:{c:4,r:4},exitApproach:{c:22,r:23},inspectorSpawn:{c:22,r:23},entrance:{c:22,r:24},
       guestSpawns:[{c:17,r:4},{c:35,r:8},{c:4,r:5},{c:29,r:14},{c:24,r:4},{c:40,r:14},{c:4,r:19},{c:31,r:19}]
     };
   }
@@ -2255,13 +2302,14 @@ class Component extends DCLogic {
     mx.fillStyle = 'rgba(91,173,115,.34)';
     for(const h of layout.hallLabels)mx.fillText(h.text,h.c*TILE+4,h.r*TILE+6);
 
-    const mirrors = layout.mirrors;
+    const mirrors = (layout.mirrors || []).map(m => ({ ...m, kind:'remote', covered:!!m.covered }));
+    const wallGlass = (layout.wallGlass || []).map(g => ({ ...g, kind:'wall', covered:!!g.covered }));
     const roomCenters = rooms.map(z => ({ c: Math.floor(z.x + z.w / 2), r: Math.floor(z.y + z.h / 2) }));
 
     const cx = (c) => (c + 0.5) * TILE, cy = (r) => (r + 0.5) * TILE;
     const playerStart=layout.playerStart,daughterHome=layout.daughterHome,exitApproach=layout.exitApproach,inspectorSpawn=layout.inspectorSpawn;
     const player = { x: cx(playerStart.c), y: cy(playerStart.r), r: 7 };
-    const daughter = { x: cx(daughterHome.c), y: cy(daughterHome.r), r: 8, path: null, pi: 0, stuck: 0, channel: 0, mirrorCd: 8, bob: 0, hostile:true, forceProgress:0 };
+    const daughter = this.makeGhostActor({ x: cx(daughterHome.c), y: cy(daughterHome.r), r: 8, mirrorCd: 6 });
 
     // guests now arrive one-by-one through the main gate (see updateArrivals)
     const guestTypes=['timidWoman','boldMan','brat','timidWoman','boldMan','brat','timidWoman','brat'];
@@ -2269,13 +2317,33 @@ class Component extends DCLogic {
     const totalArrivals=Math.min(30, maxConcurrent*2 + config.level); // a steady stream to earn the quota from
     const queue=[];
     for(let i=0;i<totalArrivals;i++)queue.push({type:guestTypes[i%guestTypes.length], id:i});
-    const roomTargets = rooms.filter(z=>z.role==='guest').map(z=>({c:Math.floor(z.x+z.w/2),r:Math.floor(z.y+z.h/2)}));
+    const guestRooms = rooms.filter(z=>z.role==='guest');
+    const roomTargets = guestRooms.map(z=>({c:Math.floor(z.x+z.w/2),r:Math.floor(z.y+z.h/2),label:z.label}));
+    const deskRoom = rooms.find(z => z.role === 'desk') || null;
+    const deskDoors = layout.doorSlots.filter(s => (s.name || '').indexOf('FRONT DESK') >= 0);
+    const serviceDoor = deskDoors.slice().sort((a, b) => b.r - a.r || a.c - b.c)[0] || null;
+    let servicePoint = exitApproach;
+    let queueDir = { dc: 0, dr: 1 };
+    if (deskRoom && serviceDoor) {
+      if (serviceDoor.axis === 'h') {
+        const roomAbove = serviceDoor.r >= deskRoom.y + deskRoom.h - 1;
+        servicePoint = { c: serviceDoor.c, r: serviceDoor.r + (roomAbove ? 1 : -1) };
+        queueDir = { dc: 0, dr: roomAbove ? 1 : -1 };
+      } else {
+        const roomRight = serviceDoor.c >= deskRoom.x + deskRoom.w - 1;
+        servicePoint = { c: serviceDoor.c + (roomRight ? 1 : -1), r: serviceDoor.r };
+        queueDir = { dc: roomRight ? 1 : -1, dr: 0 };
+      }
+    }
+    const queueSpots = [];
+    for (let i = 1; i <= 5; i++) queueSpots.push({ c: servicePoint.c + queueDir.dc * i, r: servicePoint.r + queueDir.dr * i });
 
     this.world = {
-      TILE, COLS, ROWS, grid, doors, doorMap, floorTiles, mapCanvas: mc, mirrors, roomCenters, config, layoutName:layout.name, chainColors,
+      TILE, COLS, ROWS, grid, doors, doorMap, floorTiles, mapCanvas: mc, mirrors, wallGlass, rooms, roomCenters, config, layoutName:layout.name, chainColors,
       entranceDoor, exitApproach, inspectorSpawn, daughterHome, playerStart, mapOffsetX: 3, mapOffsetY: 3,
       player, daughter, guests: [], ghosts: [], inspector: null, inspectorDone: false,
-      queue, arrival: null, maxConcurrent, nextArrivalT: 1.2, admitted: 0, turnedAway: 0, checkedOut: 0, roomTargets,
+      queue, arrival: null, maxConcurrent, nextArrivalT: 1.2, admitted: 0, turnedAway: 0, checkedOut: 0, roomTargets, guestRooms,
+      deskRoom, serviceDoor, servicePoint, queueSpots, guestSequence: 0, roomAssignCursor: 0,
       earned: 0, money: 25, spent: 0, strikes: 0, moneyTarget: config.moneyTarget,
       itemDefs: this.itemDefs, inventory: this.makeInventory(),
       itemCooldowns: { cloth: 0, blindfold: 0, phase: 0, lock: 0, whistle: 0 },
@@ -2293,15 +2361,361 @@ class Component extends DCLogic {
   startGame(level) {
     const lv=Math.max(1,Math.min(15,Math.round(Number(level)||this.state.currentLevel||1)));
     this.buildWorld(lv);
-    this.setState({ 
-      screen:'playing', 
-      showOptions:false, 
-      showLevelSelect:false, 
+    // Park on a neutral screen so the title / win / lose overlays hide while the
+    // terminal-chat intro and CRT boot animation play on top of the static stage.
+    this.setState({
+      screen:'intro',
+      showOptions:false,
+      showLevelSelect:false,
       showLevelPreview:false,
-      currentLevel:lv, 
+      currentLevel:lv,
       selectedLevel:lv,
       previewReachedBottom:false
     });
+    this.runLevelIntro(lv);
+  }
+
+  // Once the intro + boot sequence finishes we hand control back to the live game loop.
+  _beginPlaying() {
+    this._destroyIntroOverlay();
+    this.setState({ screen:'playing' });
+  }
+
+  // ===================== LEVEL INTRO: terminal chat =====================
+  getIntroScript(lv) {
+    // Terminal "handles" double as the small top-left badge that says who is talking.
+    // Terminal "handles" double as the small top-left badge that says who is talking.
+    // Spoken text + stage directions transcribed from 關卡劇情.md.
+    const KEEPER   = { who:'老爺',   handle:'keeper',     color:'#7dffb0', dim:'#3f9c6a' };
+    const DAUGHTER = { who:'女兒',   handle:'xiaoqiu',    color:'#bff6df', dim:'#5fae93', ghost:true };
+    const GUEST    = { who:'旅客',   handle:'guest',      color:'#cfe6d2', dim:'#6f9c7c' };
+    const INSPECT  = { who:'稽查員', handle:'inspector',  color:'#ffc24d', dim:'#a8761f', warn:true };
+    const OFFICER  = { who:'警官',   handle:'officer',    color:'#9cd8ff', dim:'#5a8db5' };
+    const INVEST   = { who:'調查官', handle:'investigator', color:'#ff9a6b', dim:'#a85f3a', warn:true };
+    // L(speaker, text, note?) — note is the parenthetical stage direction shown as dim narration.
+    const L = (spk, text, note) => ({ ...spk, text, note: note || '' });
+    const scripts = {
+      1: { host:'pinelodge', title:'PINE LODGE // 雪夜的叮嚀',
+        scene:'深夜的旅館大廳，老爺在櫃檯前整理名單，油燈搖曳。', lines:[
+        L(KEEPER,   '外面的風雪越來越大了……小秋，今晚可別在走廊上亂跑。要是嚇到了客人，爸爸的生意就更難做了。'),
+        L(DAUGHTER, '知道啦，爸爸。可是，我今天有乖乖幫你把大門鎖好喔。', '空靈的聲音從黑暗中傳來'),
+        L(KEEPER,   '妳小時候總是說長大想繼承這間旅館……放心吧，爸爸一定會幫妳守護好這裡的。', '嘆了口氣，微笑'),
+        L(DAUGHTER, '真的嗎？那我們說好了喔，爸爸最好了！'),
+      ]},
+      2: { host:'pinelodge', title:'PINE LODGE // 消失的糖果',
+        scene:'櫃檯上的糖果罐空空如也，旁邊留著一張畫著笑臉的小紙條。', lines:[
+        L(KEEPER,   '妳這孩子，又把要給客人的糖果藏起來了？等一下客人要投訴了。', '無奈地搖頭，對著空氣說'),
+        L(DAUGHTER, '因為那個伯伯臉太臭了，我才不給他吃呢！我把糖果藏在花盆底下了，爸爸你去拿嘛。', '咯咯笑聲'),
+        L(KEEPER,   '真是拿妳沒辦法……明天不准再調皮了。'),
+      ]},
+      3: { host:'pinelodge', title:'PINE LODGE // 櫃檯的影子',
+        scene:'老爺回房時，看見櫃檯的入住登記簿無風自動，頁面一頁頁翻過。', lines:[
+        L(KEEPER,   '今天也學著爸爸看名單嗎？'),
+        L(DAUGHTER, '對呀，我每天都在看。今天入住了三個客人，我都幫爸爸記住了喔。等我長大了，我一定能成為一個最棒的旅館主人！'),
+        L(KEEPER,   '好……等妳長大了，這間旅館，爸爸就全部交給妳。', '眼神有些黯淡，看著那本懸空翻動的書'),
+      ]},
+      4: { host:'pinelodge', title:'PINE LODGE // 風中的哭聲',
+        scene:'清晨，一位面帶倦意的旅客在櫃檯抱怨。', lines:[
+        L(GUEST,    '老闆，昨晚到底是怎麼回事？半夜總是有個女孩子的哭聲，而且隔壁的門一直自己開開關關，我整晚都沒睡好！'),
+        L(KEEPER,   '十分抱歉，客官。雪山的風雪太猛烈了，這棟別墅有些年頭，木門老舊受風壓影響才會那樣。今晚我會加強所有房門的鎖，絕不會再打擾到您。', '神色緊張，極力掩飾'),
+        L(GUEST,    '真是晦氣……', '搖搖頭離開'),
+        L(KEEPER,   '今晚……一定要把門鎖得更緊才行。', '轉身，咬牙看著黑暗處，低語'),
+      ]},
+      5: { host:'pinelodge', title:'PINE LODGE // 稽查的陰影',
+        scene:'一名穿著厚重軍大衣的稽查員推開旅館大門，風雪灌入大廳。', lines:[
+        L(INSPECT,  '老頭，最近這一帶不太太平，有好幾起旅客失蹤的通報。聽說你這裡半夜總有怪聲，我得進去搜查搜查。'),
+        L(KEEPER,   '官爺，這兒荒郊野外，風雪大，門窗作響是常有的事。老漢一人在此經營，向來奉公守法，絕對沒什麼不乾淨的東西。', '伸臂阻擋'),
+        L(INSPECT,  '是嗎？最好如此。如果讓我發現你藏了什麼不該藏的『髒東西』，你和你的旅館就準備一起完蛋吧。', '冷笑'),
+      ]},
+      6: { host:'manor', title:'TWIN-WING MANOR // 失蹤的紅線',
+        scene:'一名警官敲開大門，手中拿著幾張失蹤女學生的照片。', lines:[
+        L(OFFICER,  '老先生，打擾了。最近有兩名在雪山徒步的女學生失蹤，有人目擊她們最後往你這間別墅的方向走來。你有見過她們嗎？'),
+        L(KEEPER,   '警官，我這兒除了偶爾路過的行商，很少有年輕女學生來。也許她們在暴風雪中迷失了方向……', '握緊了拳頭，眼神飄忽'),
+        L(OFFICER,  '是嗎？那你別墅的門鎖怎麼裝得比監獄還多？', '起疑，看著二樓走廊'),
+        L(KEEPER,   '只是防野獸罷了。'),
+      ]},
+      7: { host:'manor', title:'TWIN-WING MANOR // 搖籃曲的破綻',
+        scene:'老爺整理剛空出來的房間，發現地上遺落了一條沾血的女式手帕。此時身後傳來空靈的哼唱聲。', lines:[
+        L(DAUGHTER, '……雪花落，門兒關，乖乖寶寶睡得安……', '哼著一首溫柔卻淒涼的歌謠'),
+        L(KEEPER,   '小秋！妳……妳怎麼會唱這首歌？這是我太太……在妳五歲去世前，只對妳哼過的歌……', '渾身一震，猛然回頭'),
+        L(DAUGHTER, '因為我是爸爸的乖女兒呀，爸爸記憶裡的所有事情，我都記得一清二楚喔。我還記得妳在我七歲那年，因為我跌倒哭泣，背著我在雪地裡走回旅館呢。', '歪著頭，露出無邪的笑容'),
+        L(KEEPER,   '是啊……妳都記得。是爸爸多心了……', '眼眶紅潤，深感欣慰，將沾血的手帕偷偷藏進口袋'),
+      ]},
+      8: { host:'manor', title:'TWIN-WING MANOR // 崩解的防線',
+        scene:'深夜，一名男旅客因為看到鬼影而驚慌失措地在大廳奔跑，老爺強行用防禦道具（眼罩）將其安撫送回房，隨後虛脫地坐在地上。', lines:[
+        L(KEEPER,   '今天差點……差點就防不住了……', '疲憊至極，自言自語'),
+        L(KEEPER,   '小秋，妳老實告訴爸爸。這幾天失蹤的那些客人……真的不是因為妳嗎？', '看著身旁的黑影'),
+        L(DAUGHTER, '爸爸，我不是故意的……', '低下頭，聲音帶著哭腔'),
+      ]},
+      9: { host:'manor', title:'TWIN-WING MANOR // 控制不住的靈魂',
+        scene:'關卡開始前，鬼在黑暗中不斷顫抖。', lines:[
+        L(DAUGHTER, '爸爸，我控制不住我自己……每當那些活人靠近我，我的身體就像不是我的一樣，拼命想要吸食他們的生氣……我好害怕，如果我不這麼做，我的靈魂就會像雪一樣溶化消逝……我不想死，爸爸，我真的不想死！', '哭泣'),
+        L(KEEPER,   '傻孩子……爸爸懂了。這不是妳的錯，是這場詛咒的錯。別怕，爸爸會繼續幫妳掩護，只要我們小心一點就沒事了。', '心如刀割，上前安慰'),
+      ]},
+      10: { host:'manor', title:'TWIN-WING MANOR // 軍方的最後通牒',
+        scene:'軍方調查官帶著大批士兵封鎖了別墅，氣氛無比肅殺。', lines:[
+        L(INVEST,   '林老頭，我們追蹤這股極大的怨氣很久了。你別再自欺欺人了，你護著的根本不是你女兒的冤魂，而是一個靠吸乾活人精氣來維持存在的惡鬼！'),
+        L(KEEPER,   '胡說八道！她只是個孩子！她是我女兒！她連客人的糖果都會藏起來，她怎麼可能害人！', '張開雙臂擋在樓梯前'),
+      ]},
+      11: { host:'villa', title:'BLACKTHORN VILLA // 照片中的陌生人',
+        scene:'老爺獨自在書房，看著女兒生前唯一的合照，合照裡有兩個女孩。', lines:[
+        L(KEEPER,   '如果小秋早在三年前就死了……那現在天天叫我爸爸的，到底是誰？我的女兒……妳到底在哪裡？', '看著照片，眼淚滑落'),
+        L(DAUGHTER, '爸爸，你在看什麼呢？照片裡的人，不是我嗎？', '突然從身後探出頭，聲音冰冷而空靈'),
+      ]},
+      12: { host:'villa', title:'BLACKTHORN VILLA // 不存在的紅色風箏',
+        scene:'深夜的櫃檯，老爺決定進行最後的試探。', lines:[
+        L(KEEPER,   '小秋，妳還記得妳十歲生日那天，爸爸帶妳去鎮上買的那隻紅色風箏嗎？那天風很大，風箏飛得好高，妳笑得好開心。', '裝作懷念'),
+        L(DAUGHTER, '當然記得呀！那隻風箏飛得好高好高，後來線斷了，爸爸還跑了幾里路幫我撿回來呢。我一直都好好收著呢，爸爸。', '毫不猶豫，甜甜地微笑'),
+        L(KEEPER,   '……是嗎。妳記得真清楚。可是，小秋……我從來沒有給妳買過風箏。那是妳的好朋友……小雨的風箏。', '手劇烈顫抖，眼淚奪眶而出，心如刀絞'),
+        L(DAUGHTER, '……爸爸？', '笑容瞬間凍結，僵立在原地'),
+      ]},
+      13: { host:'villa', title:'BLACKTHORN VILLA // 吞噬靈魂的真相',
+        scene:'軍方調查官趁著夜色潛入，將一份當年的調查報告摔在老爺面前。', lines:[
+        L(INVEST,   '老頭，看看這個吧。當年雪崩時，你女兒為了保護她凍僵的好朋友小雨，把自己的大衣讓給了她。你女兒死了，但小雨活了下來——只是，小雨在極度恐懼與怨恨中化為惡鬼。她為了能永遠留在人間，死後第一件事，就是把你女兒的靈魂吞噬，讓她化為暫時的鬼，最終徹底消亡。'),
+        L(INVEST,   '你天天保護的這個鬼，就是害死你女兒的真兇。她讀取了你女兒的記憶，只為了利用你的父愛，把你當作替她打掩護的遮雨棚！'),
+        L(KEEPER,   '不……不！！小秋……小秋啊！！', '看著報告，發出絕望的哀嚎'),
+      ]},
+      14: { host:'villa', title:'BLACKTHORN VILLA // 殘酷的對峙',
+        scene:'鬼在大廳飄盪，試圖走近老爺。老爺手中拿著獵鬼的木樁與符咒，眼神無比絕望。', lines:[
+        L(DAUGHTER, '爸爸，外面的風雪好大，我們把門鎖上吧？就像以前一樣……', '試圖用最甜美的聲音'),
+        L(KEEPER,   '小雨（好朋友的名字）……', '直視著她，眼淚流乾，聲音沙啞卻無比清醒'),
+        L(DAUGHTER, '……', '渾身一震，後退了一步'),
+        L(KEEPER,   '孩子……妳不是她。'),
+        L(DAUGHTER, '我只是想活下去！為什麼大家都想讓我消失！難道我想活著也有錯嗎？！', '面部逐漸扭曲，露出淒厲的惡鬼面貌，哭喊'),
+      ]},
+      15: { host:'villa', title:'BLACKTHORN VILLA // 最後的黎明',
+        scene:'別墅外，軍隊的火把照亮了雪夜。老爺站在調查官身旁。', lines:[
+        L(KEEPER,   '今晚，一切都該結束了。我不能再讓其他女孩子受害，也不能……讓我女兒的靈魂白白消亡。', '深吸一口氣'),
+        L(DAUGHTER, '林老頭！我恨你！你明明答應過要把旅館交給我的！！', '在旅館深處發出淒厲的尖叫'),
+      ]},
+    };
+    return scripts[lv] || null;
+  }
+
+  _ensureIntroStyles() {
+    if (document.getElementById('intro-style')) return;
+    const st = document.createElement('style');
+    st.id = 'intro-style';
+    st.textContent = `
+      @keyframes introFlicker{0%,19%,21%,55%,57%,100%{opacity:1}20%{opacity:.78}56%{opacity:.86}}
+      @keyframes introScan{0%{background-position:0 0}100%{background-position:0 100%}}
+      @keyframes introBlink{0%,49%{opacity:1}50%,100%{opacity:0}}
+      @keyframes introFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+      @keyframes introGhostJit{0%,100%{transform:translateX(0)}25%{transform:translateX(-.6px)}75%{transform:translateX(.6px)}}
+      @keyframes bootFlash{0%{opacity:0}8%{opacity:.9}100%{opacity:0}}
+      @keyframes cdPop{0%{transform:scale(2.4);opacity:0;filter:blur(6px)}30%{opacity:1;filter:blur(0)}100%{transform:scale(.4);opacity:0}}
+      .intro-overlay{position:fixed;inset:0;z-index:9000;background:radial-gradient(ellipse at center,#06140d 0%,#020806 70%,#000 100%);
+        font-family:'Courier New',ui-monospace,monospace;color:#7dffb0;display:flex;flex-direction:column;overflow:hidden;animation:introFlicker 6s linear infinite;}
+      .intro-overlay::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:5;
+        background:linear-gradient(rgba(0,0,0,0) 50%,rgba(0,0,0,.28) 50%);background-size:100% 4px;animation:introScan 8s linear infinite;mix-blend-mode:multiply;}
+      .intro-overlay::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:6;box-shadow:inset 0 0 160px 30px rgba(0,0,0,.85);}
+      .intro-bar{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;
+        border-bottom:1px solid rgba(125,255,176,.22);background:rgba(2,10,7,.7);z-index:7;}
+      .intro-who{display:flex;align-items:center;gap:9px;font-size:14px;letter-spacing:1.5px;}
+      .intro-dot{width:9px;height:9px;border-radius:50%;box-shadow:0 0 10px currentColor;}
+      .intro-right{font-size:12px;letter-spacing:2px;color:#4f9c72;}
+      .intro-body{flex:1;overflow-y:auto;padding:22px 26px 14px;z-index:7;display:flex;flex-direction:column;gap:14px;}
+      .intro-body::-webkit-scrollbar{width:8px}.intro-body::-webkit-scrollbar-thumb{background:rgba(125,255,176,.25)}
+      .intro-msg{animation:introFadeIn .18s ease-out;max-width:760px;}
+      .intro-prompt{font-size:12px;letter-spacing:1px;opacity:.8;margin-bottom:3px;}
+      .intro-scene{font-size:13px;line-height:1.6;letter-spacing:.5px;color:#5f8f74;margin-bottom:4px;
+        border-left:2px solid rgba(125,255,176,.25);padding-left:10px;animation:introFadeIn .18s ease-out;}
+      .intro-note{font-size:13px;line-height:1.5;font-style:italic;opacity:.85;margin-bottom:2px;}
+      .intro-text{font-size:18px;line-height:1.6;text-shadow:0 0 6px rgba(125,255,176,.35);white-space:pre-wrap;}
+      .intro-ghost .intro-text{animation:introGhostJit .12s steps(2) infinite;text-shadow:0 0 9px rgba(191,246,223,.6);}
+      .intro-cursor{display:inline-block;width:9px;height:1.05em;vertical-align:-2px;margin-left:2px;background:currentColor;animation:introBlink 1s step-end infinite;}
+      .intro-foot{flex:none;padding:10px 18px;border-top:1px solid rgba(125,255,176,.18);background:rgba(2,10,7,.7);
+        font-size:12px;letter-spacing:2px;color:#4f9c72;text-align:center;z-index:7;}
+      .boot-line-wrap{flex:none;height:3px;width:78%;max-width:900px;background:#eafff2;border-radius:2px;
+        box-shadow:0 0 30px 8px rgba(180,255,210,.8),0 0 80px 20px rgba(120,255,170,.4);transform-origin:center;}
+      .boot-log{font-size:15px;line-height:1.7;letter-spacing:1px;color:#7dffb0;text-shadow:0 0 6px rgba(125,255,176,.4);}
+      .boot-log .ok{color:#7dffb0}.boot-log .warn{color:#ffc24d}
+      .boot-flash{position:absolute;inset:0;background:#eafff2;z-index:8;pointer-events:none;opacity:0;}
+      .boot-prep{font-size:22px;letter-spacing:8px;color:#9dffb8;text-shadow:0 0 12px rgba(125,255,176,.6);margin-bottom:18px;}
+      .boot-count{font-family:'Courier New',monospace;font-size:140px;font-weight:bold;color:#bff6df;
+        text-shadow:0 0 30px rgba(125,255,176,.8);line-height:1;}
+    `;
+    document.head.appendChild(st);
+  }
+
+  _destroyIntroOverlay() {
+    if (this._introTimers) { this._introTimers.forEach(t => clearTimeout(t)); this._introTimers = []; }
+    if (this._introInterval) { clearInterval(this._introInterval); this._introInterval = null; }
+    if (this._introKeyHandler) {
+      window.removeEventListener('keydown', this._introKeyHandler);
+      window.removeEventListener('pointerdown', this._introKeyHandler);
+      this._introKeyHandler = null;
+    }
+    if (this._introEl && this._introEl.parentNode) this._introEl.parentNode.removeChild(this._introEl);
+    this._introEl = null;
+  }
+
+  runLevelIntro(lv) {
+    this._ensureIntroStyles();
+    this._destroyIntroOverlay();
+    this._introTimers = [];
+    const script = this.getIntroScript(lv);
+    if (!script || !script.lines.length) { this.runBootSequence(lv, script); return; }
+
+    const overlay = document.createElement('div');
+    overlay.className = 'intro-overlay';
+    overlay.innerHTML =
+      '<div class="intro-bar"><div class="intro-who"><span class="intro-dot"></span><span class="intro-whoname">SECURE TERMINAL</span></div>'
+      + '<div class="intro-right">LV ' + String(lv).padStart(2,'0') + ' // ' + script.host.toUpperCase() + '</div></div>'
+      + '<div class="intro-body"></div>'
+      + '<div class="intro-foot">[ 按任意鍵繼續 · 連按可跳過全部對話 ]</div>';
+    document.body.appendChild(overlay);
+    this._introEl = overlay;
+
+    const body = overlay.querySelector('.intro-body');
+    const dot = overlay.querySelector('.intro-dot');
+    const whoName = overlay.querySelector('.intro-whoname');
+
+    let idx = 0, typing = false, curEl = null, curText = '', shown = 0, typer = null;
+    const esc = (s) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+    // Opening scene-setting line, shown as dim system narration.
+    if (script.scene) {
+      const sc = document.createElement('div');
+      sc.className = 'intro-scene';
+      sc.innerHTML = 'system@' + script.host + ':~$ 場景 // ' + esc(script.scene);
+      body.appendChild(sc);
+    }
+
+    const setBadge = (spk) => {
+      dot.style.color = spk.color;
+      dot.style.background = spk.color;
+      whoName.textContent = spk.who + ' @ ' + spk.handle;
+      whoName.style.color = spk.color;
+    };
+
+    const startLine = () => {
+      if (idx >= script.lines.length) { finish(); return; }
+      const spk = script.lines[idx];
+      setBadge(spk);
+      const msg = document.createElement('div');
+      msg.className = 'intro-msg' + (spk.ghost ? ' intro-ghost' : '');
+      msg.innerHTML = '<div class="intro-prompt" style="color:' + spk.dim + ';">' + spk.handle + '@' + script.host + ':~$ </div>'
+        + (spk.note ? '<div class="intro-note" style="color:' + spk.dim + ';">（' + esc(spk.note) + '）</div>' : '')
+        + '<div class="intro-text" style="color:' + spk.color + ';"></div>';
+      body.appendChild(msg);
+      curEl = msg.querySelector('.intro-text');
+      curText = spk.text; shown = 0; typing = true;
+      this.playSFX('keyboard');
+      body.scrollTop = body.scrollHeight;
+      typer = setInterval(() => {
+        shown++;
+        curEl.innerHTML = esc(curText.slice(0, shown))
+          + (shown < curText.length ? '<span class="intro-cursor"></span>' : '');
+        body.scrollTop = body.scrollHeight;
+        if (shown >= curText.length) { clearInterval(typer); typer = null; typing = false; }
+      }, 26);
+      this._introInterval = typer;
+    };
+
+    const advance = () => {
+      if (typing) {
+        if (typer) { clearInterval(typer); typer = null; this._introInterval = null; }
+        curEl.textContent = curText; typing = false;
+        return;
+      }
+      idx++;
+      startLine();
+    };
+
+    const finish = () => {
+      this._destroyIntroOverlay();
+      this.runBootSequence(lv, script);
+    };
+
+    this._introKeyHandler = (e) => { if (e && e.type === 'keydown') e.preventDefault(); advance(); };
+    window.addEventListener('keydown', this._introKeyHandler);
+    window.addEventListener('pointerdown', this._introKeyHandler);
+
+    startLine();
+  }
+
+  // ===================== CRT BOOT + 3s PREP COUNTDOWN =====================
+  runBootSequence(lv, script) {
+    this._ensureIntroStyles();
+    this._destroyIntroOverlay();
+    this._introTimers = [];
+    const host = (script && script.host) ? script.host.toUpperCase() : 'LASTDOOR';
+
+    const overlay = document.createElement('div');
+    overlay.className = 'intro-overlay';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.textAlign = 'center';
+    overlay.innerHTML = '<div class="boot-flash"></div>'
+      + '<div class="boot-line-wrap"></div>'
+      + '<div class="boot-log" style="display:none;position:absolute;left:11%;top:24%;text-align:left;"></div>'
+      + '<div class="boot-prep" style="display:none;"></div>'
+      + '<div class="boot-count" style="display:none;"></div>';
+    document.body.appendChild(overlay);
+    this._introEl = overlay;
+
+    const flash = overlay.querySelector('.boot-flash');
+    const line = overlay.querySelector('.boot-line-wrap');
+    const log = overlay.querySelector('.boot-log');
+    const prep = overlay.querySelector('.boot-prep');
+    const count = overlay.querySelector('.boot-count');
+    const T = (fn, ms) => { const id = setTimeout(fn, ms); this._introTimers.push(id); };
+
+    // ---- Phase 1: old-monitor power-on (a bright line that springs open) ----
+    line.style.transform = 'scaleY(.02)';
+    line.style.transition = 'transform .42s cubic-bezier(.2,1.4,.4,1), height .3s ease';
+    this.playSFX('boot');
+    flash.style.animation = 'bootFlash .5s ease-out';
+    T(() => { line.style.height = '60vh'; line.style.transform = 'scaleY(1)'; }, 60);
+    T(() => { line.style.transition = 'opacity .25s'; line.style.opacity = '0'; }, 560);
+
+    // ---- Phase 2: BIOS-style boot log ----
+    const logLines = [
+      'LASTDOOR BIOS v3.1 — ' + host + ' NIGHT SHIFT',
+      'MEM CHECK ................ OK',
+      'DOOR CONTROL BUS ......... OK',
+      'MIRROR SUBSYSTEM ......... OK',
+      'GHOST CONTAINMENT ........ <span class="warn">WARN</span>',
+      'NIGHT-SHIFT LINK ......... OK',
+      'BOOT COMPLETE.',
+    ];
+    T(() => { log.style.display = 'block'; }, 620);
+    logLines.forEach((txt, i) => {
+      T(() => {
+        const row = document.createElement('div');
+        row.innerHTML = (txt.indexOf('OK') > -1 ? txt.replace('OK','<span class="ok">OK</span>') : txt);
+        log.appendChild(row);
+        this.playSFX('keyboard');
+      }, 660 + i * 150);
+    });
+
+    // ---- Phase 3: "PREPARE" + 3..2..1 countdown ----
+    const cdStart = 660 + logLines.length * 150 + 350;
+    T(() => {
+      log.style.transition = 'opacity .3s'; log.style.opacity = '0';
+      prep.style.display = 'block'; prep.textContent = '準備就緒 // PREPARE';
+    }, cdStart);
+
+    [3, 2, 1].forEach((n, i) => {
+      T(() => {
+        count.style.display = 'block';
+        count.style.animation = 'none';
+        void count.offsetWidth; // force reflow so the animation restarts each tick
+        count.textContent = n;
+        count.style.animation = 'cdPop .8s ease-out forwards';
+        this.playSFX('boot');
+      }, cdStart + 400 + i * 800);
+    });
+
+    T(() => {
+      count.style.animation = 'none';
+      count.textContent = 'GO';
+      count.style.color = '#9dffb8';
+      this.playSFX('unlock');
+    }, cdStart + 400 + 3 * 800);
+
+    T(() => { this._beginPlaying(); }, cdStart + 400 + 3 * 800 + 520);
   }
 
   // ---------- helpers ----------
@@ -2350,11 +2764,186 @@ class Component extends DCLogic {
     return null;
   }
   randomFloor() { const f = this.world.floorTiles; return f[(Math.random() * f.length) | 0]; }
+  roomAtTile(c, r) {
+    const w = this.world;
+    if (!w || !w.rooms) return null;
+    for (const room of w.rooms) {
+      if (c >= room.x && c < room.x + room.w && r >= room.y && r < room.y + room.h) return room;
+    }
+    return null;
+  }
+  roomAtEntity(e) {
+    const t = this.tileOf(e);
+    return this.roomAtTile(t.c, t.r);
+  }
+  randomRoomTile(room) {
+    if (!room) return this.randomFloor();
+    const padX = Math.max(0, Math.min(1, Math.floor((room.w - 1) / 2)));
+    const padY = Math.max(0, Math.min(1, Math.floor((room.h - 1) / 2)));
+    const minC = room.x + padX, maxC = room.x + room.w - 1 - padX;
+    const minR = room.y + padY, maxR = room.y + room.h - 1 - padY;
+    return {
+      c: minC + ((Math.random() * Math.max(1, maxC - minC + 1)) | 0),
+      r: minR + ((Math.random() * Math.max(1, maxR - minR + 1)) | 0)
+    };
+  }
+  nearestRoom(tile) {
+    const w = this.world;
+    if (!w || !w.rooms || !w.rooms.length) return null;
+    let best = null, bestDist = 1e9;
+    for (const room of w.rooms) {
+      const cc = room.x + room.w * 0.5, rr = room.y + room.h * 0.5;
+      const dist = Math.hypot(tile.c - cc, tile.r - rr);
+      if (dist < bestDist) { bestDist = dist; best = room; }
+    }
+    return best;
+  }
   retarget(e, goal, hostilePath) {
     const t = this.tileOf(e);
     const g = goal || this.randomFloor();
     e.path = this.bfs(t.c, t.r, g.c, g.r, hostilePath);
     e.pi = 0; e.goal = g;
+  }
+  chooseGhostRoom(actor, currentRoom) {
+    const w = this.world;
+    if (!w || !w.rooms || !w.rooms.length) return null;
+    const fromTile = this.tileOf(actor);
+    const candidates = w.rooms.filter(room => room !== currentRoom);
+    if (!candidates.length) return currentRoom || this.nearestRoom(fromTile);
+    const preferred = candidates.filter(room => Math.hypot((room.x + room.w * 0.5) - fromTile.c, (room.y + room.h * 0.5) - fromTile.r) >= 6);
+    const pool = preferred.length ? preferred : candidates;
+    return pool[(Math.random() * pool.length) | 0];
+  }
+  updateGhostRoam(actor, dt, speed) {
+    const here = this.tileOf(actor);
+    const room = this.roomAtTile(here.c, here.r);
+    if (room) {
+      if (actor.roomId !== room.label) {
+        actor.roomId = room.label;
+        actor.roomHold = 3.5 + Math.random() * 3;
+        actor.lingerGoal = this.randomRoomTile(room);
+        actor.path = null;
+      } else {
+        actor.roomHold = Math.max(0, (actor.roomHold || 0) - dt);
+      }
+      const reachedGoal = actor.goal && Math.hypot(actor.x - this.world.cx(actor.goal.c), actor.y - this.world.cy(actor.goal.r)) < this.world.TILE * 0.55;
+      if (!actor.path || actor.pi >= actor.path.length || reachedGoal) {
+        if ((actor.roomHold || 0) > 0.15) {
+          actor.lingerGoal = this.randomRoomTile(room);
+          this.retarget(actor, actor.lingerGoal, true);
+        } else {
+          const nextRoom = this.chooseGhostRoom(actor, room);
+          actor.roomId = null;
+          actor.roomHold = 0;
+          actor.lingerGoal = this.randomRoomTile(nextRoom);
+          this.retarget(actor, actor.lingerGoal, true);
+        }
+      }
+    } else if (!actor.path || actor.pi >= actor.path.length) {
+      const nextRoom = this.nearestRoom(here);
+      actor.lingerGoal = this.randomRoomTile(nextRoom);
+      this.retarget(actor, actor.lingerGoal, true);
+    }
+    this.follow(actor, dt, speed, true);
+  }
+  startGhostChannel(actor, route) {
+    actor.channel = route.charge;
+    actor.channelMode = route.mode;
+    actor.channelSource = route.source || null;
+    actor.channelTarget = route.target || null;
+    actor.path = null;
+    actor.pi = 0;
+    actor.forceProgress = 0;
+    actor.forceDoorKey = null;
+  }
+  resolveGhostChannel(actor, dt) {
+    if (!(actor.channel > 0) || !actor.channelMode) return false;
+    actor.channel -= dt;
+    this.world.screenGlitch = Math.max(this.world.screenGlitch, actor.channelMode === 'remote' ? 0.3 : 0.18);
+    if (actor.channel > 0) return true;
+    if (actor.channelTarget) {
+      actor.x = this.world.cx(actor.channelTarget.c);
+      actor.y = this.world.cy(actor.channelTarget.r);
+    }
+    const usedRemote = actor.channelMode === 'remote';
+    actor.channel = 0;
+    actor.channelMode = null;
+    actor.channelSource = null;
+    actor.channelTarget = null;
+    actor.path = null;
+    actor.pi = 0;
+    actor.goal = null;
+    actor.mirrorCd = usedRemote ? 12 : 5;
+    if (usedRemote && actor === this.world.daughter) this.log('SIGNAL DISTORTION // SHE MOVED.', '#7fdfff');
+    if (usedRemote) this.playSFX('teleport');
+    return true;
+  }
+  ghostWallMirrorRoute(actor) {
+    const room = this.roomAtEntity(actor);
+    if (!room) return null;
+    const tile = this.tileOf(actor);
+    let best = null, bestDist = 1e9;
+    for (const glass of this.world.wallGlass) {
+      if (glass.covered) continue;
+      const sideA = glass.dir === 'v' ? { c: glass.c - 1, r: glass.r } : { c: glass.c, r: glass.r - 1 };
+      const sideB = glass.dir === 'v' ? { c: glass.c + 1, r: glass.r } : { c: glass.c, r: glass.r + 1 };
+      const roomA = this.roomAtTile(sideA.c, sideA.r);
+      const roomB = this.roomAtTile(sideB.c, sideB.r);
+      if (roomA !== room && roomB !== room) continue;
+      const dist = Math.hypot(tile.c - glass.c, tile.r - glass.r);
+      if (dist < bestDist) { bestDist = dist; best = glass; }
+    }
+    if (!best) return null;
+    const sideA = best.dir === 'v' ? { c: best.c - 1, r: best.r } : { c: best.c, r: best.r - 1 };
+    const sideB = best.dir === 'v' ? { c: best.c + 1, r: best.r } : { c: best.c, r: best.r + 1 };
+    const distA = Math.hypot(tile.c - sideA.c, tile.r - sideA.r);
+    const distB = Math.hypot(tile.c - sideB.c, tile.r - sideB.r);
+    const target = distA <= distB ? sideB : sideA;
+    if (!this.passable(target.c, target.r, true)) return null;
+    return { mode:'wall', source:best, target, charge:0.9 };
+  }
+  ghostRemoteMirrorRoute(actor) {
+    if ((actor.mirrorCd || 0) > 0) return null;
+    const w = this.world;
+    const room = this.roomAtEntity(actor);
+    const tile = this.tileOf(actor);
+    let source = null, bestDist = 1e9;
+    for (const mirror of w.mirrors) {
+      if (mirror.covered) continue;
+      const mirrorRoom = this.roomAtTile(mirror.c, mirror.r);
+      const dist = Math.hypot(tile.c - mirror.c, tile.r - mirror.r);
+      if (room && mirrorRoom === room && dist < bestDist) { bestDist = dist; source = mirror; }
+    }
+    if (!source) {
+      for (const mirror of w.mirrors) {
+        if (mirror.covered) continue;
+        const dist = Math.hypot(tile.c - mirror.c, tile.r - mirror.r);
+        if (dist < bestDist) { bestDist = dist; source = mirror; }
+      }
+    }
+    if (!source) return null;
+    let target = null, far = -1;
+    for (const mirror of w.mirrors) {
+      if (mirror === source || mirror.covered) continue;
+      const dist = Math.hypot(source.c - mirror.c, source.r - mirror.r);
+      if (dist > far) { far = dist; target = mirror; }
+    }
+    if (!target) {
+      const nextRoom = this.chooseGhostRoom(actor, room);
+      target = this.randomRoomTile(nextRoom);
+    }
+    return { mode:'remote', source, target, charge:1.7 };
+  }
+  tryGhostMirrorEscape(actor, barrier, dt) {
+    if (actor.channel > 0 && actor.channelMode) return this.resolveGhostChannel(actor, dt);
+    const room = this.roomAtEntity(actor);
+    const blockedRoom = this.roomAtTile(barrier.c, barrier.r);
+    let route = this.ghostWallMirrorRoute(actor);
+    if (!route && room && blockedRoom !== room) route = this.ghostRemoteMirrorRoute(actor);
+    if (!route && room) route = this.ghostRemoteMirrorRoute(actor);
+    if (!route) return false;
+    this.startGhostChannel(actor, route);
+    return this.resolveGhostChannel(actor, dt);
   }
   follow(e, dt, speed, hostilePath) {
     if (!e.path || e.pi >= e.path.length) { this.retarget(e, null, hostilePath); return; }
@@ -2362,7 +2951,11 @@ class Component extends DCLogic {
     const tx = (wp.c + 0.5) * T, ty = (wp.r + 0.5) * T;
     const dx = tx - e.x, dy = ty - e.y, dist = Math.hypot(dx, dy);
     const barrier=this.world.doorMap[wp.c+','+wp.r];
-    if(hostilePath&&barrier&&!barrier.open&&dist<T*1.25){this.forceDoor(e,barrier,dt);return;}
+    if(hostilePath&&barrier&&!barrier.open&&dist<T*1.25){
+      if (this.tryGhostMirrorEscape(e, barrier, dt)) return;
+      this.forceDoor(e,barrier,dt);
+      return;
+    }
     if (dist < 5) { e.pi++; return; }
     const sp = speed * (e.speedMul || 1) * dt;
     const ox = e.x, oy = e.y;
@@ -2452,13 +3045,118 @@ class Component extends DCLogic {
   forceDoor(actor,d,dt){
     const key=d.id+':'+d.locked;if(actor.forceDoorKey!==key){actor.forceDoorKey=key;actor.forceProgress=0;}
     actor.forceProgress=(actor.forceProgress||0)+dt;d.forcePulse=Math.min(1,(d.forcePulse||0)+dt*2);
-    const group=this.doorGroup(d),threshold=group.some(x=>x.locked)?3:1.25;
+    const group=this.doorGroup(d),threshold=(group.some(x=>x.locked)?3:1.25)*4;
     if(actor.forceProgress<threshold)return;
     for(const x of group)x.locked=false;
     if(d.type==='rotating'){for(const x of group)x.open=x.id===d.id;}
     else{for(const x of group)x.open=true;}
     actor.forceProgress=0;actor.forceDoorKey=null;
     this.log('FORCED ENTRY // '+d.name,'#ff3333');this.playSFX('breakIn');
+  }
+
+  guestRoomCatalog() {
+    const w = this.world;
+    return (w && w.roomTargets) || [];
+  }
+
+  nextGuestRoomIndex() {
+    const w = this.world, rooms = this.guestRoomCatalog();
+    if (!w || !rooms.length) return 0;
+    const idx = w.roomAssignCursor % rooms.length;
+    w.roomAssignCursor = (w.roomAssignCursor + 1) % rooms.length;
+    return idx;
+  }
+
+  setGuestGoal(g, goal, key, hostilePath) {
+    if (!g || !goal) return;
+    const nextKey = key || (goal.c + ',' + goal.r);
+    if (g.goalKey === nextKey && g.path && g.pi < g.path.length) return;
+    g.goalKey = nextKey;
+    this.retarget(g, goal, hostilePath);
+  }
+
+  deskDistance() {
+    const w = this.world;
+    if (!w || !w.servicePoint) return 1e9;
+    return Math.hypot(w.player.x - w.cx(w.servicePoint.c), w.player.y - w.cy(w.servicePoint.r));
+  }
+
+  canUseDeskControls() {
+    const w = this.world;
+    if (!w || !w.servicePoint) return false;
+    const active = this.getFrontDeskGuest();
+    return !!(active && active.state === 'checkinReady' && this.deskDistance() < w.TILE * 1.35);
+  }
+
+  getQueueGuests() {
+    const w = this.world;
+    if (!w) return [];
+    const queued = w.guests.filter(g => ['queueing','checkinReady','returnQueue','payReady','paying'].includes(g.state) && !g.fleeing);
+    const priority = (g) => (g.state === 'returnQueue' || g.state === 'payReady' || g.state === 'paying') ? 0 : 1;
+    return queued.sort((a, b) => priority(a) - priority(b) || (a.queueOrder || 0) - (b.queueOrder || 0));
+  }
+
+  getFrontDeskGuest() {
+    const queued = this.getQueueGuests();
+    return queued.length ? queued[0] : null;
+  }
+
+  cycleDeskRoom(dir) {
+    if (!this.canUseDeskControls()) return false;
+    const rooms = this.guestRoomCatalog();
+    const g = this.getFrontDeskGuest();
+    if (!g || !rooms.length) return false;
+    g.assignedRoomIndex = (g.assignedRoomIndex + dir + rooms.length) % rooms.length;
+    this.playSFX('keyboard');
+    return true;
+  }
+
+  tryDeskConfirm() {
+    const w = this.world, g = this.getFrontDeskGuest(), rooms = this.guestRoomCatalog();
+    if (!w || !g || g.state !== 'checkinReady' || !rooms.length || this.deskDistance() >= w.TILE * 1.35) return false;
+    const room = rooms[g.assignedRoomIndex % rooms.length];
+    g.assignedRoomIndex = g.assignedRoomIndex % rooms.length;
+    g.assignedRoomLabel = room.label;
+    g.assignedRoomTarget = { c: room.c, r: room.r };
+    g.state = 'toRoom';
+    g.stayDuration = 16 + Math.random() * 12;
+    g.stayElapsed = 0;
+    g.progress = 0;
+    this.setGuestGoal(g, g.assignedRoomTarget, 'room:' + room.label);
+    w.admitted++;
+    this.log('CHECK-IN COMPLETE // ' + g.profile.title + ' -> ' + room.label + '.', g.overtime ? '#ffb000' : '#7dffb0');
+    this.playSFX('unlock');
+    return true;
+  }
+
+  updateDeskQueue(dt) {
+    const w = this.world;
+    if (!w) return;
+    const queued = this.getQueueGuests();
+    for (let i = 0; i < queued.length; i++) {
+      const g = queued[i];
+      const target = i === 0 ? w.servicePoint : (w.queueSpots[Math.min(i - 1, w.queueSpots.length - 1)] || w.queueSpots[w.queueSpots.length - 1] || w.servicePoint);
+      this.setGuestGoal(g, target, 'queue:' + i);
+      if (g.state !== 'paying') this.follow(g, dt, (g.profile.moveSpeed || 34) * (i === 0 ? 1 : 0.94));
+      const dist = Math.hypot(g.x - w.cx(target.c), g.y - w.cy(target.r));
+      if (i === 0 && dist < w.TILE * 0.45) {
+        if (g.state === 'queueing') g.state = 'checkinReady';
+        if (g.state === 'returnQueue') { g.state = 'paying'; g.payTimer = 1.15; this.log('PAYMENT WINDOW // ' + g.profile.title + ' AT DESK.', '#7fd6ff'); }
+      } else if (i > 0 && g.state === 'checkinReady') g.state = 'queueing';
+      if (g.state === 'paying') {
+        g.payTimer = Math.max(0, (g.payTimer || 0) - dt);
+        if (g.payTimer <= 0) {
+          const inc = this.guestIncome(g);
+          w.earned += inc;
+          w.money = Math.max(0, w.money + inc);
+          w.checkedOut++;
+          this.log('PAYMENT RECEIVED // ' + (inc >= 0 ? '+$' : '-$') + Math.abs(inc) + '  (' + g.profile.title + ').', inc >= 0 ? '#33ff00' : '#ffb000');
+          this.playSFX('unlock');
+          const idx = w.guests.indexOf(g);
+          if (idx >= 0) w.guests.splice(idx, 1);
+        }
+      }
+    }
   }
 
   // ---------- guest arrivals (one-by-one through the main gate) ----------
@@ -2555,31 +3253,28 @@ class Component extends DCLogic {
       }
     }
 
-    // daughter ghost wander + mirror teleport
+    // daughter ghost now lingers inside rooms and treats mirrors as her first escape plan
     const dg = w.daughter; dg.bob += dt;
-    if (dg.channel > 0) {
-      dg.channel -= dt; w.screenGlitch = 0.3;
-      if (dg.channel <= 0) {
-        const m0 = w.mirrors[0], m1 = w.mirrors[1];
-        const here = this.tileOf(dg);
-        const tgt = (Math.hypot(here.c - m0.c, here.r - m0.r) < 2) ? m1 : m0;
-        dg.x = (tgt.c + 0.5) * w.TILE; dg.y = (tgt.r + 0.5) * w.TILE; dg.path = null;
-        this.log('SIGNAL DISTORTION // SHE MOVED.', '#7fdfff');
-        this.playSFX('teleport');
-      }
+    if (dg.channel > 0 && dg.channelMode) {
+      this.resolveGhostChannel(dg, dt);
     } else {
-      this.follow(dg, dt, 44, true);
+      this.updateGhostRoam(dg, dt, 28);
       if (Math.random() < 0.002) this.playSFX('sigh'); // random ghost wander sigh
       dg.mirrorCd -= dt;
       if (dg.mirrorCd <= 0) {
-        const here = this.tileOf(dg);
-        for (const m of w.mirrors) if (Math.hypot(here.c - m.c, here.r - m.r) < 1.5) { dg.channel = 2.6; dg.mirrorCd = 14; break; }
-        if (dg.mirrorCd <= 0) dg.mirrorCd = 2;
+        const route = this.ghostRemoteMirrorRoute(dg);
+        if (route) this.startGhostChannel(dg, route);
+        if (dg.mirrorCd <= 0) dg.mirrorCd = 2.5;
       }
     }
 
-    // extra ghosts wander
-    for (const gh of w.ghosts) this.follow(gh, dt, 40, true);
+    // extra ghosts also prefer haunting rooms over corridor pacing
+    for (const gh of w.ghosts) {
+      gh.bob += dt;
+      gh.mirrorCd = Math.max(0, (gh.mirrorCd || 0) - dt);
+      if (gh.channel > 0 && gh.channelMode) this.resolveGhostChannel(gh, dt);
+      else this.updateGhostRoam(gh, dt, 24);
+    }
 
     // guests queue up outside and enter one-by-one through the main gate
     this.updateArrivals(dt);
@@ -2625,7 +3320,7 @@ class Component extends DCLogic {
         } else g.scare = Math.max(0, g.scare - dt * profile.scareRecover);
         if (g.scare > 25) scaredActive++;
         if (g.scare >= profile.scareThreshold) {
-          w.ghosts.push({ x:g.x,y:g.y,r:9,path:null,pi:0,stuck:0,bob:0,hostile:true,forceProgress:0 });
+          w.ghosts.push(this.makeGhostActor({ x:g.x, y:g.y, r:9, mirrorCd:3 }));
           w.guests.splice(i, 1); w.lostGuests++;
           this.log('TIMID WOMAN LOST // NEW APPARITION SPAWNED.', '#ff3333');
           w.flash = 0.5;
@@ -2927,6 +3622,40 @@ class Component extends DCLogic {
       }
     }
 
+    // wall glass (see-through panels embedded in walls)
+    for (const g of w.wallGlass) {
+      const x = g.c * T, y = g.r * T, isV = g.dir === 'v';
+      ctx.save();
+      const grad = g.covered ? null : (isV
+        ? ctx.createLinearGradient(x, y, x + T, y)
+        : ctx.createLinearGradient(x, y, x, y + T));
+      if (grad) {
+        grad.addColorStop(0,   'rgba(120,220,255,0.06)');
+        grad.addColorStop(0.4, 'rgba(180,240,255,0.32)');
+        grad.addColorStop(0.6, 'rgba(180,240,255,0.32)');
+        grad.addColorStop(1,   'rgba(120,220,255,0.06)');
+      }
+      ctx.fillStyle = g.covered ? 'rgba(30,22,12,0.92)' : grad;
+      if (isV) {
+        ctx.fillRect(x + T * 0.35, y + 1, T * 0.3, T - 2);
+        ctx.strokeStyle = g.covered ? '#6b432a' : 'rgba(160,235,255,0.7)'; ctx.lineWidth = 1;
+        ctx.strokeRect(x + T * 0.35, y + 1, T * 0.3, T - 2);
+        if (!g.covered) {
+          ctx.fillStyle = 'rgba(255,255,255,0.22)';
+          ctx.fillRect(x + T * 0.42, y + 2, T * 0.08, T - 4);
+        }
+      } else {
+        ctx.fillRect(x + 1, y + T * 0.35, T - 2, T * 0.3);
+        ctx.strokeStyle = g.covered ? '#6b432a' : 'rgba(160,235,255,0.7)'; ctx.lineWidth = 1;
+        ctx.strokeRect(x + 1, y + T * 0.35, T - 2, T * 0.3);
+        if (!g.covered) {
+          ctx.fillStyle = 'rgba(255,255,255,0.22)';
+          ctx.fillRect(x + 2, y + T * 0.42, T - 4, T * 0.08);
+        }
+      }
+      ctx.restore();
+    }
+
     // ---- semi-dark veil + guest vision cones ----
     // The hotel sits in low light; each guest's sweeping gaze brightens what they see.
     const polys = w.guests.filter(g => !(g.blinded > 0)).map(g => ({ g, pts: this.conePoly(g) }));
@@ -2940,6 +3669,7 @@ class Component extends DCLogic {
     const carveRadial = (x, y, R, a0) => { const rg = lx.createRadialGradient(x, y, 0, x, y, R); rg.addColorStop(0, 'rgba(255,255,255,' + a0 + ')'); rg.addColorStop(0.7, 'rgba(255,255,255,' + (a0 * 0.5) + ')'); rg.addColorStop(1, 'rgba(255,255,255,0)'); lx.fillStyle = rg; lx.fillRect(x - R, y - R, 2 * R, 2 * R); };
     carveRadial(w.player.x, w.player.y, T * 2.6, 0.85); // the keeper carries a little light
     for (const m of w.mirrors) if (!m.covered) carveRadial((m.c + 0.5) * T, (m.r + 0.5) * T, T * 1.3, 0.4); // mirrors glimmer (see-through)
+    for (const g of w.wallGlass) if (!g.covered) carveRadial((g.c + 0.5) * T, (g.r + 0.5) * T, T * 0.9, 0.28); // wall glass panels let light bleed through
     for (const { g, pts } of polys) {
       const vp = this.visionParams(g.sightShape), R = vp.range * T;
       lx.save();
@@ -3204,6 +3934,11 @@ class Component extends DCLogic {
       this.world.daughter.path = null;
       this.world.daughter.stuck = 0;
       this.world.daughter.channel = 0;
+      this.world.daughter.channelMode = null;
+      this.world.daughter.channelSource = null;
+      this.world.daughter.channelTarget = null;
+      this.world.daughter.roomId = null;
+      this.world.daughter.roomHold = 4;
       this.log("DEV: DAUGHTER RESET TO ARCHIVE", "#7dffb0");
     }
   }
@@ -3383,7 +4118,7 @@ class Component extends DCLogic {
       onCloseEditor: () => this.setState({ showEditor: false }),
       onExit: () => { this.log('THERE IS NO WAY DOWN THE MOUNTAIN TONIGHT.', '#ff3333'); },
       onRestart: () => this.startGame(),
-      onToTitle: () => { this.buildWorld(); this.setState({ screen: 'title' }); },
+      onToTitle: () => { this._destroyIntroOverlay(); this.buildWorld(); this.setState({ screen: 'title' }); },
       onHoverOn: () => {}, onHoverOff: () => {},
       onHeaderClick: () => {
         this.devClickCount = (this.devClickCount || 0) + 1;
