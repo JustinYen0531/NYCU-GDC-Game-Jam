@@ -411,6 +411,7 @@
       .lvl-zone-text{position:absolute;padding:2px 4px;font-size:11px;line-height:1;color:#e6ffe9;text-shadow:0 0 4px rgba(0,0,0,.95);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
       .lvl-hall-text{position:absolute;padding:1px 5px;font-size:10px;letter-spacing:1px;color:#8ee2a7;background:rgba(2,8,6,.82);border:1px solid rgba(102,214,140,.16);white-space:nowrap;}
       .lvl-door-dot{position:absolute;border-radius:3px;box-shadow:0 0 10px currentColor;}
+      .lvl-mirror-mark{position:absolute;border:1px solid currentColor;box-shadow:0 0 10px currentColor, inset 0 0 8px rgba(255,255,255,.18);background:rgba(105,225,255,.12);}
       .lvl-mini-legend{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;color:#7ed69b;}
       .lvl-mini-tag{display:flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid rgba(102,214,140,.18);background:rgba(11,28,17,.46);}
       .lvl-mini-swatch{width:10px;height:10px;border-radius:2px;box-shadow:0 0 7px currentColor;}
@@ -470,12 +471,16 @@
                 <sc-for list="{{ worldIntelLabels }}" as="label" hint-placeholder-count="3">
                   <div class="lvl-hall-text" style="left:{{ label.left }}; top:{{ label.top }};">{{ label.text }}</div>
                 </sc-for>
+                <sc-for list="{{ worldIntelMirrors }}" as="mirror" hint-placeholder-count="6">
+                  <div class="lvl-mirror-mark" style="left:{{ mirror.left }}; top:{{ mirror.top }}; width:{{ mirror.width }}; height:{{ mirror.height }}; color:{{ mirror.color }};" title="{{ mirror.name }}"></div>
+                </sc-for>
               </div>
               <div class="lvl-mini-legend" style="margin-top:8px;">
                 <div class="lvl-mini-tag"><span class="lvl-mini-swatch" style="color:#84d0a4;background:rgba(61,118,86,.22);"></span><span>走廊</span></div>
                 <div class="lvl-mini-tag"><span class="lvl-mini-swatch" style="color:#c3ffd9;background:rgba(52,102,77,.18);"></span><span>客房</span></div>
                 <div class="lvl-mini-tag"><span class="lvl-mini-swatch" style="color:#ffd48d;background:rgba(120,90,42,.2);"></span><span>櫃檯</span></div>
                 <div class="lvl-mini-tag"><span class="lvl-mini-swatch" style="color:#7ef0ae;background:rgba(54,113,83,.23);"></span><span>大廳</span></div>
+                <div class="lvl-mini-tag"><span class="lvl-mini-swatch" style="color:#8defff;background:rgba(105,225,255,.18);"></span><span>鏡子 / 牆鏡</span></div>
               </div>
             </div>
 
@@ -612,6 +617,9 @@
                   </sc-for>
                   <sc-for list="{{ previewDoors }}" as="door" hint-placeholder-count="8">
                     <div class="lvl-door-dot" style="left:{{ door.left }}; top:{{ door.top }}; width:{{ door.width }}; height:{{ door.height }}; color:{{ door.color }}; background:{{ door.color }};" title="{{ door.name }}"></div>
+                  </sc-for>
+                  <sc-for list="{{ previewMirrors }}" as="mirror" hint-placeholder-count="6">
+                    <div class="lvl-mirror-mark" style="left:{{ mirror.left }}; top:{{ mirror.top }}; width:{{ mirror.width }}; height:{{ mirror.height }}; color:{{ mirror.color }};" title="{{ mirror.name }}"></div>
                   </sc-for>
                 </div>
               </div>
@@ -1564,7 +1572,27 @@ class Component extends DCLogic {
         color:meta.color
       };
     });
-    return { corridors, rooms, labels, doors };
+    const mirrors = [
+      ...(layout.mirrors || []).map((mirror, index) => ({
+        id:'M' + index,
+        name:(mirror.room || 'ROOM MIRROR') + ' // STANDING MIRROR',
+        left:this.pct(mirror.c + 0.15, W),
+        top:this.pct(mirror.r + 0.15, H),
+        width:this.pct(0.7, W),
+        height:this.pct(0.7, H),
+        color:'#8defff'
+      })),
+      ...(layout.wallGlass || []).map((glass, index) => ({
+        id:'WG' + index,
+        name:(glass.room || 'ROOM') + ' <-> ' + (glass.targetRoom || 'ROOM') + ' // WALL MIRROR',
+        left:this.pct(glass.c + (glass.dir === 'h' ? 0.1 : 0.34), W),
+        top:this.pct(glass.r + (glass.dir === 'h' ? 0.34 : 0.1), H),
+        width:this.pct(glass.dir === 'h' ? 0.8 : 0.32, W),
+        height:this.pct(glass.dir === 'h' ? 0.32 : 0.8, H),
+        color:'#8defff'
+      }))
+    ];
+    return { corridors, rooms, labels, doors, mirrors };
   }
 
   getWorldIntel(worldTier) {
@@ -1698,6 +1726,7 @@ class Component extends DCLogic {
       const meta = this.doorTypeCatalog(type);
       return { label:meta.label + ' x' + config.counts[type], color:meta.color };
     });
+    legend.push({ label:'MIRROR / GLASS', color:'#8defff' });
     const notes = [
       '門型視窗：' + pattern.label + ' 共用同一套門位分布，進場前先重新對色。',
       '走廊 / 大廳 / 櫃檯皆已淡色標出，右圖看到的就是實際跑線骨架。',
@@ -4336,6 +4365,7 @@ class Component extends DCLogic {
       worldIntelCorridors: worldIntel.map.corridors,
       worldIntelRooms: worldIntel.map.rooms,
       worldIntelLabels: worldIntel.map.labels,
+      worldIntelMirrors: worldIntel.map.mirrors,
       worldIntelHandleText: (s.worldIntelWidth || 58) > 120 ? 'WORLD INTEL // DRAG CLOSE' : 'WORLD INTEL // DRAG OPEN',
       previewLevelCode: preview.levelCode,
       previewDisplayName: preview.displayName,
@@ -4352,6 +4382,7 @@ class Component extends DCLogic {
       previewRooms: preview.map.rooms,
       previewLabels: preview.map.labels,
       previewDoors: preview.map.doors,
+      previewMirrors: preview.map.mirrors,
       previewScrollRef: this.previewScrollRef,
       previewStartHint: 'DEPLOYMENT SYSTEM READY // READY TO BEGIN',
       previewStartLabel: 'BEGIN DEPLOYMENT ->',
