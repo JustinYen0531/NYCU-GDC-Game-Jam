@@ -2807,7 +2807,7 @@ class Component extends DCLogic {
   hud() {
     const w = this.world;
     const dur = this.props.nightSeconds ?? 180;
-    if(!w)return{clock:'22:00',phase:'NIGHT',level:'01',mapTier:'I',doorTier:'I',alert:'STANDBY',alertColor:'#1f8f1f',panicPct:0,panicBar:'',panicColor:'#33ff00',basicCount:'0',rashCount:'0',sensorCount:'0',rotateCount:'0',chainCount:'0',statusText:'OK',showPrompt:false,doorPrompt:'',endStats:'',loseTitle:'',loseMsg:'',ghosts:0,guests:0,money:0,quota:0,pw0:1,pw1:1,pw2:1,pw3:1,pw4:1,pw5:.15,pw6:.15};
+    if(!w)return{clock:'22:00',phase:'NIGHT',level:'01',mapTier:'I',doorTier:'I',alert:'STANDBY',alertColor:'#1f8f1f',panicPct:0,panicBar:'',panicColor:'#33ff00',basicCount:'0',rashCount:'0',sensorCount:'0',rotateCount:'0',chainCount:'0',statusText:'OK',showPrompt:false,doorPrompt:'',endStats:'',loseTitle:'',loseMsg:'',ghosts:0,guests:0,money:0,quota:0,repColor:'#33ff00',repText:'CLEAR',rep0:1,rep1:1,rep2:1,rep3:1,rep4:1,rep5:1,pw0:1,pw1:1,pw2:1,pw3:1,pw4:1,pw5:.15,pw6:.15};
     const frac = Math.min(1, w.t / dur);
     const hour = 22 + frac * 8; const h = Math.floor(hour) % 24; const m = Math.floor((hour % 1) * 60);
     const pad = (n) => (n < 10 ? '0' : '') + n;
