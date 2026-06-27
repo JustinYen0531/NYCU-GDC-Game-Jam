@@ -513,6 +513,14 @@ class Component extends DCLogic {
         glow: 'rgba(157,255,184,.7)',
         border: '#2d6c45',
         mapColor: '#9dffb8',
+        moveSpeed: 34,
+        scareGain: 1.15,
+        scareRecover: 9,
+        scareThreshold: 100,
+        idleMode: 'room',
+        sightShape: 'narrow-long',
+        timeoutRule: '50% leave / 50% force stay half pay',
+        ghostRule: 'transform-and-run',
         vision: '視野細長，平時無光，只有視線掃到的位置會被照亮。',
         checkIn: '報房號後必須即時接待；逾時後 50% 直接離開，50% 硬住且只付半價。',
         behavior: '大多躲在自己房間，偶爾才會到走廊和大廳晃動。',
@@ -527,6 +535,15 @@ class Component extends DCLogic {
         glow: 'rgba(255,208,96,.7)',
         border: '#7a5a20',
         mapColor: '#ffd060',
+        moveSpeed: 38,
+        panicRunSpeed: 52,
+        scareGain: 0.85,
+        scareRecover: 11,
+        scareThreshold: 100,
+        idleMode: 'hall',
+        sightShape: 'wide-short',
+        timeoutRule: '50% force stay half pay / 50% report',
+        ghostRule: 'report-and-leave',
         vision: '視野廣而短，平時無光，扇形前方區域被照亮得更快。',
         checkIn: '報房號後若沒即時處理，50% 半價強行入住，50% 直接通報。',
         behavior: '常出現在走廊與大廳，偶爾回房，也會進別人房間串門子。',
@@ -541,10 +558,78 @@ class Component extends DCLogic {
         glow: 'rgba(127,214,255,.7)',
         border: '#255c74',
         mapColor: '#7fd6ff',
+        moveSpeed: 44,
+        scareGain: 0.5,
+        scareRecover: 6,
+        scareThreshold: 100,
+        idleMode: 'wander',
+        sightShape: 'balanced',
+        timeoutRule: 'steals coins instead of paying',
+        ghostRule: 'scream-chain',
+        screamRadius: 84,
+        screamScare: 26,
         vision: '視野居中平均，平時無光，照亮範圍落在女人與男人之間。',
         checkIn: '不付任何錢；若接待逾時，會直接搶走你家的金幣。',
         behavior: '不會乖乖待在同一處，會到處串門子，但入住時間最短。',
         ghost: '看見鬼不會直接受害，但會大聲尖叫，把其他顧客吸過來形成連鎖。'
+      }
+    };
+    this.itemDefs = {
+      mirrorCloth: {
+        key: 'mirrorCloth',
+        title: '遮布',
+        short: '封鏡',
+        icon: 'MC',
+        accent: '#bfa98a',
+        stock: 2,
+        target: 'mirror',
+        duration: 'permanent-until-moved',
+        effect: '讓鏡子永久無法穿透；若要換位置，必須拿起並遷移到另一面鏡子。'
+      },
+      blindfold: {
+        key: 'blindfold',
+        title: '眼罩',
+        short: '盲封',
+        icon: 'BF',
+        accent: '#7fd6ff',
+        stock: 3,
+        target: 'guest',
+        duration: 8,
+        effect: '讓顧客暫時失去視野與行動，入住計時暫停，期間視為無敵。'
+      },
+      wallPass: {
+        key: 'wallPass',
+        title: '勞術',
+        short: '穿牆',
+        icon: 'WP',
+        accent: '#c18cff',
+        stock: 3,
+        target: 'self',
+        duration: 0.45,
+        effect: '讓玩家短距離穿透一面牆，本質上是一次短衝刺位移。'
+      },
+      lockSeal: {
+        key: 'lockSeal',
+        title: '門鎖',
+        short: '封門',
+        icon: 'LK',
+        accent: '#ffb000',
+        stock: 4,
+        target: 'door',
+        duration: 10,
+        effect: '讓一扇門在短時間內維持關閉狀態，不會被立刻重新打開。'
+      },
+      whistle: {
+        key: 'whistle',
+        title: '口哨',
+        short: '引鬼',
+        icon: 'WH',
+        accent: '#ff7a7a',
+        stock: 3,
+        target: 'ghost',
+        duration: 5,
+        radius: 160,
+        effect: '吸引一定範圍內的鬼靠近，可穿牆尋路，暫時沿最近路線接近主人。'
       }
     };
   }
@@ -566,6 +651,14 @@ class Component extends DCLogic {
       behavior: '行為｜' + profile.behavior,
       ghost: '撞鬼｜' + profile.ghost
     }));
+  }
+
+  makeInventory() {
+    const inventory = {};
+    for (const item of Object.values(this.itemDefs)) {
+      inventory[item.key] = { uses: item.stock, active: [] };
+    }
+    return inventory;
   }
 
   // ---------- colors ----------
@@ -876,12 +969,21 @@ class Component extends DCLogic {
       { c: 29, r: 14, type: 'timidWoman' }, { c: 24, r: 4, type: 'boldMan' }, { c: 40, r: 14, type: 'brat' }
     ];
     const n = Math.max(1, Math.min(6, Math.round(this.props.guestCount ?? 4)));
-    const guests = gspec.slice(0, n).map((g, i) => ({ x: cx(g.c), y: cy(g.r), r: 7, type: g.type, scare: 0, fleeing: false, path: null, pi: 0, stuck: 0, id: i }));
+    const guests = gspec.slice(0, n).map((g, i) => {
+      const profile = this.getGuestProfile(g.type);
+      return {
+        x: cx(g.c), y: cy(g.r), r: 7, type: g.type, profile,
+        scare: 0, fleeing: false, path: null, pi: 0, stuck: 0, id: i,
+        sightShape: profile.sightShape, timeoutRule: profile.timeoutRule, ghostRule: profile.ghostRule,
+        blinded: 0, invulnerable: 0, visitTimer: 0
+      };
+    });
 
     this.world = {
       TILE, COLS, ROWS, grid, doors, doorMap, floorTiles, mapCanvas: mc, mirrors, roomCenters,
       entranceDoor, exitApproach, inspectorSpawn, daughterHome, playerStart, mapOffsetX: 3, mapOffsetY: 3,
       player, daughter, guests, ghosts: [], inspector: null, inspectorDone: false,
+      itemDefs: this.itemDefs, inventory: this.makeInventory(),
       t: 0, panic: 0, power: 100, reported: false, lostGuests: 0, flash: 0, screenGlitch: 0,
       cx, cy
     };
@@ -1060,44 +1162,66 @@ class Component extends DCLogic {
     let scaredActive = 0;
     for (let i = w.guests.length - 1; i >= 0; i--) {
       const g = w.guests[i];
+      const profile = g.profile || this.getGuestProfile(g.type);
       const seen = this.visibleGhost(g);
-      if (g.type === 'timidWoman' || g.type === 'brat') {
+      if (g.blinded > 0) {
+        g.blinded = Math.max(0, g.blinded - dt);
+        g.invulnerable = Math.max(0, g.invulnerable - dt);
+        continue;
+      }
+      if (g.type === 'timidWoman') {
         if (seen) {
           if (g.scare < 1) { 
-            this.log('GUEST SEES SOMETHING...', '#ffb000'); 
+            this.log('TIMID WOMAN PANICS // GHOST SIGHTED.', '#ffb000'); 
             w.flash = 0.2; 
             this.playSFX('screaming');
           }
-          g.scare += dt * (this.props.scareRate ?? 20);
-        } else g.scare = Math.max(0, g.scare - dt * 9);
+          g.scare += dt * (this.props.scareRate ?? 20) * profile.scareGain;
+        } else g.scare = Math.max(0, g.scare - dt * profile.scareRecover);
         if (g.scare > 25) scaredActive++;
-        if (g.scare >= 100) {
+        if (g.scare >= profile.scareThreshold) {
           w.ghosts.push({ x: g.x, y: g.y, r: 9, path: null, pi: 0, stuck: 0, bob: 0 });
           w.guests.splice(i, 1); w.lostGuests++;
-          this.log('GUEST LOST // NEW APPARITION SPAWNED.', '#ff3333');
+          this.log('TIMID WOMAN LOST // NEW APPARITION SPAWNED.', '#ff3333');
           w.flash = 0.5; 
           this.playSFX('transform');
           continue;
         }
-        this.follow(g, dt, 38);
+        this.follow(g, dt, profile.moveSpeed);
+      } else if (g.type === 'brat') {
+        if (seen) {
+          if (g.scare < 1) {
+            this.log('BRAT SCREAMS // OTHER GUESTS ARE DRAWN IN.', '#3bd6ff');
+            this.playSFX('gasping');
+          }
+          g.scare += dt * (this.props.scareRate ?? 20) * profile.scareGain;
+          for (const other of w.guests) {
+            if (other.id === g.id) continue;
+            if (Math.hypot(other.x - g.x, other.y - g.y) <= profile.screamRadius) {
+              other.scare = Math.min((other.profile || this.getGuestProfile(other.type)).scareThreshold, other.scare + profile.screamScare * dt);
+            }
+          }
+        } else g.scare = Math.max(0, g.scare - dt * profile.scareRecover);
+        if (g.scare > 25) scaredActive++;
+        this.follow(g, dt, profile.moveSpeed);
       } else { // boldMan
         if (seen && !g.fleeing) { 
           g.fleeing = true; 
-          this.log('BRAVE GUEST PANICS // RUNNING FOR THE DOOR!', '#ffb000'); 
+          this.log('BOLD MAN REPORTS // RUNNING FOR THE DOOR!', '#ffb000'); 
           this.retarget(g, w.exitApproach);
           this.playSFX('gasping');
         }
         if (g.fleeing) {
-          this.follow(g, dt, 52);
+          this.follow(g, dt, profile.panicRunSpeed || 52);
           if (Math.hypot(g.x - w.cx(w.exitApproach.c), g.y - w.cy(w.exitApproach.r)) < w.TILE) {
             const ent = w.entranceDoor;
             if (ent && ent.open) {
               w.guests.splice(i, 1);
-              this.log('GUEST ESCAPED // INSPECTOR INBOUND!', '#ff3333');
+              this.log('BOLD MAN ESCAPED // INSPECTOR INBOUND!', '#ff3333');
               if (!w.inspector && !w.inspectorDone) this.spawnInspector(true);
             }
           }
-        } else this.follow(g, dt, 38);
+        } else this.follow(g, dt, profile.moveSpeed);
       }
     }
 
