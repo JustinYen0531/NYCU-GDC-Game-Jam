@@ -2463,6 +2463,9 @@ class Component extends DCLogic {
       itemDefs: this.itemDefs, inventory: this.makeInventory(),
       itemCooldowns: { cloth: 0, blindfold: 0, phase: 0, lock: 0, whistle: 0 },
       t: 0, panic: 0, power: 100, reported: false, lostGuests: 0, flash: 0, screenGlitch: 0,
+      arrivalLaneStart: { c: COLS + 1.5, r: layout.entrance.r },
+      arrivalLaneGate: { c: layout.entrance.c + 0.2, r: layout.entrance.r },
+      arrivalLaneExit: { c: -3, r: layout.entrance.r },
       cx, cy
     };
     this.world.roomBedLoops = this.buildRoomBedLoops();
@@ -3365,46 +3368,64 @@ class Component extends DCLogic {
       blinded: 0, invulnerable: 0, visitTimer: 0, spotted: false, checkingOut: false,
       waited: 0, overtime: false, halfPay: false, everScared: false,
       state: 'waitingGate', queueOrder: ++w.guestSequence, assignedRoomIndex: this.nextGuestRoomIndex(),
-      assignedRoomLabel: null, assignedRoomTarget: null, stayDuration: 0, stayElapsed: 0, progress: 0, payTimer: 0, goalKey: null
+      assignedRoomLabel: null, assignedRoomTarget: null, stayDuration: 0, stayElapsed: 0, progress: 0, payTimer: 0, goalKey: null,
+      arrivalMode: 'approaching', approachSpeed: Math.max(18, (profile.moveSpeed || 34) * 0.72)
     };
   }
   updateArrivals(dt) {
     const w = this.world, ent = w.entranceDoor, ap = w.exitApproach;
     if (w.arrival) {
       const a = w.arrival;
-      a.facing = -Math.PI/2; // looking in through the gate
-      if (ent && ent.open && !ent.locked) {
-        if (w.guests.length < w.maxConcurrent) {
-          const overtime = a.waited > 2.5; // kept knocking at a shut gate too long
-          // GDD overtime reception rules per guest type
-          if (overtime) {
-            if (a.type === 'timidWoman' && Math.random() < 0.5) {
-              w.arrival = null; w.turnedAway++; w.nextArrivalT = 1.8 + Math.random()*1.4;
-              this.log('膽小女人逾時離開 // 沒收到客人。', '#ffb000'); return;
+      const speed = (a.approachSpeed || 24) * dt;
+      a.facing = Math.PI;
+      if (a.arrivalMode === 'approaching') {
+        a.x = Math.max(w.cx(w.arrivalLaneGate.c), a.x - speed);
+        a.y = w.cy(w.arrivalLaneGate.r);
+        if (a.x <= w.cx(w.arrivalLaneGate.c) + w.TILE * 0.2) a.arrivalMode = 'atGate';
+      }
+      if (a.arrivalMode === 'atGate') {
+        if (ent && ent.open && !ent.locked) {
+          if (w.guests.length < w.maxConcurrent) {
+            const overtime = a.waited > 2.5;
+            if (overtime) {
+              if (a.type === 'timidWoman' && Math.random() < 0.5) {
+                w.arrival = null; w.turnedAway++; w.nextArrivalT = 1.8 + Math.random()*1.4;
+                this.log('膽小女人逾時離開 // 沒收到客人。', '#ffb000'); return;
+              }
+              if (a.type === 'boldMan' && Math.random() < 0.5) {
+                w.arrival = null; w.turnedAway++; w.nextArrivalT = 1.8 + Math.random()*1.4;
+                this.addStrike('大膽男人逾時通報'); return;
+              }
+              a.overtime = true; a.halfPay = true;
             }
-            if (a.type === 'boldMan' && Math.random() < 0.5) {
-              w.arrival = null; w.turnedAway++; w.nextArrivalT = 1.8 + Math.random()*1.4;
-              this.addStrike('大膽男人逾時通報'); return;
+            a.state = 'queueing';
+            a.path = null; a.pi = 0; a.goal = null; a.goalKey = null;
+            w.guests.push(a); w.arrival = null;
+            w.nextArrivalT = 2.4 + Math.random()*2.2;
+            this.log('GUEST ENTERED LOBBY // ' + a.profile.title + ' QUEUING AT DESK' + (overtime ? ' (逾時/半價)' : '') + '.', overtime?'#ffb000':'#7dffb0');
+            this.playSFX('unlock');
+          } else {
+            a.patience -= dt;
+            if (a.patience <= 0) {
+              a.arrivalMode = 'passing';
+              this.log('GUEST LEAVES // NO VACANCY.', '#ffb000');
             }
-            a.overtime = true; a.halfPay = true;
           }
-          // admit: joins the front-desk queue and waits for a room assignment
-          a.state = 'queueing';
-          a.path = null; a.pi = 0; a.goal = null; a.goalKey = null;
-          w.guests.push(a); w.arrival = null;
-          w.nextArrivalT = 2.4 + Math.random()*2.2;
-          this.log('GUEST ENTERED LOBBY // ' + a.profile.title + ' QUEUING AT DESK' + (overtime ? ' (逾時/半價)' : '') + '.', overtime?'#ffb000':'#7dffb0');
-          this.playSFX('unlock');
         } else {
-          // gate open but hotel full — wait, then give up
-          a.patience -= dt;
-          if (a.patience <= 0) { w.arrival = null; w.turnedAway++; w.nextArrivalT = 2.0 + Math.random()*1.5; this.log('GUEST LEAVES // NO VACANCY.', '#ffb000'); }
+          a.waited += dt;
+          a.arrivalMode = 'passing';
+          this.log('GATE LOCKED // ' + a.profile.title + ' WALKS PAST.', '#ffb000');
         }
-      } else {
-        // gate closed: a guest waits (knocking), accruing "late reception" time, then leaves
-        a.waited += dt;
-        a.patience -= dt;
-        if (a.patience <= 0) { w.arrival = null; w.turnedAway++; w.nextArrivalT = 1.8 + Math.random()*1.6; this.log('GUEST TURNED AWAY // GATE WAS SHUT.', '#ffb000'); }
+      }
+      if (a.arrivalMode === 'passing') {
+        a.x -= speed;
+        a.y = w.cy(w.arrivalLaneExit.r);
+        if (a.x <= w.cx(w.arrivalLaneExit.c)) {
+          w.arrival = null;
+          w.turnedAway++;
+          w.nextArrivalT = 1.8 + Math.random()*1.6;
+          return;
+        }
       }
       return;
     }
@@ -3413,10 +3434,11 @@ class Component extends DCLogic {
       if (w.nextArrivalT <= 0) {
         const spec = w.queue.shift();
         const a = this.makeGuest(spec, ap.c, ap.r);
-        a.patience = 6.0; a.state = 'waiting';
+        a.x = w.cx(w.arrivalLaneStart.c);
+        a.y = w.cy(w.arrivalLaneStart.r);
+        a.patience = 6.0; a.state = 'waiting'; a.arrivalMode = 'approaching';
         w.arrival = a;
-        this.log('SOMEONE AT THE GATE // '+a.profile.title+'.', '#33ff00');
-        this.playSFX('knock');
+        this.log('INBOUND GUEST // '+a.profile.title+' APPROACHING FROM THE SOUTH-EAST.', '#33ff00');
       }
     }
   }
@@ -3999,10 +4021,14 @@ class Component extends DCLogic {
       const a = w.arrival, pulse = 0.5 + 0.5 * Math.sin(w.t * 6);
       this.drawGuestMarker(ctx, a, this.getGuestProfile(a.type).mapColor || C.amber);
       ctx.save();
+      ctx.font = '10px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#cfe6d2';
+      ctx.fillText(a.profile.title || a.type, a.x, a.y - 24);
       ctx.globalAlpha = 0.45 + 0.45 * pulse;
-      ctx.fillStyle = (w.entranceDoor && w.entranceDoor.open && !w.entranceDoor.locked) ? C.green : C.amber;
+      ctx.fillStyle = a.arrivalMode === 'passing' ? C.red : ((w.entranceDoor && w.entranceDoor.open && !w.entranceDoor.locked) ? C.green : C.amber);
       ctx.font = 'bold 13px monospace'; ctx.textAlign = 'center';
-      ctx.fillText((w.entranceDoor && w.entranceDoor.open && !w.entranceDoor.locked) ? '↓' : '!', a.x, a.y - 14);
+      ctx.fillText(a.arrivalMode === 'passing' ? '←' : ((w.entranceDoor && w.entranceDoor.open && !w.entranceDoor.locked) ? '↓' : '!'), a.x, a.y - 12);
       ctx.restore();
     }
 
