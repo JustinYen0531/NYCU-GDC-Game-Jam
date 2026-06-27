@@ -230,19 +230,20 @@
       <div style="position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(180deg, rgba(2,8,10,.62) 0%, rgba(0,0,0,0) 24%, rgba(0,0,0,0) 58%, rgba(2,8,12,.78) 100%), radial-gradient(120% 90% at 50% 30%, rgba(0,0,0,0) 55%, rgba(0,0,0,.4) 100%);"></div>
 
       <!-- left roster: the guests -->
-      <div style="position:absolute; left:24px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:18px; z-index:5;">
-        <div data-tone="g" style="display:flex; gap:10px; align-items:center; background:rgba(3,12,7,.78); border:1px solid #1c4d2e; padding:8px 12px; width:266px;">
-          <div style="width:36px; height:36px; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid #2a6b3a; color:#7dffb0; font-size:24px; text-shadow:0 0 8px #33ff00;">&#9760;</div>
-          <div><div style="font-family:'Cinzel',serif; font-size:16px; color:#cfe8cf; letter-spacing:1px;">THE RECKLESS</div><div style="font-size:15px; color:#5f9f6f; line-height:1.1;">They break rules. They fear nothing.</div></div>
-        </div>
-        <div style="display:flex; gap:10px; align-items:center; background:rgba(3,12,7,.78); border:1px solid #1c4d2e; padding:8px 12px; width:266px;">
-          <div style="width:36px; height:36px; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid #2a6b3a; color:#7dffb0; font-size:24px; text-shadow:0 0 8px #33ff00;">&#9760;</div>
-          <div><div style="font-family:'Cinzel',serif; font-size:16px; color:#cfe8cf; letter-spacing:1px;">THE ARROGANT</div><div style="font-size:15px; color:#5f9f6f; line-height:1.1;">They disturb others. They leave chaos.</div></div>
-        </div>
-        <div style="display:flex; gap:10px; align-items:center; background:rgba(3,12,7,.78); border:1px solid #1c4d2e; padding:8px 12px; width:266px;">
-          <div style="width:36px; height:36px; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid #2a6b3a; color:#7dffb0; font-size:24px; text-shadow:0 0 8px #33ff00;">&#9760;</div>
-          <div><div style="font-family:'Cinzel',serif; font-size:16px; color:#cfe8cf; letter-spacing:1px;">THE UNHINGED</div><div style="font-size:15px; color:#5f9f6f; line-height:1.1;">They bring death. They become ghosts.</div></div>
-        </div>
+      <div style="position:absolute; left:24px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:14px; z-index:5;">
+        <sc-for list="{{ titleGuestCards }}" as="guestCard" hint-placeholder-count="3">
+          <div style="display:flex; gap:10px; align-items:flex-start; background:rgba(3,12,7,.82); border:1px solid {{ guestCard.border }}; padding:10px 12px; width:348px; box-shadow:0 0 18px rgba(0,0,0,.24);">
+            <div style="width:40px; height:40px; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid {{ guestCard.border }}; color:{{ guestCard.accent }}; font-size:24px; text-shadow:0 0 8px {{ guestCard.glow }};">{{ guestCard.icon }}</div>
+            <div style="display:flex; flex-direction:column; gap:4px;">
+              <div style="font-family:'Cinzel',serif; font-size:17px; color:#e4f7e8; letter-spacing:1px;">{{ guestCard.title }}</div>
+              <div style="font-size:14px; color:{{ guestCard.accent }}; line-height:1.1;">{{ guestCard.subtitle }}</div>
+              <div style="font-size:13px; color:#86c79a; line-height:1.2;">{{ guestCard.vision }}</div>
+              <div style="font-size:13px; color:#72b785; line-height:1.22;">{{ guestCard.checkIn }}</div>
+              <div style="font-size:13px; color:#72b785; line-height:1.22;">{{ guestCard.behavior }}</div>
+              <div style="font-size:13px; color:#ffcf8a; line-height:1.22;">{{ guestCard.ghost }}</div>
+            </div>
+          </div>
+        </sc-for>
       </div>
 
       <!-- right roster: inspectors -->
@@ -502,6 +503,69 @@ class Component extends DCLogic {
       this.loopingSFX = null;
     }
     this.currentMusic = null;
+    this.guestProfiles = {
+      timidWoman: {
+        key: 'timidWoman',
+        title: '膽小女人',
+        subtitle: '怕事、細長視野、房內型住客',
+        icon: 'W',
+        accent: '#9dffb8',
+        glow: 'rgba(157,255,184,.7)',
+        border: '#2d6c45',
+        mapColor: '#9dffb8',
+        vision: '視野細長，平時無光，只有視線掃到的位置會被照亮。',
+        checkIn: '報房號後必須即時接待；逾時後 50% 直接離開，50% 硬住且只付半價。',
+        behavior: '大多躲在自己房間，偶爾才會到走廊和大廳晃動。',
+        ghost: '看見鬼會立刻變鬼，短暫停留後往外逃；成功離開會累積一點醜一。'
+      },
+      boldMan: {
+        key: 'boldMan',
+        title: '膽大男人',
+        subtitle: '膽大、廣短視野、外出型住客',
+        icon: 'M',
+        accent: '#ffd060',
+        glow: 'rgba(255,208,96,.7)',
+        border: '#7a5a20',
+        mapColor: '#ffd060',
+        vision: '視野廣而短，平時無光，扇形前方區域被照亮得更快。',
+        checkIn: '報房號後若沒即時處理，50% 半價強行入住，50% 直接通報。',
+        behavior: '常出現在走廊與大廳，偶爾回房，也會進別人房間串門子。',
+        ghost: '看見鬼會離開櫃檯去通報，直接累積一點醜一。'
+      },
+      brat: {
+        key: 'brat',
+        title: '小鬼頭',
+        subtitle: '搗蛋、居中視野、到處亂竄',
+        icon: 'K',
+        accent: '#7fd6ff',
+        glow: 'rgba(127,214,255,.7)',
+        border: '#255c74',
+        mapColor: '#7fd6ff',
+        vision: '視野居中平均，平時無光，照亮範圍落在女人與男人之間。',
+        checkIn: '不付任何錢；若接待逾時，會直接搶走你家的金幣。',
+        behavior: '不會乖乖待在同一處，會到處串門子，但入住時間最短。',
+        ghost: '看見鬼不會直接受害，但會大聲尖叫，把其他顧客吸過來形成連鎖。'
+      }
+    };
+  }
+
+  getGuestProfile(type) {
+    return this.guestProfiles[type] || this.guestProfiles.timidWoman;
+  }
+
+  getTitleGuestCards() {
+    return Object.values(this.guestProfiles).map((profile) => ({
+      title: profile.title,
+      subtitle: profile.subtitle,
+      icon: profile.icon,
+      accent: profile.accent,
+      glow: profile.glow,
+      border: profile.border,
+      vision: '視野｜' + profile.vision,
+      checkIn: '接待｜' + profile.checkIn,
+      behavior: '行為｜' + profile.behavior,
+      ghost: '撞鬼｜' + profile.ghost
+    }));
   }
 
   // ---------- colors ----------
@@ -808,8 +872,8 @@ class Component extends DCLogic {
 
     // guests
     const gspec = [
-      { c: 17, r: 4, type: 'basic' }, { c: 35, r: 8, type: 'brave' }, { c: 4, r: 5, type: 'basic' },
-      { c: 29, r: 14, type: 'basic' }, { c: 24, r: 4, type: 'brave' }, { c: 40, r: 14, type: 'basic' }
+      { c: 17, r: 4, type: 'timidWoman' }, { c: 35, r: 8, type: 'boldMan' }, { c: 4, r: 5, type: 'brat' },
+      { c: 29, r: 14, type: 'timidWoman' }, { c: 24, r: 4, type: 'boldMan' }, { c: 40, r: 14, type: 'brat' }
     ];
     const n = Math.max(1, Math.min(6, Math.round(this.props.guestCount ?? 4)));
     const guests = gspec.slice(0, n).map((g, i) => ({ x: cx(g.c), y: cy(g.r), r: 7, type: g.type, scare: 0, fleeing: false, path: null, pi: 0, stuck: 0, id: i }));
@@ -997,7 +1061,7 @@ class Component extends DCLogic {
     for (let i = w.guests.length - 1; i >= 0; i--) {
       const g = w.guests[i];
       const seen = this.visibleGhost(g);
-      if (g.type === 'basic') {
+      if (g.type === 'timidWoman' || g.type === 'brat') {
         if (seen) {
           if (g.scare < 1) { 
             this.log('GUEST SEES SOMETHING...', '#ffb000'); 
@@ -1016,7 +1080,7 @@ class Component extends DCLogic {
           continue;
         }
         this.follow(g, dt, 38);
-      } else { // brave
+      } else { // boldMan
         if (seen && !g.fleeing) { 
           g.fleeing = true; 
           this.log('BRAVE GUEST PANICS // RUNNING FOR THE DOOR!', '#ffb000'); 
@@ -1223,11 +1287,12 @@ class Component extends DCLogic {
 
     // guests
     for (const g of w.guests) {
-      const col = g.type === 'brave' ? '#ffd060' : C.amber;
+      const col = this.getGuestProfile(g.type).mapColor || C.amber;
       if (g.scare > 25) { ctx.save(); ctx.globalAlpha = 0.5; ctx.strokeStyle = C.amber; const rr = 9 + (g.scare / 100) * 8; ctx.beginPath(); ctx.arc(g.x, g.y, rr, 0, 7); ctx.stroke(); ctx.restore(); }
       ctx.save(); ctx.shadowColor = col; ctx.shadowBlur = 8; ctx.fillStyle = col;
       ctx.beginPath(); ctx.arc(g.x, g.y, 7, 0, 7); ctx.fill();
-      if (g.type === 'brave') { ctx.shadowBlur = 0; ctx.fillStyle = '#3a2400'; ctx.beginPath(); ctx.arc(g.x, g.y, 3, 0, 7); ctx.fill(); }
+      if (g.type === 'boldMan') { ctx.shadowBlur = 0; ctx.fillStyle = '#3a2400'; ctx.beginPath(); ctx.arc(g.x, g.y, 3, 0, 7); ctx.fill(); }
+      if (g.type === 'brat') { ctx.shadowBlur = 0; ctx.fillStyle = '#06283a'; ctx.fillRect(g.x - 2.5, g.y - 2.5, 5, 5); }
       ctx.restore();
       if (g.scare > 5 && g.scare < 100) {
         ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(g.x - 10, g.y - 16, 20, 4);
@@ -1379,6 +1444,7 @@ class Component extends DCLogic {
       isWon: s.screen === 'won',
       isLost: s.screen === 'lost',
       showOptions: s.showOptions,
+      titleGuestCards: this.getTitleGuestCards(),
       showDevConsole: s.showDevConsole,
       canvasRef: this.canvasRef,
       miniRef: this.miniRef,
