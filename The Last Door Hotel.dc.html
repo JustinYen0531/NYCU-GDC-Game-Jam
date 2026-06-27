@@ -171,17 +171,19 @@
             <div style="display:flex; justify-content:space-between; font-size:12px; color:#1f521f; margin-top:2px;"><span>FUNDS ${{ hud.money }} / {{ hud.quota }}</span><span style="color:#33ff00;">{{ hud.statusText }}</span></div>
           </div>
 
-          <!-- power -->
+          <!-- reputation / 醜值 (each complaint drops 2 bars; colour shifts green->yellow->red) -->
           <div style="border:1px solid #1a3d1a; background:#020704; padding:7px 9px; flex:none;">
-            <div style="font-size:14px; color:#1f8f1f; letter-spacing:2px; margin-bottom:4px;">POWER</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <span style="font-size:14px; color:#1f8f1f; letter-spacing:2px;">醜值 // REPUTATION</span>
+              <span style="font-size:13px; color:{{ hud.repColor }}; text-shadow:0 0 6px currentColor;">{{ hud.repText }}</span>
+            </div>
             <div style="display:flex; gap:3px; height:14px;">
-              <div style="flex:1; background:#33ff00; opacity:{{ hud.pw0 }}; box-shadow:0 0 4px #33ff00;"></div>
-              <div style="flex:1; background:#33ff00; opacity:{{ hud.pw1 }}; box-shadow:0 0 4px #33ff00;"></div>
-              <div style="flex:1; background:#33ff00; opacity:{{ hud.pw2 }}; box-shadow:0 0 4px #33ff00;"></div>
-              <div style="flex:1; background:#33ff00; opacity:{{ hud.pw3 }}; box-shadow:0 0 4px #33ff00;"></div>
-              <div style="flex:1; background:#ffb000; opacity:{{ hud.pw4 }}; box-shadow:0 0 4px #ffb000;"></div>
-              <div style="flex:1; background:#ffb000; opacity:{{ hud.pw5 }}; box-shadow:0 0 4px #ffb000;"></div>
-              <div style="flex:1; background:#ff3333; opacity:{{ hud.pw6 }}; box-shadow:0 0 4px #ff3333;"></div>
+              <div style="flex:1; background:{{ hud.repColor }}; opacity:{{ hud.rep0 }}; box-shadow:0 0 4px {{ hud.repColor }};"></div>
+              <div style="flex:1; background:{{ hud.repColor }}; opacity:{{ hud.rep1 }}; box-shadow:0 0 4px {{ hud.repColor }};"></div>
+              <div style="flex:1; background:{{ hud.repColor }}; opacity:{{ hud.rep2 }}; box-shadow:0 0 4px {{ hud.repColor }};"></div>
+              <div style="flex:1; background:{{ hud.repColor }}; opacity:{{ hud.rep3 }}; box-shadow:0 0 4px {{ hud.repColor }};"></div>
+              <div style="flex:1; background:{{ hud.repColor }}; opacity:{{ hud.rep4 }}; box-shadow:0 0 4px {{ hud.repColor }};"></div>
+              <div style="flex:1; background:{{ hud.repColor }}; opacity:{{ hud.rep5 }}; box-shadow:0 0 4px {{ hud.repColor }};"></div>
             </div>
           </div>
 
@@ -357,17 +359,45 @@
       .lvlfloor-head{position:relative;z-index:2;text-align:center;margin-bottom:34px;text-shadow:0 0 4px rgba(0,0,0,.92),0 0 18px rgba(80,255,140,.35);pointer-events:none;}
       .lvlfloor-name{font-family:'Cinzel',serif;font-size:40px;font-weight:700;letter-spacing:8px;color:#e6f6ea;}
       .lvlfloor-sub{font-size:18px;letter-spacing:3px;color:#8fd6a6;margin-top:6px;}
-      .lvlrow{position:relative;z-index:2;display:flex;gap:22px;align-items:stretch;justify-content:center;}
-      .lvlnode{cursor:pointer;width:150px;height:198px;border:1px solid rgba(120,210,150,.4);border-radius:8px;background:linear-gradient(180deg,rgba(8,24,15,.82),rgba(3,11,8,.92));box-shadow:0 8px 24px rgba(0,0,0,.5),inset 0 0 24px rgba(0,0,0,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:transform .18s,border-color .18s,box-shadow .18s;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);}
+      .lvlrow{position:relative;z-index:2;display:flex;gap:16px;align-items:stretch;justify-content:center;}
+      .lvlnode{cursor:pointer;width:148px;min-height:214px;border:1px solid rgba(120,210,150,.4);border-radius:8px;background:linear-gradient(180deg,rgba(8,24,15,.82),rgba(3,11,8,.92));box-shadow:0 8px 24px rgba(0,0,0,.5),inset 0 0 24px rgba(0,0,0,.5);display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:8px;padding:12px 12px 11px;transition:transform .18s,border-color .18s,box-shadow .18s,background .18s;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);}
       .lvlnode:hover{transform:translateY(-6px);border-color:#8effb4;box-shadow:0 14px 30px rgba(0,0,0,.6),0 0 26px rgba(80,255,140,.28);}
-      .lvlnode .lvl-no{font-family:'Cinzel',serif;font-size:32px;font-weight:700;color:#bff5cf;letter-spacing:2px;text-shadow:0 0 12px rgba(80,255,140,.5);}
-      .lvlnode .lvl-name{font-size:24px;letter-spacing:5px;color:#e6f6ea;}
-      .lvlnode .lvl-map{font-size:12px;letter-spacing:1px;color:#6fb487;}
-      .lvlnode .lvl-badge{font-size:13px;letter-spacing:2px;color:#89efab;border:1px solid #2d7144;border-radius:3px;padding:1px 9px;margin-top:2px;}
+      .lvlnode.is-selected{border-color:#c7ffd6;box-shadow:0 14px 30px rgba(0,0,0,.66),0 0 30px rgba(80,255,140,.34);background:linear-gradient(180deg,rgba(16,45,28,.94),rgba(4,12,8,.96));}
+      .lvlnode .lvl-head{width:100%;display:flex;align-items:flex-start;justify-content:space-between;gap:6px;}
+      .lvlnode .lvl-no{font-family:'Cinzel',serif;font-size:28px;font-weight:700;color:#bff5cf;letter-spacing:2px;line-height:1;text-shadow:0 0 12px rgba(80,255,140,.5);}
+      .lvlnode .lvl-badge{font-size:11px;letter-spacing:1.8px;color:#89efab;border:1px solid #2d7144;border-radius:3px;padding:2px 6px;margin-top:1px;}
+      .lvlnode .lvl-name{font-size:22px;letter-spacing:4px;color:#e6f6ea;line-height:1.05;}
+      .lvlnode .lvl-map{font-size:12px;letter-spacing:1.2px;color:#6fb487;line-height:1.1;}
+      .lvlnode .lvl-door{font-size:11px;letter-spacing:.5px;color:#6fe18e;line-height:1.2;opacity:.88;margin-top:auto;}
+      .lvlnode .lvl-foot{width:100%;padding-top:5px;border-top:1px dashed rgba(110,196,132,.22);font-size:11px;letter-spacing:1px;color:#8fd6a6;}
       .lvlnode.boss{border-color:rgba(255,120,80,.5);background:linear-gradient(180deg,rgba(34,14,10,.86),rgba(12,6,6,.94));}
       .lvlnode.boss:hover{border-color:#ff8f66;box-shadow:0 14px 30px rgba(0,0,0,.6),0 0 26px rgba(255,120,60,.3);}
       .lvlnode.boss .lvl-no,.lvlnode.boss .lvl-name{color:#ffd0bd;}
       .lvlnode.boss .lvl-badge{color:#ff9e7a;border-color:#8a4f34;}
+      .lvl-intel{position:absolute;left:0;top:0;bottom:0;z-index:9;overflow:visible;border-right:1px solid rgba(102,214,140,.28);background:linear-gradient(180deg,rgba(3,10,7,.96) 0%,rgba(2,7,4,.95) 100%);box-shadow:16px 0 38px rgba(0,0,0,.55);transition:width .22s ease;}
+      .lvl-intel-shell{position:relative;width:100%;height:100%;overflow:hidden;}
+      .lvl-intel-content{width:420px;height:100%;padding:22px 22px 18px;display:flex;flex-direction:column;gap:14px;}
+      .lvl-intel-handle{position:absolute;right:0;top:50%;transform:translate(100%,-50%);width:36px;padding:14px 0;border:1px solid rgba(102,214,140,.32);border-left:0;border-radius:0 8px 8px 0;background:linear-gradient(180deg,rgba(8,20,14,.95),rgba(4,12,8,.95));color:#8fffb4;font-size:14px;letter-spacing:2px;writing-mode:vertical-rl;text-orientation:mixed;text-align:center;cursor:ew-resize;user-select:none;box-shadow:8px 0 18px rgba(0,0,0,.35);}
+      .lvl-terminal{border:1px solid rgba(102,214,140,.28);background:linear-gradient(180deg,rgba(4,14,10,.88),rgba(1,7,5,.94));box-shadow:inset 0 0 0 1px rgba(175,255,212,.04),0 8px 24px rgba(0,0,0,.32);}
+      .lvl-sec-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px;letter-spacing:2px;color:#9ff0b8;border-bottom:1px solid rgba(102,214,140,.18);padding-bottom:6px;margin-bottom:7px;}
+      .lvl-chip{padding:2px 8px;border:1px solid rgba(120,210,150,.28);color:#71d993;background:rgba(30,70,44,.22);}
+      .lvl-stack{display:flex;flex-direction:column;gap:6px;}
+      .lvl-line{font-size:15px;line-height:1.2;color:#dfffe8;}
+      .lvl-dim{color:#6ab784;}
+      .lvl-blueprint{position:relative;height:206px;border:1px solid rgba(102,214,140,.24);background:linear-gradient(180deg,rgba(3,10,8,.98),rgba(1,5,4,.98));overflow:hidden;}
+      .lvl-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(120,210,150,.05) 1px, transparent 1px),linear-gradient(90deg, rgba(120,210,150,.05) 1px, transparent 1px);background-size:calc(100% / 15) calc(100% / 10);}
+      .lvl-zone{position:absolute;border:1px solid rgba(190,255,215,.12);}
+      .lvl-zone-text{position:absolute;padding:2px 4px;font-size:11px;line-height:1;color:#e6ffe9;text-shadow:0 0 4px rgba(0,0,0,.95);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .lvl-hall-text{position:absolute;padding:1px 5px;font-size:10px;letter-spacing:1px;color:#8ee2a7;background:rgba(2,8,6,.82);border:1px solid rgba(102,214,140,.16);white-space:nowrap;}
+      .lvl-door-dot{position:absolute;border-radius:3px;box-shadow:0 0 10px currentColor;}
+      .lvl-mini-legend{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;color:#7ed69b;}
+      .lvl-mini-tag{display:flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid rgba(102,214,140,.18);background:rgba(11,28,17,.46);}
+      .lvl-mini-swatch{width:10px;height:10px;border-radius:2px;box-shadow:0 0 7px currentColor;}
+      .lvl-preview{position:absolute;right:92px;top:82px;z-index:8;width:364px;padding:16px 16px 14px;}
+      .lvl-preview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0 12px;}
+      .lvl-metric{padding:7px 8px;border:1px solid rgba(102,214,140,.18);background:rgba(8,24,15,.4);}
+      .lvl-metric-label{font-size:11px;letter-spacing:1px;color:#79c893;}
+      .lvl-metric-value{font-size:22px;color:#e8ffe8;line-height:1.05;}
       .lvl-elevator{position:absolute;right:26px;top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;align-items:center;gap:8px;background:rgba(2,10,6,.7);border:1px solid rgba(120,210,150,.3);border-radius:10px;padding:12px 10px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);}
       .lvl-elv-arrow{cursor:pointer;width:42px;height:28px;display:flex;align-items:center;justify-content:center;color:#8fd6a6;font-size:18px;border:1px solid rgba(120,210,150,.25);border-radius:5px;transition:.15s;}
       .lvl-elv-arrow:hover{color:#04110d;background:#33ff00;border-color:#33ff00;}
@@ -377,6 +407,60 @@
       .lvl-hint{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:6;font-size:15px;letter-spacing:2px;color:#5fa074;text-shadow:0 0 4px rgba(0,0,0,.9);pointer-events:none;}
     </style>
     <div class="lvl-overlay">
+      <div class="lvl-intel" data-intel-panel data-no-drag style="width:{{ worldIntelWidth }};">
+        <div class="lvl-intel-shell">
+          <div class="lvl-intel-content">
+            <div class="lvl-terminal" style="padding:12px 12px 10px;">
+              <div class="lvl-sec-head"><span>WORLD INTEL</span><span class="lvl-chip">{{ worldIntelTag }}</span></div>
+              <div style="font-family:'Cinzel',serif;font-size:24px;letter-spacing:4px;color:{{ worldIntelAccent }};text-shadow:0 0 10px {{ worldIntelAccent }};">{{ worldIntelTitle }}</div>
+              <div style="font-size:14px;letter-spacing:1.6px;color:#9fd7b1;margin-top:4px;">{{ worldIntelSubtitle }}</div>
+              <div style="font-size:13px;letter-spacing:1px;color:#67b582;margin-top:10px;">{{ worldIntelSummary }}</div>
+            </div>
+
+            <div class="lvl-terminal" style="padding:10px 12px;">
+              <div class="lvl-sec-head"><span>UNLOCK TRACE</span><span class="lvl-chip">{{ worldIntelUnlockCount }}</span></div>
+              <div class="lvl-stack">
+                <sc-for list="{{ worldIntelUnlocks }}" as="line" hint-placeholder-count="3">
+                  <div class="lvl-line">{{ line }}</div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div class="lvl-terminal" style="padding:10px 12px;">
+              <div class="lvl-sec-head"><span>WORLD MAP</span><span class="lvl-chip">ROOM / HALL / DESK</span></div>
+              <div class="lvl-blueprint">
+                <div class="lvl-grid"></div>
+                <sc-for list="{{ worldIntelCorridors }}" as="zone" hint-placeholder-count="3">
+                  <div class="lvl-zone" style="left:{{ zone.left }}; top:{{ zone.top }}; width:{{ zone.width }}; height:{{ zone.height }}; background:{{ zone.fill }}; border-color:{{ zone.border }};"></div>
+                </sc-for>
+                <sc-for list="{{ worldIntelRooms }}" as="room" hint-placeholder-count="6">
+                  <div class="lvl-zone" style="left:{{ room.left }}; top:{{ room.top }}; width:{{ room.width }}; height:{{ room.height }}; background:{{ room.fill }}; border-color:{{ room.border }};"></div>
+                  <div class="lvl-zone-text" style="left:{{ room.textLeft }}; top:{{ room.textTop }}; width:{{ room.textWidth }}; color:{{ room.textColor }};">{{ room.label }}</div>
+                </sc-for>
+                <sc-for list="{{ worldIntelLabels }}" as="label" hint-placeholder-count="3">
+                  <div class="lvl-hall-text" style="left:{{ label.left }}; top:{{ label.top }};">{{ label.text }}</div>
+                </sc-for>
+              </div>
+              <div class="lvl-mini-legend" style="margin-top:8px;">
+                <div class="lvl-mini-tag"><span class="lvl-mini-swatch" style="color:#84d0a4;background:rgba(61,118,86,.22);"></span><span>走廊</span></div>
+                <div class="lvl-mini-tag"><span class="lvl-mini-swatch" style="color:#c3ffd9;background:rgba(52,102,77,.18);"></span><span>客房</span></div>
+                <div class="lvl-mini-tag"><span class="lvl-mini-swatch" style="color:#ffd48d;background:rgba(120,90,42,.2);"></span><span>櫃檯</span></div>
+                <div class="lvl-mini-tag"><span class="lvl-mini-swatch" style="color:#7ef0ae;background:rgba(54,113,83,.23);"></span><span>大廳</span></div>
+              </div>
+            </div>
+
+            <div class="lvl-terminal" style="padding:10px 12px;">
+              <div class="lvl-sec-head"><span>STRUCTURE NOTES</span><span class="lvl-chip">{{ worldIntelZoneCount }}</span></div>
+              <div class="lvl-stack">
+                <sc-for list="{{ worldIntelZones }}" as="line" hint-placeholder-count="4">
+                  <div class="lvl-line"><span class="lvl-dim">&gt;</span> {{ line }}</div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div class="lvl-intel-handle" data-intel-handle data-no-drag>{{ worldIntelHandleText }}</div>
+        </div>
+      </div>
       <div class="lvl-viewport">
         <div class="lvl-floors" ref="{{ floorsRef }}" style="transform:{{ floorShift }};">
 
@@ -389,11 +473,19 @@
             <div class="lvlfloor-veil"></div>
             <div class="lvlfloor-head"><div class="lvlfloor-name">三樓 · 荊棘別墅</div><div class="lvlfloor-sub">FLOOR 3 // BLACKTHORN VILLA &#183; 難度 ★★★</div></div>
             <div class="lvlrow">
-              <div class="lvlnode" data-lvl-node onClick="{{ pickL11 }}"><div class="lvl-no">11</div><div class="lvl-name">三之一</div><div class="lvl-map">BLACKTHORN</div><div class="lvl-badge">TIER IV</div></div>
-              <div class="lvlnode" data-lvl-node onClick="{{ pickL12 }}"><div class="lvl-no">12</div><div class="lvl-name">三之二</div><div class="lvl-map">BLACKTHORN</div><div class="lvl-badge">TIER IV</div></div>
-              <div class="lvlnode" data-lvl-node onClick="{{ pickL13 }}"><div class="lvl-no">13</div><div class="lvl-name">三之三</div><div class="lvl-map">BLACKTHORN</div><div class="lvl-badge">TIER V</div></div>
-              <div class="lvlnode" data-lvl-node onClick="{{ pickL14 }}"><div class="lvl-no">14</div><div class="lvl-name">三之四</div><div class="lvl-map">BLACKTHORN</div><div class="lvl-badge">TIER V</div></div>
-              <div class="lvlnode boss" data-lvl-node onClick="{{ pickL15 }}"><div class="lvl-no">15</div><div class="lvl-name">三之五</div><div class="lvl-map">BLACKTHORN</div><div class="lvl-badge">BOSS</div></div>
+              <sc-for list="{{ floor3Cards }}" as="card" hint-placeholder-count="5">
+                <div class="lvlnode {{ card.nodeClass }}" data-lvl-node data-no-drag onClick="{{ card.onSelect }}" style="border-color:{{ card.border }}; background:{{ card.bg }}; box-shadow:{{ card.shadow }};">
+                  <div class="lvl-head">
+                    <div class="lvl-no" style="color:{{ card.numberColor }};">{{ card.levelCode }}</div>
+                    <div class="lvl-badge" style="color:{{ card.badgeColor }}; border-color:{{ card.badgeBorder }};">{{ card.badge }}</div>
+                  </div>
+                  <div class="lvl-name">{{ card.displayName }}</div>
+                  <div class="lvl-map">{{ card.map }}</div>
+                  <div class="lvl-map" style="color:{{ card.alertColor }};">{{ card.reviewFlag }}</div>
+                  <div class="lvl-door">{{ card.doorMix }}</div>
+                  <div class="lvl-foot">{{ card.footer }}</div>
+                </div>
+              </sc-for>
             </div>
           </section>
 
@@ -406,11 +498,19 @@
             <div class="lvlfloor-veil"></div>
             <div class="lvlfloor-head"><div class="lvlfloor-name">二樓 · 雙翼莊園</div><div class="lvlfloor-sub">FLOOR 2 // TWIN-WING MANOR &#183; 難度 ★★☆</div></div>
             <div class="lvlrow">
-              <div class="lvlnode" data-lvl-node onClick="{{ pickL6 }}"><div class="lvl-no">06</div><div class="lvl-name">二之一</div><div class="lvl-map">TWIN-WING</div><div class="lvl-badge">TIER II</div></div>
-              <div class="lvlnode" data-lvl-node onClick="{{ pickL7 }}"><div class="lvl-no">07</div><div class="lvl-name">二之二</div><div class="lvl-map">TWIN-WING</div><div class="lvl-badge">TIER III</div></div>
-              <div class="lvlnode" data-lvl-node onClick="{{ pickL8 }}"><div class="lvl-no">08</div><div class="lvl-name">二之三</div><div class="lvl-map">TWIN-WING</div><div class="lvl-badge">TIER III</div></div>
-              <div class="lvlnode" data-lvl-node onClick="{{ pickL9 }}"><div class="lvl-no">09</div><div class="lvl-name">二之四</div><div class="lvl-map">TWIN-WING</div><div class="lvl-badge">TIER III</div></div>
-              <div class="lvlnode boss" data-lvl-node onClick="{{ pickL10 }}"><div class="lvl-no">10</div><div class="lvl-name">二之五</div><div class="lvl-map">TWIN-WING</div><div class="lvl-badge">BOSS</div></div>
+              <sc-for list="{{ floor2Cards }}" as="card" hint-placeholder-count="5">
+                <div class="lvlnode {{ card.nodeClass }}" data-lvl-node data-no-drag onClick="{{ card.onSelect }}" style="border-color:{{ card.border }}; background:{{ card.bg }}; box-shadow:{{ card.shadow }};">
+                  <div class="lvl-head">
+                    <div class="lvl-no" style="color:{{ card.numberColor }};">{{ card.levelCode }}</div>
+                    <div class="lvl-badge" style="color:{{ card.badgeColor }}; border-color:{{ card.badgeBorder }};">{{ card.badge }}</div>
+                  </div>
+                  <div class="lvl-name">{{ card.displayName }}</div>
+                  <div class="lvl-map">{{ card.map }}</div>
+                  <div class="lvl-map" style="color:{{ card.alertColor }};">{{ card.reviewFlag }}</div>
+                  <div class="lvl-door">{{ card.doorMix }}</div>
+                  <div class="lvl-foot">{{ card.footer }}</div>
+                </div>
+              </sc-for>
             </div>
           </section>
 
@@ -423,15 +523,71 @@
             <div class="lvlfloor-veil"></div>
             <div class="lvlfloor-head"><div class="lvlfloor-name">一樓 · 松木旅舍</div><div class="lvlfloor-sub">FLOOR 1 // PINE LODGE &#183; 難度 ★☆☆</div></div>
             <div class="lvlrow">
-              <div class="lvlnode" data-lvl-node onClick="{{ pickL1 }}"><div class="lvl-no">01</div><div class="lvl-name">一之一</div><div class="lvl-map">PINE LODGE</div><div class="lvl-badge">TIER I</div></div>
-              <div class="lvlnode" data-lvl-node onClick="{{ pickL2 }}"><div class="lvl-no">02</div><div class="lvl-name">一之二</div><div class="lvl-map">PINE LODGE</div><div class="lvl-badge">TIER I</div></div>
-              <div class="lvlnode" data-lvl-node onClick="{{ pickL3 }}"><div class="lvl-no">03</div><div class="lvl-name">一之三</div><div class="lvl-map">PINE LODGE</div><div class="lvl-badge">TIER I</div></div>
-              <div class="lvlnode" data-lvl-node onClick="{{ pickL4 }}"><div class="lvl-no">04</div><div class="lvl-name">一之四</div><div class="lvl-map">PINE LODGE</div><div class="lvl-badge">TIER II</div></div>
-              <div class="lvlnode boss" data-lvl-node onClick="{{ pickL5 }}"><div class="lvl-no">05</div><div class="lvl-name">一之五</div><div class="lvl-map">PINE LODGE</div><div class="lvl-badge">BOSS</div></div>
+              <sc-for list="{{ floor1Cards }}" as="card" hint-placeholder-count="5">
+                <div class="lvlnode {{ card.nodeClass }}" data-lvl-node data-no-drag onClick="{{ card.onSelect }}" style="border-color:{{ card.border }}; background:{{ card.bg }}; box-shadow:{{ card.shadow }};">
+                  <div class="lvl-head">
+                    <div class="lvl-no" style="color:{{ card.numberColor }};">{{ card.levelCode }}</div>
+                    <div class="lvl-badge" style="color:{{ card.badgeColor }}; border-color:{{ card.badgeBorder }};">{{ card.badge }}</div>
+                  </div>
+                  <div class="lvl-name">{{ card.displayName }}</div>
+                  <div class="lvl-map">{{ card.map }}</div>
+                  <div class="lvl-map" style="color:{{ card.alertColor }};">{{ card.reviewFlag }}</div>
+                  <div class="lvl-door">{{ card.doorMix }}</div>
+                  <div class="lvl-foot">{{ card.footer }}</div>
+                </div>
+              </sc-for>
             </div>
           </section>
 
         </div>
+      </div>
+
+      <div class="lvl-preview lvl-terminal" data-no-drag>
+        <div class="lvl-sec-head"><span>LEVEL PREVIEW</span><span class="lvl-chip">{{ previewLevelCode }}</span></div>
+        <div style="font-family:'Cinzel',serif;font-size:26px;letter-spacing:4px;color:{{ previewTitleColor }};text-shadow:0 0 10px {{ previewTitleGlow }};">{{ previewDisplayName }}</div>
+        <div style="font-size:14px;letter-spacing:1.4px;color:#9bdab3;margin-top:3px;">{{ previewWorldLine }}</div>
+        <div style="font-size:14px;letter-spacing:1px;color:{{ previewReviewColor }};margin-top:10px;">{{ previewReviewStatus }}</div>
+        <div style="font-size:13px;letter-spacing:.8px;color:#74bf8d;margin-top:2px;">{{ previewReviewNote }}</div>
+
+        <div class="lvl-preview-grid">
+          <sc-for list="{{ previewFacts }}" as="fact" hint-placeholder-count="4">
+            <div class="lvl-metric">
+              <div class="lvl-metric-label">{{ fact.label }}</div>
+              <div class="lvl-metric-value" style="color:{{ fact.color }};">{{ fact.value }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div class="lvl-blueprint" style="height:190px;">
+          <div class="lvl-grid"></div>
+          <sc-for list="{{ previewCorridors }}" as="zone" hint-placeholder-count="3">
+            <div class="lvl-zone" style="left:{{ zone.left }}; top:{{ zone.top }}; width:{{ zone.width }}; height:{{ zone.height }}; background:{{ zone.fill }}; border-color:{{ zone.border }};"></div>
+          </sc-for>
+          <sc-for list="{{ previewRooms }}" as="room" hint-placeholder-count="6">
+            <div class="lvl-zone" style="left:{{ room.left }}; top:{{ room.top }}; width:{{ room.width }}; height:{{ room.height }}; background:{{ room.fill }}; border-color:{{ room.border }};"></div>
+            <div class="lvl-zone-text" style="left:{{ room.textLeft }}; top:{{ room.textTop }}; width:{{ room.textWidth }}; color:{{ room.textColor }};">{{ room.label }}</div>
+          </sc-for>
+          <sc-for list="{{ previewLabels }}" as="label" hint-placeholder-count="3">
+            <div class="lvl-hall-text" style="left:{{ label.left }}; top:{{ label.top }};">{{ label.text }}</div>
+          </sc-for>
+          <sc-for list="{{ previewDoors }}" as="door" hint-placeholder-count="8">
+            <div class="lvl-door-dot" style="left:{{ door.left }}; top:{{ door.top }}; width:{{ door.width }}; height:{{ door.height }}; color:{{ door.color }}; background:{{ door.color }};" title="{{ door.name }}"></div>
+          </sc-for>
+        </div>
+
+        <div class="lvl-mini-legend" style="margin-top:8px;">
+          <sc-for list="{{ previewDoorLegend }}" as="tag" hint-placeholder-count="5">
+            <div class="lvl-mini-tag"><span class="lvl-mini-swatch" style="color:{{ tag.color }}; background:{{ tag.color }};"></span><span>{{ tag.label }}</span></div>
+          </sc-for>
+        </div>
+
+        <div class="lvl-stack" style="margin-top:10px;">
+          <sc-for list="{{ previewNotes }}" as="line" hint-placeholder-count="3">
+            <div class="lvl-line"><span class="lvl-dim">&gt;</span> {{ line }}</div>
+          </sc-for>
+        </div>
+
+        <div onClick="{{ onStartSelectedLevel }}" style="margin-top:14px;cursor:pointer;font-family:'Cinzel',serif;font-size:15px;font-weight:700;letter-spacing:3px;color:#031109;background:linear-gradient(180deg,#9dffb8 0%,#46db79 100%);border:1px solid #bfffd0;border-radius:4px;padding:10px 14px;text-align:center;box-shadow:0 0 18px rgba(80,255,140,.35);" style-hover="background:linear-gradient(180deg,#b7ffcb 0%,#58e68a 100%); box-shadow:0 0 24px rgba(80,255,140,.48);">BEGIN DEPLOYMENT &#8594;</div>
       </div>
 
       <!-- back to title -->
@@ -446,7 +602,7 @@
         <div class="lvl-elv-arrow" onClick="{{ onFloorDown }}">&#9660;</div>
       </div>
 
-      <div class="lvl-hint">滾輪 / 拖曳 上下切換樓層 &#183; 點擊關卡開始 &#183; 越往上越難</div>
+      <div class="lvl-hint">滾輪 / 拖曳上下切換樓層 &#183; 左側拖拉抽屜看世界情報 &#183; 點擊關卡先檢閱，按 BEGIN 才會部署</div>
     </div>
   </sc-if>
 
@@ -600,47 +756,13 @@
       </div>
   </sc-if>
 
-  <!-- ======================= LEVEL SELECT ======================= -->
-  <sc-if value="{{ showLevelSelect }}" hint-placeholder-val="{{ false }}">
-    <div style="position:fixed; inset:0; z-index:78; background:rgba(1,8,4,.92); display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'VT323',monospace; -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);">
-
-      <!-- header -->
-      <div style="display:flex; align-items:center; justify-content:space-between; width:880px; margin-bottom:14px;">
-        <div onClick="{{ onCloseLevelSelect }}" style="cursor:pointer; font-family:'Cinzel',serif; font-size:14px; font-weight:600; letter-spacing:3px; color:#b89a9a; border:1px solid rgba(150,90,90,.4); border-radius:3px; padding:8px 18px; transition:all .3s ease;" style-hover="color:#ffdede; border-color:rgba(220,110,110,.7); text-shadow:0 0 10px rgba(235,95,95,.5);">&#8592; BACK</div>
-        <div style="text-align:center;">
-          <div style="font-family:'Cinzel',serif; font-size:26px; font-weight:700; color:#dff7e6; letter-spacing:5px; text-shadow:0 0 4px rgba(0,0,0,.95), 0 0 18px rgba(80,255,140,.55);">SELECT NIGHT</div>
-          <div style="font-family:'Cinzel',serif; font-size:13px; color:#9fe6b8; letter-spacing:2px; margin-top:2px;">{{ selectedLevelMeta }}</div>
-        </div>
-        <div onClick="{{ onStartSelectedLevel }}" style="cursor:pointer; font-family:'Cinzel',serif; font-size:14px; font-weight:600; letter-spacing:3px; color:#02080a; background:linear-gradient(180deg, #5fffa0 0%, #2bd06a 100%); border:1px solid #8effb4; border-radius:3px; padding:8px 22px; box-shadow:0 0 14px rgba(80,255,140,.45); transition:all .3s ease;" style-hover="background:linear-gradient(180deg, #7dffb4 0%, #38de7d 100%); box-shadow:0 0 22px rgba(80,255,140,.7);">BEGIN &#8594;</div>
-      </div>
-
-      <!-- night cards grid -->
-      <div style="width:880px; max-height:520px; overflow-y:auto; display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; padding:4px;">
-        <sc-for list="{{ levelSelectCards }}" as="card" hint-placeholder-count="5">
-          <div onClick="{{ card.onSelect }}" style="cursor:pointer; position:relative; border:1px solid {{ card.border }}; background:{{ card.bg }}; box-shadow:{{ card.shadow }}; border-radius:5px; padding:12px 10px; display:flex; flex-direction:column; gap:5px; min-height:140px; transition:transform .25s ease, box-shadow .25s ease;" style-hover="transform:translateY(-3px); box-shadow:0 8px 22px rgba(0,0,0,.55), 0 0 16px rgba(80,255,140,.25);">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
-              <div style="font-family:'Cinzel',serif; font-size:24px; font-weight:700; color:{{ card.numberColor }}; line-height:1; text-shadow:0 0 8px currentColor;">{{ card.level }}</div>
-              <div style="font-family:'Cinzel',serif; font-size:9px; font-weight:600; letter-spacing:1px; color:{{ card.badgeColor }}; border:1px solid {{ card.badgeBorder }}; border-radius:2px; padding:2px 6px;">{{ card.badge }}</div>
-            </div>
-            <div style="font-family:'Cinzel',serif; font-size:11px; color:#e4f7e8; letter-spacing:.5px; font-weight:600;">{{ card.label }}</div>
-            <div style="font-size:12px; color:#7dffb0; letter-spacing:.5px; line-height:1.1;">{{ card.map }}</div>
-            <div style="font-size:11px; color:#56d97d; letter-spacing:.3px; line-height:1.15; margin-top:auto; opacity:.85;">{{ card.doorMix }}</div>
-            <div style="font-size:10px; color:{{ card.alertColor }}; letter-spacing:.5px; line-height:1; border-top:1px dashed rgba(78,166,105,.25); padding-top:4px;">{{ card.alert }}</div>
-          </div>
-        </sc-for>
-      </div>
-
-      <div style="margin-top:14px; font-size:13px; color:#5f9f6f; letter-spacing:1.5px; text-align:center;">Click a night to select &#183; BEGIN to deploy &#183; BACK to return</div>
-    </div>
-  </sc-if>
-
 <!-- ======================= WIN ======================= -->
   <sc-if value="{{ isWon }}" hint-placeholder-val="{{ false }}">
     <div style="position:fixed; inset:0; z-index:75; background:rgba(1,8,4,.9); display:flex; align-items:center; justify-content:center; font-family:'VT323',monospace;">
       <div style="text-align:center; border:1px solid #33ff00; background:#040a06; padding:40px 56px; box-shadow:0 0 60px rgba(51,255,0,.35);">
-        <div style="font-family:'Cinzel',serif; font-size:46px; color:#bff5cf; letter-spacing:4px; text-shadow:0 0 24px rgba(80,255,140,.6);">DAWN BREAKS</div>
-        <div style="font-size:22px; color:#7dffb0; margin:14px 0 4px;">06:00 &mdash; The inspector leaves empty-handed.</div>
-        <div style="font-size:20px; color:#5f9f6f;">Your secret is safe. For one more night.</div>
+        <div style="font-family:'Cinzel',serif; font-size:46px; color:#bff5cf; letter-spacing:4px; text-shadow:0 0 24px rgba(80,255,140,.6);">QUOTA MET</div>
+        <div style="font-size:22px; color:#7dffb0; margin:14px 0 4px;">The night's takings are in. The books balance.</div>
+        <div style="font-size:20px; color:#5f9f6f;">Her secret is safe &mdash; and the lodge survives another night.</div>
         <div style="font-size:20px; color:#33ff00; margin-top:18px;">{{ hud.endStats }}</div>
         <div style="display:flex; gap:16px; justify-content:center; margin-top:26px; font-family:'Cinzel',serif; font-size:22px; letter-spacing:2px;">
           <div onClick="{{ onRestart }}" style="cursor:pointer; border:1px solid #33ff00; color:#33ff00; padding:8px 22px;" style-hover="background:#33ff00; color:#04110d;">[ NEW NIGHT ]</div>
@@ -698,7 +820,8 @@
             <span style="background:#33ff00; color:#000; padding:2px 6px; font-weight:bold; font-size:16px;">[06 金幣繼承與關卡]</span>
             <p style="margin:8px 0 12px; color:#cfe8cf;">
               * <strong>關卡與地圖</strong>：共 15 關，每 5 關解鎖 1 個稽查員，擊倒解鎖下一張地圖（共 4 張地圖）。<br>
-              * <strong>繼承規則</strong>：金幣為唯一繼承資源。玩家可重複挑戰已通關關卡以刷新最高金幣數，之後的新關卡將繼承此最滿意的最高初始金幣值。
+              * <strong>繼承規則</strong>：金幣為唯一繼承資源。玩家可重複挑戰已通關關卡以刷新最高金幣數，之後的新關卡將繼承此最滿意的最高初始金幣值。<br>
+              * <strong>覆寫方式</strong>：若舊關卡刷出更高金幣，該關卡紀錄會被新高分覆寫；這不回頭修改已經完成的後續結算，但會影響你未來再次挑戰後面關卡時的起始資本。
             </p>
           </div>
 
@@ -735,11 +858,12 @@
           <div style="margin-top:16px;">
             <span style="background:#33ff00; color:#000; padding:2px 6px; font-weight:bold; font-size:16px;">[10 商店道具清單]</span>
             <p style="margin:8px 0 12px; color:#cfe8cf;">
-              1. <strong>遮布</strong>：使鏡子永久無法穿透，數量有限，可隨時拿走重新部署。<br>
-              2. <strong>眼罩</strong>：使顧客失去視野與行動（無敵狀態，暫停住宿計時）。<br>
-              3. <strong>穿牆術/勞術</strong>：短距離瞬移穿牆。<br>
-              4. <strong>門鎖</strong>：短暫強行鎖定任意門。<br>
-              5. <strong>口哨</strong>：穿牆範圍吸引鬼魂循最短路徑走近玩家。
+              * <strong>經濟規則</strong>：5 種道具皆為「單次付費使用 + 個別冷卻」，不採背包庫存制；退房金幣可直接作為下一次施放資金。<br>
+              1. <strong>遮布</strong>：`$12 / 8s`。使鏡子永久無法穿透，可隨時拿走重新部署。<br>
+              2. <strong>眼罩</strong>：`$18 / 16s`。使顧客失去視野與行動（無敵狀態，暫停住宿計時）。<br>
+              3. <strong>穿牆術/勞術</strong>：`$10 / 6s`。短距離瞬移穿牆。<br>
+              4. <strong>門鎖</strong>：`$15 / 12s`。短暫強行鎖定任意門。<br>
+              5. <strong>口哨</strong>：`$9 / 14s`。穿牆範圍吸引鬼魂循最短路徑走近玩家。
             </p>
           </div>
         </div>
@@ -811,6 +935,7 @@ class Component extends DCLogic {
       currentLevel: 1,
       selectedLevel: 1,
       selFloor: 1,
+      worldIntelWidth: 58,
       tick: 0,
       scale: 1
     };
@@ -1010,11 +1135,187 @@ class Component extends DCLogic {
     }));
   }
 
+  pad2(n) {
+    const v = Math.max(0, Math.round(Number(n) || 0));
+    return v < 10 ? '0' + v : '' + v;
+  }
+
+  levelToFloor(level) {
+    const lv = Math.max(1, Math.min(15, Math.round(Number(level) || 1)));
+    return Math.max(1, Math.min(3, Math.ceil(lv / 5)));
+  }
+
+  levelDisplayName(level) {
+    const floorText = ['一', '二', '三'][this.levelToFloor(level) - 1] || '一';
+    const stepText = ['一', '二', '三', '四', '五'][(Math.max(1, Math.min(15, level)) - 1) % 5] || '一';
+    return floorText + '之' + stepText;
+  }
+
+  levelPatternKey(level) {
+    const config = this.getLevelConfig(level);
+    const counts = ['basic','rashomon','sensor','rotating','chain'].map((type) => config.counts[type] || 0).join('-');
+    return [config.mapTier, config.doorTier, config.boss ? 1 : 0, counts].join('|');
+  }
+
+  getPatternWindow(level) {
+    const lv = Math.max(1, Math.min(15, Math.round(Number(level) || 1)));
+    const sig = this.levelPatternKey(lv);
+    let start = lv, end = lv;
+    while (start > 1 && this.levelPatternKey(start - 1) === sig) start--;
+    while (end < 15 && this.levelPatternKey(end + 1) === sig) end++;
+    return { start, end, label: start === end ? ('N' + this.pad2(start)) : ('N' + this.pad2(start) + '-' + this.pad2(end)) };
+  }
+
+  doorTypeCatalog(type) {
+    const map = {
+      basic: { label:'BASIC', color:'#ff4040', note:'手動開關門' },
+      rashomon: { label:'RASHOMON', color:'#ff8c00', note:'自動節奏開關' },
+      sensor: { label:'SENSOR', color:'#3bd6ff', note:'接近後觸發' },
+      rotating: { label:'ROTATE', color:'#ffd000', note:'配對輪轉門' },
+      chain: { label:'CHAIN', color:'#b061ff', note:'群組連動門' },
+      entrance: { label:'GATE', color:'#d8f7ff', note:'主入口' }
+    };
+    return map[type] || { label:(type || 'UNKNOWN').toUpperCase(), color:'#7dffb0', note:'未知門型' };
+  }
+
+  doorTypeList(config) {
+    const entries = [];
+    for (const type of ['basic','rashomon','sensor','rotating','chain']) {
+      for (let i = 0; i < (config.counts[type] || 0); i++) entries.push(type);
+    }
+    return entries;
+  }
+
+  zoneRoleStyle(role) {
+    if (role === 'desk') return { fill:'rgba(120,90,42,.2)', border:'rgba(255,208,141,.32)', text:'#ffd48d' };
+    if (role === 'lounge') return { fill:'rgba(54,113,83,.23)', border:'rgba(140,255,190,.26)', text:'#7ef0ae' };
+    return { fill:'rgba(52,102,77,.18)', border:'rgba(195,255,217,.18)', text:'#e6ffe9' };
+  }
+
+  pct(n, total) {
+    return ((n / total) * 100).toFixed(3) + '%';
+  }
+
+  buildMapPreview(layout, config) {
+    const W = 45, H = 25;
+    const corridors = layout.corridors.map((c, index) => ({
+      id:'C' + index,
+      left:this.pct(c[0], W),
+      top:this.pct(c[1], H),
+      width:this.pct(c[2], W),
+      height:this.pct(c[3], H),
+      fill:'rgba(61,118,86,.22)',
+      border:'rgba(132,208,164,.18)'
+    }));
+    const rooms = layout.rooms.map((room, index) => {
+      const style = this.zoneRoleStyle(room.role);
+      return {
+        id:'R' + index,
+        label:room.label,
+        left:this.pct(room.x, W),
+        top:this.pct(room.y, H),
+        width:this.pct(room.w, W),
+        height:this.pct(room.h, H),
+        textLeft:this.pct(room.x + 0.35, W),
+        textTop:this.pct(room.y + 0.35, H),
+        textWidth:this.pct(Math.max(2, room.w - 0.7), W),
+        fill:style.fill,
+        border:style.border,
+        textColor:style.text
+      };
+    });
+    const labels = (layout.hallLabels || []).map((label, index) => ({
+      id:'L' + index,
+      text:label.text,
+      left:this.pct(label.c, W),
+      top:this.pct(label.r - 0.6, H)
+    }));
+    const doorOrder = config ? this.doorTypeList(config) : [];
+    const doors = (config ? layout.doorSlots : []).map((slot, index) => {
+      const type = doorOrder[index];
+      const meta = this.doorTypeCatalog(type);
+      const dw = slot.axis === 'h' ? 2.5 : 0.9;
+      const dh = slot.axis === 'h' ? 0.85 : 4.2;
+      return {
+        id:'D' + index,
+        name:slot.name + ' // ' + meta.label,
+        left:this.pct(slot.c + (slot.axis === 'h' ? -0.75 : 0.05), W),
+        top:this.pct(slot.r + (slot.axis === 'h' ? 0.05 : -0.7), H),
+        width:this.pct(dw, W),
+        height:this.pct(dh, H),
+        color:meta.color
+      };
+    });
+    return { corridors, rooms, labels, doors };
+  }
+
+  getWorldIntel(worldTier) {
+    const layout = this.getMapLayout(worldTier);
+    const specs = {
+      1: {
+        tag:'F1 // EARLY ROUTE',
+        title:'PINE LODGE',
+        subtitle:'松木旅舍 // 單主走廊入門圖',
+        accent:'#8effb4',
+        summary:'先熟悉「櫃檯 - 主走廊 - 客房」的直線節奏，學會手動守門。',
+        unlocks:[
+          'N01-N03 // BASIC 門列，九扇門全靠手動操作。',
+          'N04-N05 // RASHOMON 混入，固定節奏門開始擾亂巡邏。',
+          '四間客房、一間大廳、一個南側櫃檯，動線單純但視野直白。'
+        ],
+        zones:[
+          '走廊：MAIN CORRIDOR 橫貫整層，三個 gateway 把北側房區和南側櫃檯接起來。',
+          '大廳：LOUNGE 在北側中段，是旅客緩衝區也容易成為繞路點。',
+          '櫃檯：FRONT DESK 固定在右下角，出門迎賓與回防距離都很長。',
+          '客房：101、102、103 在北排，104 在西南角，容易漏看單房。'
+        ]
+      },
+      2: {
+        tag:'F2 // SPLIT WING',
+        title:'TWIN-WING MANOR',
+        subtitle:'雙翼莊園 // 中央櫃檯分流圖',
+        accent:'#ffd060',
+        summary:'世界二把櫃檯拉到中央，西翼、東翼和北廊三條線要輪流巡。',
+        unlocks:[
+          'N06 // 地圖升級成雙翼結構，八間客房同時啟用。',
+          'N07-N09 // SENSOR 感應門加入，靠近就會改變門面節奏。',
+          'N10 // ROTATING 配對門首次上場，BOSS 夜需要重新背圖。'
+        ],
+        zones:[
+          '走廊：NORTH CORRIDOR 串起上排房區，左右兩翼一路通到底。',
+          '大廳：LOUNGE 仍在北側中央，是通往櫃檯前的視線中繼。',
+          '櫃檯：FRONT DESK 變成中樞核心，北門與南門都會被稽查抽查。',
+          '客房：205-208 分布在下翼，206 / 207 又切成左右兩扇門，最容易漏控。'
+        ]
+      },
+      3: {
+        tag:'F3 // FINAL GRID',
+        title:'BLACKTHORN VILLA',
+        subtitle:'荊棘別墅 // 高密度雙走廊圖',
+        accent:'#7fd6ff',
+        summary:'世界三把雙層客房與連動門網路全打開，重點變成資訊管理而不是單純跑線。',
+        unlocks:[
+          'N11-N12 // ROTATING 成為常態配置，雙走廊開始互卡。',
+          'N13-N15 // CHAIN 連動門網解鎖，多扇門會一起開關。',
+          '十二間客房 + 雙走廊 + 前後櫃檯口，任何失誤都會放大。'
+        ],
+        zones:[
+          '走廊：NORTH / SOUTH CORRIDOR 形成上下雙環，CHECK-IN HALL 把中央櫃檯穿起來。',
+          '大廳：LOUNGE 壓縮在北側中央，只剩一小塊喘息空間。',
+          '櫃檯：FRONT DESK 佔據中央大廳，南北兩扇 desk gate 都要顧。',
+          '客房：305-312 分成上下兩列，西翼、東翼都存在雙門房，路線最碎。'
+        ]
+      }
+    };
+    const info = specs[worldTier] || specs[1];
+    return { ...info, map:this.buildMapPreview(layout, null), unlockCount:'+' + info.unlocks.length, zoneCount:info.zones.length + ' ZONES' };
+  }
+
   getSelectedLevelMeta(level) {
     const config = this.getLevelConfig(level);
     const layout = this.getMapLayout(config.mapTier);
     const bossTag = config.boss ? ' // INSPECTOR BOSS NIGHT' : '';
-    return layout.name + ' // TIER ' + config.doorTier + bossTag;
+    return layout.name + ' // TIER ' + config.doorTier + ' // QUOTA $' + config.moneyTarget + bossTag;
   }
 
   getLevelSelectCards() {
@@ -1023,6 +1324,8 @@ class Component extends DCLogic {
     return Array.from({ length: 15 }, (_, index) => {
       const level = index + 1;
       const config = this.getLevelConfig(level);
+      const floor = this.levelToFloor(level);
+      const window = this.getPatternWindow(level);
       const map = mapNames[config.mapTier] || 'UNKNOWN SITE';
       const badge = config.boss ? 'BOSS' : ('TIER ' + config.doorTier);
       const badgeColor = config.boss ? '#ffb38f' : '#89efab';
@@ -1037,8 +1340,11 @@ class Component extends DCLogic {
       for (const type of ['basic','rashomon','sensor','rotating','chain']) if (config.counts[type]) entries.push(type.toUpperCase().slice(0,4) + ':' + config.counts[type]);
       return {
         level,
+        floor,
+        levelCode:this.pad2(level),
+        displayName:this.levelDisplayName(level),
         label: config.boss ? 'Inspector Confrontation' : 'Night Patrol',
-        map,
+        map: map + ' · 目標 $' + config.moneyTarget,
         badge,
         badgeColor,
         badgeBorder,
@@ -1049,9 +1355,55 @@ class Component extends DCLogic {
         doorMix: entries.join(' / '),
         alert: config.boss ? 'ALERT // INSPECTOR DEPLOYED' : ('SECTOR // MAP ' + config.mapTier),
         alertColor: config.boss ? '#ff9e7a' : '#71c58c',
-        onSelect: () => this.setState({ selectedLevel: level })
+        reviewFlag: window.label + (config.boss ? ' // BOSS' : ' // REVIEW'),
+        footer: '旅客 ' + Math.min(30, Math.max(1, Math.floor(this.getMapLayout(config.mapTier).guestRoomCount / 2)) * 2 + config.level) + ' // 配額 $' + config.moneyTarget,
+        nodeClass:(config.boss ? 'boss ' : '') + (level === selected ? 'is-selected' : ''),
+        onSelect: () => this.setState({ selectedLevel: level, selFloor: floor })
       };
     });
+  }
+
+  getFloorLevelCards(floor) {
+    return this.getLevelSelectCards().filter((card) => card.floor === floor);
+  }
+
+  getLevelPreview(level) {
+    const lv = Math.max(1, Math.min(15, Math.round(Number(level) || 1)));
+    const config = this.getLevelConfig(lv);
+    const layout = this.getMapLayout(config.mapTier);
+    const pattern = this.getPatternWindow(lv);
+    const changed = lv === 1 || this.levelPatternKey(lv - 1) !== this.levelPatternKey(lv);
+    const maxConcurrent = Math.max(1, Math.floor(layout.guestRoomCount / 2));
+    const travellers = Math.min(30, maxConcurrent * 2 + config.level);
+    const blueprint = this.buildMapPreview(layout, config);
+    const legend = ['basic','rashomon','sensor','rotating','chain'].filter((type) => config.counts[type]).map((type) => {
+      const meta = this.doorTypeCatalog(type);
+      return { label:meta.label + ' x' + config.counts[type], color:meta.color };
+    });
+    const notes = [
+      '門型視窗：' + pattern.label + ' 共用同一套門位分布，進場前先重新對色。',
+      '走廊 / 大廳 / 櫃檯皆已淡色標出，右圖看到的就是實際跑線骨架。',
+      config.boss ? '本夜含 INSPECTOR BOSS，門口與中央櫃檯都會變成高風險區。' : '本夜仍屬常規巡邏，但旅客數與收益要求會繼續提高。'
+    ];
+    return {
+      levelCode:this.pad2(lv),
+      displayName:this.levelDisplayName(lv),
+      worldLine:layout.name + ' // TIER ' + config.doorTier + ' // ' + pattern.label,
+      titleColor:config.boss ? '#ffb38f' : '#bfffd2',
+      titleGlow:config.boss ? 'rgba(255,143,102,.45)' : 'rgba(142,255,180,.34)',
+      reviewStatus:changed ? 'REVIEW REQUIRED // DOOR PATTERN SHIFT DETECTED' : 'REVIEW ADVISED // PATTERN WINDOW CONTINUES',
+      reviewColor:changed ? '#ffd060' : '#7dffb0',
+      reviewNote:changed ? '本夜門面配置與前一夜不同，請先確認門色與位置。' : '本夜沿用同一輪門型窗口，但旅客壓力與金額目標仍在上升。',
+      facts:[
+        { label:'TRAVELLERS', value:'' + travellers, color:'#e8ffe8' },
+        { label:'QUOTA', value:'$' + config.moneyTarget, color:'#ffd060' },
+        { label:'ROOMS', value:'' + layout.guestRoomCount, color:'#8effb4' },
+        { label:'BOSS', value:config.boss ? 'YES' : 'NO', color:config.boss ? '#ff8f66' : '#7dffb0' }
+      ],
+      notes,
+      doorLegend:legend,
+      map:blueprint
+    };
   }
 
   makeInventory() {
@@ -1317,19 +1669,40 @@ class Component extends DCLogic {
       if (e.deltaY < 0) this.changeFloor(1); else this.changeFloor(-1);
     };
     this._drag = null;
+    this._intelDrag = null;
     this._onPointerDown = (e) => {
       if (!this.state.showLevelSelect) return;
+      if (e.target && e.target.closest && e.target.closest('[data-intel-handle]')) {
+        this._intelDrag = { x: e.clientX, width: this.state.worldIntelWidth || 58, dragged: false };
+        this._drag = null;
+        return;
+      }
       if (e.target && e.target.closest && e.target.closest('[data-lvl-node],[data-no-drag]')) { this._drag = null; return; }
       this._drag = { y: e.clientY, moved: 0 };
     };
     this._onPointerMove = (e) => {
+      if (this._intelDrag && this.state.showLevelSelect) {
+        const next = Math.max(58, Math.min(420, this._intelDrag.width + (e.clientX - this._intelDrag.x)));
+        this._intelDrag.dragged = this._intelDrag.dragged || Math.abs(e.clientX - this._intelDrag.x) > 5;
+        if (Math.abs(next - (this.state.worldIntelWidth || 58)) > 2) this.setState({ worldIntelWidth: next });
+        return;
+      }
       if (!this._drag || !this.state.showLevelSelect) return;
       const dy = e.clientY - this._drag.y; this._drag.moved = dy;
       const el = this.floorsRef.current; if (!el) return;
       el.style.transition = 'none';
       el.style.transform = 'translateY(calc(-' + ((3 - (this.state.selFloor || 1)) * 100) + 'vh + ' + dy + 'px))';
     };
-    this._onPointerUp = () => {
+    this._onPointerUp = (e) => {
+      if (this._intelDrag) {
+        const moved = Math.abs(e.clientX - this._intelDrag.x);
+        let next = this.state.worldIntelWidth || 58;
+        if (!this._intelDrag.dragged || moved < 5) next = next > 120 ? 58 : 360;
+        else next = next < 140 ? 58 : (next > 300 ? 360 : 240);
+        this._intelDrag = null;
+        if (next !== (this.state.worldIntelWidth || 58)) this.setState({ worldIntelWidth: next });
+        return;
+      }
       if (!this._drag) return;
       const dy = this._drag.moved; this._drag = null;
       const el = this.floorsRef.current; if (el) el.style.transition = '';
@@ -1628,7 +2001,10 @@ class Component extends DCLogic {
   }
   blockedAt(x, y, rad) {
     const T = this.world.TILE;
-    const pts = [[x - rad, y - rad], [x + rad, y - rad], [x - rad, y + rad], [x + rad, y + rad]];
+    // Inset the collision box a little so a body (r~7) reliably passes a 1-tile (21px)
+    // doorway without snagging on the wall corners.
+    const m = Math.max(3, rad - 2);
+    const pts = [[x - m, y - m], [x + m, y - m], [x - m, y + m], [x + m, y + m]];
     for (const p of pts) if (!this.passable(Math.floor(p[0] / T), Math.floor(p[1] / T))) return true;
     return false;
   }
@@ -2526,10 +2902,15 @@ class Component extends DCLogic {
     const currentTab = s.optionsTab || 'rules';
     const sf = s.selFloor || 1;
     const picks = {};
-    for (let i = 1; i <= 15; i++) { const lv = i; picks['pickL' + lv] = () => this.startGame(lv); }
+    for (let i = 1; i <= 15; i++) {
+      const lv = i;
+      picks['pickL' + lv] = () => this.setState({ selectedLevel: lv, selFloor: this.levelToFloor(lv) });
+    }
     const elvOn = { bg: '#8effb4', fg: '#04110d', bd: '#8effb4' };
     const elvOff = { bg: 'transparent', fg: '#5f9f6f', bd: 'rgba(120,210,150,.2)' };
     const e1 = sf === 1 ? elvOn : elvOff, e2 = sf === 2 ? elvOn : elvOff, e3 = sf === 3 ? elvOn : elvOff;
+    const worldIntel = this.getWorldIntel(sf);
+    const preview = this.getLevelPreview(s.selectedLevel || 1);
     return {
       optionsTab: currentTab,
       showTabRules: currentTab === 'rules',
@@ -2585,7 +2966,38 @@ class Component extends DCLogic {
       showLevelSelect: s.showLevelSelect,
       selectedLevel: s.selectedLevel,
       selectedLevelMeta: this.getSelectedLevelMeta(s.selectedLevel),
-      levelSelectCards: this.getLevelSelectCards(),
+      floor1Cards: this.getFloorLevelCards(1),
+      floor2Cards: this.getFloorLevelCards(2),
+      floor3Cards: this.getFloorLevelCards(3),
+      worldIntelWidth: Math.round(s.worldIntelWidth || 58) + 'px',
+      worldIntelTag: worldIntel.tag,
+      worldIntelTitle: worldIntel.title,
+      worldIntelSubtitle: worldIntel.subtitle,
+      worldIntelSummary: worldIntel.summary,
+      worldIntelAccent: worldIntel.accent,
+      worldIntelUnlockCount: worldIntel.unlockCount,
+      worldIntelUnlocks: worldIntel.unlocks,
+      worldIntelZoneCount: worldIntel.zoneCount,
+      worldIntelZones: worldIntel.zones,
+      worldIntelCorridors: worldIntel.map.corridors,
+      worldIntelRooms: worldIntel.map.rooms,
+      worldIntelLabels: worldIntel.map.labels,
+      worldIntelHandleText: (s.worldIntelWidth || 58) > 120 ? 'WORLD INTEL // DRAG CLOSE' : 'WORLD INTEL // DRAG OPEN',
+      previewLevelCode: preview.levelCode,
+      previewDisplayName: preview.displayName,
+      previewWorldLine: preview.worldLine,
+      previewTitleColor: preview.titleColor,
+      previewTitleGlow: preview.titleGlow,
+      previewReviewStatus: preview.reviewStatus,
+      previewReviewColor: preview.reviewColor,
+      previewReviewNote: preview.reviewNote,
+      previewFacts: preview.facts,
+      previewNotes: preview.notes,
+      previewDoorLegend: preview.doorLegend,
+      previewCorridors: preview.map.corridors,
+      previewRooms: preview.map.rooms,
+      previewLabels: preview.map.labels,
+      previewDoors: preview.map.doors,
       titleGuestCards: this.getTitleGuestCards(),
       showDevConsole: s.showDevConsole,
       canvasRef: this.canvasRef,
@@ -2599,8 +3011,11 @@ class Component extends DCLogic {
       onUseItem5: () => this.useItem(5),
       logLines: this.logs.map(l => ({ txt: l.txt, color: l.color })),
       onNewGame: () => this.startGame(),
-      onOpenLevelSelect: () => this.setState({ showLevelSelect: true, showOptions: false, selectedLevel: s.selectedLevel || s.currentLevel || 1, selFloor: Math.max(1, Math.min(3, Math.ceil((s.currentLevel || 1) / 5))) }),
-      onCloseLevelSelect: () => this.setState({ showLevelSelect: false }),
+      onOpenLevelSelect: () => {
+        const selected = s.selectedLevel || s.currentLevel || 1;
+        this.setState({ showLevelSelect: true, showOptions: false, selectedLevel: selected, selFloor: this.levelToFloor(selected), worldIntelWidth: 58 });
+      },
+      onCloseLevelSelect: () => this.setState({ showLevelSelect: false, worldIntelWidth: 58 }),
       ...picks,
       floorsRef: this.floorsRef,
       selFloor: sf,
