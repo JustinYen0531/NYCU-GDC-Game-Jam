@@ -206,12 +206,55 @@
         </div>
       </div>
 
-      <!-- bottom log -->
-      <div style="border:1px solid #1a3d1a; background:#020704; padding:5px 14px; margin-top:7px; height:72px; overflow:hidden; font-size:16px; line-height:1.3;">
-        <span style="color:#1f521f; letter-spacing:2px; font-size:13px;">SYSTEM&nbsp;LOG&nbsp;//</span>
-        <sc-for list="{{ logLines }}" as="line" hint-placeholder-count="3">
-          <div style="color:{{ line.color }}; text-shadow:0 0 5px currentColor;">&gt; {{ line.txt }}</div>
-        </sc-for>
+      <!-- bottom section: inventory & logs -->
+      <div style="display:flex; gap:8px; margin-top:7px; height:74px; align-items:stretch; width:100%;">
+        <!-- Inventory UI -->
+        <div style="display:flex; border:1px solid #1a3d1a; background:#020704; padding:2px 8px; gap:8px; align-items:center; flex-shrink:0;">
+          <div style="font-size:12px; color:#1f8f1f; writing-mode:vertical-lr; text-orientation:mixed; letter-spacing:1px; border-right:1px solid #122a12; padding-right:4px; height:100%; display:flex; align-items:center; justify-content:center;">ITEMS</div>
+          
+          <!-- Slot 1: 遮布 -->
+          <div onClick="{{ onUseItem1 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="遮布: 鏡子永久防穿">
+            <div style="width:40px; height:40px; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:120px 80px; background-position:0px 0px;"></div>
+            <div style="font-size:11px; color:#33ff00; transform:scale(0.85); margin-top:-4px; white-space:nowrap;">遮布 [{{ items.cloth }}]</div>
+            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">1</div>
+          </div>
+
+          <!-- Slot 2: 眼罩 -->
+          <div onClick="{{ onUseItem2 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="眼罩: 顧客失明無敵">
+            <div style="width:40px; height:40px; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:120px 80px; background-position:-40px 0px;"></div>
+            <div style="font-size:11px; color:#33ff00; transform:scale(0.85); margin-top:-4px; white-space:nowrap;">眼罩 [{{ items.blindfold }}]</div>
+            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">2</div>
+          </div>
+
+          <!-- Slot 3: 勞術 -->
+          <div onClick="{{ onUseItem3 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="勞術: 短距離穿牆">
+            <div style="width:40px; height:40px; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:120px 80px; background-position:-80px 0px;"></div>
+            <div style="font-size:11px; color:#33ff00; transform:scale(0.85); margin-top:-4px; white-space:nowrap;">勞術 [{{ items.phase }}]</div>
+            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">3</div>
+          </div>
+
+          <!-- Slot 4: 門鎖 -->
+          <div onClick="{{ onUseItem4 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="門鎖: 強行閉鎖門扉">
+            <div style="width:40px; height:40px; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:120px 80px; background-position:0px -40px;"></div>
+            <div style="font-size:11px; color:#33ff00; transform:scale(0.85); margin-top:-4px; white-space:nowrap;">門鎖 [{{ items.lock }}]</div>
+            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">4</div>
+          </div>
+
+          <!-- Slot 5: 口哨 -->
+          <div onClick="{{ onUseItem5 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="口哨: 吸引鬼魂靠近">
+            <div style="width:40px; height:40px; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:120px 80px; background-position:-40px -40px;"></div>
+            <div style="font-size:11px; color:#33ff00; transform:scale(0.85); margin-top:-4px; white-space:nowrap;">口哨 [{{ items.whistle }}]</div>
+            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">5</div>
+          </div>
+        </div>
+
+        <!-- System Log -->
+        <div style="flex:1; border:1px solid #1a3d1a; background:#020704; padding:5px 14px; overflow:hidden; font-size:16px; line-height:1.3;">
+          <span style="color:#1f521f; letter-spacing:2px; font-size:13px;">SYSTEM&nbsp;LOG&nbsp;//</span>
+          <sc-for list="{{ logLines }}" as="line" hint-placeholder-count="3">
+            <div style="color:{{ line.color }}; text-shadow:0 0 5px currentColor;">&gt; {{ line.txt }}</div>
+          </sc-for>
+        </div>
       </div>
 
     </div>
@@ -229,19 +272,27 @@
       <!-- readability veil (top + bottom gradient to anchor title & buttons) -->
       <div style="position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(180deg, rgba(2,8,10,.62) 0%, rgba(0,0,0,0) 24%, rgba(0,0,0,0) 58%, rgba(2,8,12,.78) 100%), radial-gradient(120% 90% at 50% 30%, rgba(0,0,0,0) 55%, rgba(0,0,0,.4) 100%);"></div>
 
-      <!-- left roster: the guests -->
-      <div style="position:absolute; left:24px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:14px; z-index:5;">
+      <style>
+        .guest-roster-item .guest-detail { display:none; }
+        .guest-roster-item:hover .guest-detail { display:flex; }
+      </style>
+      <!-- compact guest roster; details appear only while hovering a name -->
+      <div style="position:absolute; left:18px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:8px; z-index:14;">
         <sc-for list="{{ titleGuestCards }}" as="guestCard" hint-placeholder-count="3">
-          <div style="display:flex; gap:10px; align-items:flex-start; background:rgba(3,12,7,.82); border:1px solid {{ guestCard.border }}; padding:10px 12px; width:348px; box-shadow:0 0 18px rgba(0,0,0,.24);">
-            <div style="width:40px; height:40px; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid {{ guestCard.border }}; color:{{ guestCard.accent }}; font-size:24px; text-shadow:0 0 8px {{ guestCard.glow }};">{{ guestCard.icon }}</div>
-            <div style="display:flex; flex-direction:column; gap:4px;">
-              <div style="font-family:'Cinzel',serif; font-size:17px; color:#e4f7e8; letter-spacing:1px;">{{ guestCard.title }}</div>
-              <div style="font-size:14px; color:{{ guestCard.accent }}; line-height:1.1;">{{ guestCard.subtitle }}</div>
-              <div style="font-size:13px; color:#86c79a; line-height:1.2;">{{ guestCard.vision }}</div>
-              <div style="font-size:13px; color:#72b785; line-height:1.22;">{{ guestCard.checkIn }}</div>
-              <div style="font-size:13px; color:#72b785; line-height:1.22;">{{ guestCard.behavior }}</div>
-              <div style="font-size:13px; color:#ffcf8a; line-height:1.22;">{{ guestCard.ghost }}</div>
+          <div class="guest-roster-item" style="position:relative; width:132px;">
+            <div style="cursor:help; height:30px; box-sizing:border-box; display:flex; gap:7px; align-items:center; padding:3px 8px 3px 4px; background:rgba(3,12,7,.64); border:1px solid {{ guestCard.border }}; border-radius:999px; box-shadow:0 6px 16px rgba(0,0,0,.24); -webkit-backdrop-filter:blur(7px); backdrop-filter:blur(7px);">
+              <div style="width:22px; height:22px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid {{ guestCard.border }}; color:{{ guestCard.accent }}; font-size:15px; text-shadow:0 0 7px {{ guestCard.glow }};">{{ guestCard.icon }}</div>
+              <div style="font-family:'Cinzel',serif; font-size:12px; color:#e4f7e8; letter-spacing:.5px; white-space:nowrap;">{{ guestCard.title }}</div>
             </div>
+
+              <div class="guest-detail" style="position:absolute; left:142px; top:50%; transform:translateY(-50%); width:306px; box-sizing:border-box; padding:11px 13px; flex-direction:column; gap:5px; pointer-events:none; background:linear-gradient(135deg, rgba(2,14,8,.88), rgba(5,22,14,.72)); border:1px solid {{ guestCard.border }}; border-radius:10px; box-shadow:0 14px 34px rgba(0,0,0,.48); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);">
+                <div style="font-family:'Cinzel',serif; font-size:16px; color:#e4f7e8; letter-spacing:1px;">{{ guestCard.title }}</div>
+                <div style="font-size:14px; color:{{ guestCard.accent }}; line-height:1.1;">{{ guestCard.subtitle }}</div>
+                <div style="font-size:13px; color:#86c79a; line-height:1.2;">{{ guestCard.vision }}</div>
+                <div style="font-size:13px; color:#72b785; line-height:1.22;">{{ guestCard.checkIn }}</div>
+                <div style="font-size:13px; color:#72b785; line-height:1.22;">{{ guestCard.behavior }}</div>
+                <div style="font-size:13px; color:#ffcf8a; line-height:1.22;">{{ guestCard.ghost }}</div>
+              </div>
           </div>
         </sc-for>
       </div>
@@ -510,7 +561,23 @@
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { screen: (props.startScreen === 'game' ? 'playing' : 'title'), showOptions: false, showLevelSelect: false, showDevConsole: false, currentLevel: 1, selectedLevel: 1, tick: 0, scale: 1 };
+    this.state = { 
+      screen: (props.startScreen === 'game' ? 'playing' : 'title'), 
+      showOptions: false, 
+      showLevelSelect: false, 
+      showDevConsole: false, 
+      currentLevel: 1, 
+      selectedLevel: 1, 
+      tick: 0, 
+      scale: 1,
+      items: {
+        cloth: 3,
+        blindfold: 2,
+        phase: 1,
+        lock: 2,
+        whistle: 1
+      }
+    };
     this.canvasRef = React.createRef();
     this.miniRef = React.createRef();
     this.keys = {};
@@ -807,6 +874,117 @@ class Component extends DCLogic {
     }
   }
 
+  useItem(index) {
+    if (this.state.screen !== 'playing') return;
+    const names = ['cloth', 'blindfold', 'phase', 'lock', 'whistle'];
+    const name = names[index - 1];
+    const items = { ...this.state.items };
+    if (items[name] > 0) {
+      items[name]--;
+      this.setState({ items });
+      
+      if (name === 'cloth') {
+        this.placeCloth();
+      } else if (name === 'blindfold') {
+        this.useBlindfold();
+      } else if (name === 'phase') {
+        this.usePhase();
+      } else if (name === 'lock') {
+        this.useLock();
+      } else if (name === 'whistle') {
+        this.useWhistle();
+      }
+    } else {
+      this.log("NO " + name.toUpperCase() + " REMAINING!", "#ff3333");
+      this.playSFX('error');
+    }
+  }
+
+  placeCloth() {
+    const w = this.world; if (!w) return;
+    let closest = null, bd = 1e9;
+    for (const m of w.mirrors) {
+      const dx = (m.c + 0.5) * w.TILE - w.player.x;
+      const dy = (m.r + 0.5) * w.TILE - w.player.y;
+      const d = Math.hypot(dx, dy);
+      if (d < bd) { bd = d; closest = m; }
+    }
+    if (closest && bd < w.TILE * 1.8) {
+      closest.covered = !closest.covered;
+      this.log(closest.covered ? "MIRROR COVERED WITH CLOTH." : "CLOTH REMOVED FROM MIRROR.", "#33ff00");
+      this.playSFX('lock');
+    } else {
+      this.log("TOO FAR FROM ANY MIRROR.", "#ff3333");
+      this.playSFX('error');
+      const items = { ...this.state.items }; items.cloth++; this.setState({ items });
+    }
+  }
+
+  useBlindfold() {
+    const w = this.world; if (!w) return;
+    let closest = null, bd = 1e9;
+    for (const g of w.guests) {
+      const dx = g.x - w.player.x, dy = g.y - w.player.y;
+      const d = Math.hypot(dx, dy);
+      if (d < bd) { bd = d; closest = g; }
+    }
+    if (closest && bd < w.TILE * 1.8) {
+      closest.blinded = 10;
+      closest.invulnerable = 10;
+      this.log("GUEST BLINDFOLDED. INVULNERABLE FOR 10s.", "#33ff00");
+      this.playSFX('lock');
+    } else {
+      this.log("TOO FAR FROM ANY GUEST.", "#ffb000");
+      this.playSFX('error');
+      const items = { ...this.state.items }; items.blindfold++; this.setState({ items });
+    }
+  }
+
+  usePhase() {
+    const w = this.world; if (!w) return;
+    const dx = Math.cos(w.player.dir || 0) * w.TILE * 2.2;
+    const dy = Math.sin(w.player.dir || 0) * w.TILE * 2.2;
+    const tx = w.player.x + dx, ty = w.player.y + dy;
+    if (this.passable(Math.floor(tx / w.TILE), Math.floor(ty / w.TILE))) {
+      w.player.x = tx; w.player.y = ty;
+      this.log("PHASED THROUGH WALL.", "#33ff00");
+      this.playSFX('teleport');
+    } else {
+      this.log("PHASE BLOCKED BY SOLID OBJECT.", "#ff3333");
+      this.playSFX('error');
+      const items = { ...this.state.items }; items.phase++; this.setState({ items });
+    }
+  }
+
+  useLock() {
+    const w = this.world; if (!w) return;
+    let closest = null, bd = 1e9;
+    for (const d of w.doors) {
+      const dx = (d.c + 0.5) * w.TILE - w.player.x;
+      const dy = (d.r + 0.5) * w.TILE - w.player.y;
+      const dist = Math.hypot(dx, dy);
+      if (dist < bd) { bd = dist; closest = d; }
+    }
+    if (closest && bd < w.TILE * 1.8) {
+      closest.locked = true; closest.open = false;
+      closest.lockTimer = 10;
+      this.log("DOOR FORCIBLY LOCKED FOR 10s.", "#33ff00");
+      this.playSFX('lock');
+    } else {
+      this.log("TOO FAR FROM ANY DOOR.", "#ff3333");
+      this.playSFX('error');
+      const items = { ...this.state.items }; items.lock++; this.setState({ items });
+    }
+  }
+
+  useWhistle() {
+    const w = this.world; if (!w) return;
+    this.log("WHISTLE BLOWN! GHOSTS ATTRACTED.", "#ffb000");
+    this.playSFX('sigh');
+    w.daughter.path = null;
+    for (const gh of w.ghosts) gh.path = null;
+  }
+
   componentDidMount() {
     this.buildWorld(this.state.currentLevel);
     this.fit();
@@ -838,10 +1016,11 @@ class Component extends DCLogic {
           this.log("DEV OVERRIDE INSTIGATED", "#ffb000");
           this.playSFX('boot');
         }
-      } else if (k !== 'shift' && k !== 'e' && !['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) {
+      } else if (k !== 'shift' && k !== 'e' && !['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','1','2','3','4','5'].includes(k)) {
         this.devClickCount = 0;
       }
       if (k === 'e' && this.state.screen === 'playing') { e.preventDefault(); this.operateDoor(!!e.shiftKey || !!this.keys['shift']); }
+      if (['1','2','3','4','5'].includes(k) && this.state.screen === 'playing') { e.preventDefault(); this.useItem(parseInt(k)); }
       if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k)) e.preventDefault();
     };
     this._onKeyUp = (e) => { this.keys[e.key.toLowerCase()] = false; };
@@ -1067,7 +1246,20 @@ class Component extends DCLogic {
   startGame(level) {
     const lv=Math.max(1,Math.min(15,Math.round(Number(level)||this.state.currentLevel||1)));
     this.buildWorld(lv);
-    this.setState({ screen:'playing', showOptions:false, showLevelSelect:false, currentLevel:lv, selectedLevel:lv });
+    this.setState({ 
+      screen:'playing', 
+      showOptions:false, 
+      showLevelSelect:false, 
+      currentLevel:lv, 
+      selectedLevel:lv,
+      items: {
+        cloth: 3,
+        blindfold: 2,
+        phase: 1,
+        lock: 2,
+        whistle: 1
+      }
+    });
   }
 
   // ---------- helpers ----------
@@ -1301,8 +1493,8 @@ class Component extends DCLogic {
             const ent = w.entranceDoor;
             if (ent && ent.open) {
               w.guests.splice(i, 1);
-              this.log('BOLD MAN ESCAPED // INSPECTOR INBOUND!', '#ff3333');
-              if (!w.inspector && !w.inspectorDone) this.spawnInspector(true);
+              this.log(w.config.boss?'BOLD MAN ESCAPED // INSPECTOR INBOUND!':'BOLD MAN ESCAPED // NO INSPECTOR SIGNAL.',w.config.boss?'#ff3333':'#ffb000');
+              if(w.config.boss&&!w.inspector&&!w.inspectorDone)this.spawnInspector(true);
             }
           }
         } else this.follow(g, dt, profile.moveSpeed);
@@ -1310,7 +1502,7 @@ class Component extends DCLogic {
     }
 
     // inspector spawn timing
-    if (!w.inspector && !w.inspectorDone && w.t > dur * 0.5) this.spawnInspector(false);
+    if(w.config.boss&&!w.inspector&&!w.inspectorDone&&w.t>dur*.5)this.spawnInspector(false);
 
     // inspector
     if (w.inspector) {
@@ -1353,7 +1545,7 @@ class Component extends DCLogic {
 
   spawnInspector(early) {
     const w = this.world;
-    const ins = { x: w.cx(w.inspectorSpawn.c), y: w.cy(w.inspectorSpawn.r), r: 7, path: null, pi: 0, stuck: 0, caught: 0, speedMul: 1, dashCd: 2, dashT: 0, warned: false };
+    const ins = { x:w.cx(w.inspectorSpawn.c),y:w.cy(w.inspectorSpawn.r),r:7,path:null,pi:0,stuck:0,caught:0,speedMul:1,dashCd:2,dashT:0,warned:false,hostile:true,forceProgress:0 };
     w.inspector = ins;
     w.screenGlitch = 1.2; w.flash = 0.6;
     this.log(early ? 'THE INSPECTOR FORCES THE DOOR.' : 'KNOCKING AT THE GATE // INSPECTOR ARRIVES.', '#ff3333');
@@ -1443,11 +1635,16 @@ class Component extends DCLogic {
     // mirrors
     for (const m of w.mirrors) {
       const x = m.c * T, y = m.r * T;
-      const grad = ctx.createLinearGradient(x, y, x + T, y + T);
-      grad.addColorStop(0, 'rgba(127,223,255,0.35)'); grad.addColorStop(0.5, 'rgba(20,60,80,0.2)'); grad.addColorStop(1, 'rgba(127,223,255,0.3)');
-      ctx.fillStyle = grad; ctx.fillRect(x + 4, y + 3, T - 8, T - 6);
-      ctx.strokeStyle = 'rgba(127,223,255,0.6)'; ctx.strokeRect(x + 4, y + 3, T - 8, T - 6);
-      if (w.daughter.channel > 0) { ctx.save(); ctx.shadowColor = C.mirror; ctx.shadowBlur = 18; ctx.strokeStyle = C.mirror; ctx.lineWidth = 2; ctx.strokeRect(x + 3, y + 2, T - 6, T - 4); ctx.restore(); }
+      if (m.covered) {
+        ctx.fillStyle = 'rgba(30,22,12,0.95)'; ctx.fillRect(x + 4, y + 3, T - 8, T - 6);
+        ctx.strokeStyle = '#6b432a'; ctx.lineWidth = 2; ctx.strokeRect(x + 4, y + 3, T - 8, T - 6);
+      } else {
+        const grad = ctx.createLinearGradient(x, y, x + T, y + T);
+        grad.addColorStop(0, 'rgba(127,223,255,0.35)'); grad.addColorStop(0.5, 'rgba(20,60,80,0.2)'); grad.addColorStop(1, 'rgba(127,223,255,0.3)');
+        ctx.fillStyle = grad; ctx.fillRect(x + 4, y + 3, T - 8, T - 6);
+        ctx.strokeStyle = 'rgba(127,223,255,0.6)'; ctx.strokeRect(x + 4, y + 3, T - 8, T - 6);
+        if (w.daughter.channel > 0) { ctx.save(); ctx.shadowColor = C.mirror; ctx.shadowBlur = 18; ctx.strokeStyle = C.mirror; ctx.lineWidth = 2; ctx.strokeRect(x + 3, y + 2, T - 6, T - 4); ctx.restore(); }
+      }
     }
 
     // doors
@@ -1502,7 +1699,14 @@ class Component extends DCLogic {
       if (g.type === 'boldMan') { ctx.shadowBlur = 0; ctx.fillStyle = '#3a2400'; ctx.beginPath(); ctx.arc(g.x, g.y, 3, 0, 7); ctx.fill(); }
       if (g.type === 'brat') { ctx.shadowBlur = 0; ctx.fillStyle = '#06283a'; ctx.fillRect(g.x - 2.5, g.y - 2.5, 5, 5); }
       ctx.restore();
-      if (g.scare > 5 && g.scare < 100) {
+
+      // blindfold bar indicator
+      if (g.blinded > 0) {
+        ctx.fillStyle = '#000000'; ctx.fillRect(g.x - 8, g.y - 3, 16, 4);
+        ctx.strokeStyle = '#33ff00'; ctx.lineWidth = 1; ctx.strokeRect(g.x - 8, g.y - 3, 16, 4);
+      }
+
+      if (g.scare > 5 && g.scare < 100 && !(g.blinded > 0)) {
         ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(g.x - 10, g.y - 16, 20, 4);
         ctx.fillStyle = g.scare > 70 ? C.red : C.amber; ctx.fillRect(g.x - 10, g.y - 16, 20 * g.scare / 100, 4);
       }
@@ -1661,6 +1865,12 @@ class Component extends DCLogic {
       canvasRef: this.canvasRef,
       miniRef: this.miniRef,
       hud: this.hud(),
+      items: s.items || { cloth: 0, blindfold: 0, phase: 0, lock: 0, whistle: 0 },
+      onUseItem1: () => this.useItem(1),
+      onUseItem2: () => this.useItem(2),
+      onUseItem3: () => this.useItem(3),
+      onUseItem4: () => this.useItem(4),
+      onUseItem5: () => this.useItem(5),
       logLines: this.logs.map(l => ({ txt: l.txt, color: l.color })),
       onNewGame: () => this.startGame(),
       onOpenLevelSelect: () => this.setState({ showLevelSelect: true, showOptions: false, selectedLevel: s.selectedLevel || s.currentLevel || 1 }),
