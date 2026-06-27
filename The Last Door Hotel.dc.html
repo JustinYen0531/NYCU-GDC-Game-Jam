@@ -224,32 +224,13 @@
   <!-- ======================= TITLE SCREEN ======================= -->
   <sc-if value="{{ isTitle }}" hint-placeholder-val="{{ true }}">
     <div style="position:fixed; inset:0; z-index:70; overflow:hidden; background:#02080a; font-family:'VT323', monospace;">
-      <!-- sky -->
-      <div style="position:absolute; inset:0; background:linear-gradient(180deg, #04141c 0%, #061a18 40%, #02100c 70%, #010705 100%);"></div>
-      <!-- aurora ribbons -->
-      <div style="position:absolute; top:-4%; left:-10%; width:120%; height:46%; background:linear-gradient(95deg, transparent 0%, rgba(51,255,120,.0) 15%, rgba(60,255,140,.45) 38%, rgba(120,255,180,.2) 55%, transparent 78%); filter:blur(28px); mix-blend-mode:screen; animation:aurora 14s ease-in-out infinite;"></div>
-      <div style="position:absolute; top:2%; left:-10%; width:120%; height:40%; background:linear-gradient(85deg, transparent 25%, rgba(40,220,255,.28) 50%, rgba(80,255,200,.18) 62%, transparent 85%); filter:blur(34px); mix-blend-mode:screen; animation:aurora 19s ease-in-out infinite reverse;"></div>
-      <!-- mountains -->
-      <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMax slice" style="position:absolute; inset:0; width:100%; height:100%;">
-        <polygon points="0,700 0,430 150,300 300,420 460,250 640,470 720,360 900,520 1050,330 1200,470 1200,700" fill="#04110d"></polygon>
-        <polygon points="0,700 0,540 220,400 420,560 560,440 760,600 980,470 1200,580 1200,700" fill="#020b08"></polygon>
-        <polygon points="460,250 520,300 580,265 640,470 540,400 480,360" fill="#0a1f18" opacity="0.7"></polygon>
-        <!-- hotel silhouette -->
-        <g transform="translate(560,150)" fill="#06140f" stroke="#1c4d2e" stroke-width="1.4">
-          <rect x="20" y="60" width="120" height="80"></rect>
-          <rect x="44" y="20" width="20" height="46"></rect><polygon points="44,20 54,2 64,20"></polygon>
-          <rect x="96" y="20" width="20" height="46"></rect><polygon points="96,20 106,2 116,20"></polygon>
-          <rect x="70" y="34" width="20" height="32"></rect><polygon points="70,34 80,12 90,34"></polygon>
-        </g>
-        <g transform="translate(560,150)" fill="#aef7c2" opacity="0.85">
-          <rect x="30" y="78" width="6" height="8"></rect><rect x="50" y="78" width="6" height="8"></rect><rect x="74" y="74" width="6" height="8"></rect><rect x="98" y="78" width="6" height="8"></rect><rect x="122" y="78" width="6" height="8"></rect>
-          <rect x="40" y="100" width="6" height="8"></rect><rect x="64" y="100" width="6" height="8"></rect><rect x="88" y="100" width="6" height="8"></rect><rect x="112" y="100" width="6" height="8"></rect>
-        </g>
-      </svg>
-      <div style="position:absolute; inset:0; background:radial-gradient(120% 90% at 50% 30%, rgba(0,0,0,0) 50%, rgba(0,0,0,.55) 100%);"></div>
+      <!-- looping lobby animation background -->
+      <video src="./遊戲大廳_無縫循環動畫.mp4" autoplay loop muted playsinline preload="auto" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;"></video>
+      <!-- readability veil (top + bottom gradient to anchor title & buttons) -->
+      <div style="position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(180deg, rgba(2,8,10,.62) 0%, rgba(0,0,0,0) 24%, rgba(0,0,0,0) 58%, rgba(2,8,12,.78) 100%), radial-gradient(120% 90% at 50% 30%, rgba(0,0,0,0) 55%, rgba(0,0,0,.4) 100%);"></div>
 
       <!-- left roster: the guests -->
-      <div style="position:absolute; left:24px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:18px;">
+      <div style="position:absolute; left:24px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:18px; z-index:5;">
         <div data-tone="g" style="display:flex; gap:10px; align-items:center; background:rgba(3,12,7,.78); border:1px solid #1c4d2e; padding:8px 12px; width:266px;">
           <div style="width:36px; height:36px; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid #2a6b3a; color:#7dffb0; font-size:24px; text-shadow:0 0 8px #33ff00;">&#9760;</div>
           <div><div style="font-family:'Cinzel',serif; font-size:16px; color:#cfe8cf; letter-spacing:1px;">THE RECKLESS</div><div style="font-size:15px; color:#5f9f6f; line-height:1.1;">They break rules. They fear nothing.</div></div>
@@ -265,7 +246,7 @@
       </div>
 
       <!-- right roster: inspectors -->
-      <div style="position:absolute; right:24px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:18px; text-align:right;">
+      <div style="position:absolute; right:24px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:18px; text-align:right; z-index:5;">
         <div style="display:flex; gap:10px; align-items:center; flex-direction:row-reverse; background:rgba(3,12,7,.78); border:1px solid #4d2e1c; padding:8px 12px; width:266px;">
           <div style="width:36px; height:36px; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid #6b4a2a; color:#ffb000; font-size:22px; text-shadow:0 0 8px #ffb000;">&#9876;</div>
           <div><div style="font-family:'Cinzel',serif; font-size:16px; color:#e8d8c0; letter-spacing:1px;">THE OBSERVER</div><div style="font-size:15px; color:#a08050; line-height:1.1;">They watch. They take notes.</div></div>
@@ -280,17 +261,19 @@
         </div>
       </div>
 
-      <!-- center sign -->
-      <div style="position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); width:420px; text-align:center; background:linear-gradient(180deg, rgba(8,28,18,.92), rgba(3,14,9,.96)); border:2px solid #2a6b3a; box-shadow:0 0 50px rgba(51,255,0,.18), inset 0 0 40px rgba(0,0,0,.7); padding:30px 28px 34px;">
-        <div style="font-family:'Cinzel',serif; font-weight:700; font-size:42px; color:#bff5cf; letter-spacing:4px; text-shadow:0 0 22px rgba(80,255,140,.6);">THE LAST DOOR</div>
-        <div style="font-family:'Cinzel',serif; font-size:18px; color:#5f9f6f; letter-spacing:14px; margin:4px 0 8px;">&#183; HOTEL &#183;</div>
-        <div style="height:1px; background:linear-gradient(90deg, transparent, #2a6b3a, transparent); margin:0 0 18px;"></div>
-        <div style="display:flex; flex-direction:column; gap:12px; font-family:'Cinzel',serif; font-size:24px; letter-spacing:3px;">
-          <div onClick="{{ onNewGame }}" onMouseEnter="{{ onHoverOn }}" onMouseLeave="{{ onHoverOff }}" style="cursor:pointer; color:#dff7e6; padding:3px 0; transition:.15s;" style-hover="background:#33ff00; color:#04110d; text-shadow:none;">NEW GAME</div>
-          <div onClick="{{ onNewGame }}" style="cursor:pointer; color:#dff7e6; padding:3px 0; transition:.15s;" style-hover="background:#33ff00; color:#04110d;">CONTINUE</div>
-          <div onClick="{{ onOptions }}" style="cursor:pointer; color:#dff7e6; padding:3px 0; transition:.15s;" style-hover="background:#33ff00; color:#04110d;">OPTIONS</div>
-          <div onClick="{{ onExit }}" style="cursor:pointer; color:#dff7e6; padding:3px 0; transition:.15s;" style-hover="background:#ff3333; color:#04110d;">EXIT</div>
-        </div>
+      <!-- floating title (no panel) -->
+      <div style="position:absolute; left:50%; top:16%; transform:translateX(-50%); z-index:6; text-align:center; pointer-events:none;">
+        <div style="font-family:'Cinzel',serif; font-weight:700; font-size:46px; color:#dff7e6; letter-spacing:5px; text-shadow:0 0 4px rgba(0,0,0,.95), 0 0 22px rgba(80,255,140,.65);">THE LAST DOOR</div>
+        <div style="font-family:'Cinzel',serif; font-size:18px; color:#9fe6b8; letter-spacing:14px; margin:2px 0 8px; text-shadow:0 0 4px rgba(0,0,0,.95), 0 0 14px rgba(80,255,140,.5);">&#183; HOTEL &#183;</div>
+        <div style="height:1px; width:340px; margin:0 auto; background:linear-gradient(90deg, transparent, #2a6b3a, transparent);"></div>
+      </div>
+
+      <!-- menu buttons: bottom-center horizontal bar -->
+      <div style="position:absolute; left:50%; bottom:9%; transform:translateX(-50%); z-index:6; display:flex; gap:14px; align-items:center; justify-content:center;">
+        <div onClick="{{ onNewGame }}" onMouseEnter="{{ onHoverOn }}" onMouseLeave="{{ onHoverOff }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:22px; letter-spacing:2px; color:#33ff00; background:rgba(3,12,7,.78); border:1px solid #33ff00; box-shadow:0 0 10px rgba(51,255,0,.22); padding:9px 20px; text-shadow:0 0 6px #33ff00; transition:.15s;" style-hover="background:#33ff00; color:#04110d; text-shadow:none;">[ NEW GAME ]</div>
+        <div onClick="{{ onNewGame }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:22px; letter-spacing:2px; color:#7dffb0; background:rgba(3,12,7,.78); border:1px solid #2a6b3a; padding:9px 20px; transition:.15s;" style-hover="background:#33ff00; color:#04110d;">[ CONTINUE ]</div>
+        <div onClick="{{ onOptions }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:22px; letter-spacing:2px; color:#7dffb0; background:rgba(3,12,7,.78); border:1px solid #2a6b3a; padding:9px 20px; transition:.15s;" style-hover="background:#33ff00; color:#04110d;">[ OPTIONS ]</div>
+        <div onClick="{{ onExit }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:22px; letter-spacing:2px; color:#ff6b6b; background:rgba(12,3,3,.78); border:1px solid #6b2020; padding:9px 20px; transition:.15s;" style-hover="background:#ff3333; color:#04110d;">[ EXIT ]</div>
       </div>
 
       <!-- options panel -->
@@ -311,7 +294,7 @@
         </div>
       </sc-if>
 
-      <div style="position:absolute; bottom:16px; left:50%; transform:translateX(-50%); font-size:16px; color:#2a6b3a; letter-spacing:2px;">NYCU GAME JAM &#183; THEME: DOOR &#183; SNOWBOUND PROTOCOL</div>
+      <div style="position:absolute; bottom:8px; left:50%; transform:translateX(-50%); z-index:6; font-size:14px; color:#2a6b3a; letter-spacing:2px; text-shadow:0 0 4px rgba(0,0,0,.9);">NYCU GAME JAM &#183; THEME: DOOR &#183; SNOWBOUND PROTOCOL</div>
     </div>
   </sc-if>
 
@@ -487,6 +470,7 @@ class Component extends DCLogic {
     this.hudAcc = 0;
     this.last = 0;
     this.devClickCount = 0;
+    this.powerWarnCd = 0;
 
     // Load music files from local path
     try {
@@ -498,9 +482,18 @@ class Component extends DCLogic {
       this.audio.title.loop = true;
       this.audio.normal.loop = true;
       this.audio.boss.loop = true;
+
+      // Initialize looping SFX
+      this.loopingSFX = {
+        heartbeat: new Audio('./音效資產/03_旅客與稽查員/心跳聲.mp3'),
+        channeling: new Audio('./音效資產/02_靈異與鬼魂/穿透牆壁聲.wav')
+      };
+      this.loopingSFX.heartbeat.loop = true;
+      this.loopingSFX.channeling.loop = true;
     } catch (e) {
       console.error("Failed to load audio files:", e);
       this.audio = null;
+      this.loopingSFX = null;
     }
     this.currentMusic = null;
   }
@@ -526,6 +519,41 @@ class Component extends DCLogic {
       this.audio[type].play().catch(err => {
         console.warn("Audio autoplay blocked by browser policy. Will unlock on interaction.", err);
       });
+    }
+  }
+
+  playSFX(name) {
+    if (!this.sfxPaths) {
+      this.sfxPaths = {
+        close: './音效資產/01_門與鎖頭/關門聲.wav',
+        lock: './音效資產/01_門與鎖頭/鎖門聲.wav',
+        unlock: './音效資產/01_門與鎖頭/解鎖門聲.wav',
+        blocked: './音效資產/01_門與鎖頭/無法開門聲.wav',
+        sigh: './音效資產/02_靈異與鬼魂/鬼呼聲.wav',
+        channeling: './音效資產/02_靈異與鬼魂/穿透牆壁聲.wav',
+        teleport: './音效資產/02_靈異與鬼魂/傳送成功聲.wav',
+        transform: './音效資產/02_靈異與鬼魂/變鬼聲.mp3',
+        screaming: './音效資產/03_旅客與稽查員/膽小女人尖叫.wav',
+        gasping: './音效資產/03_旅客與稽查員/大膽男人驚呼.wav',
+        breakIn: './音效資產/03_旅客與稽查員/稽查破門聲.wav',
+        dash: './音效資產/03_旅客與稽查員/稽查衝刺聲.wav',
+        heartbeat: './音效資產/03_旅客與稽查員/心跳聲.mp3',
+        boot: './音效資產/04_系統與介面/主機開啟聲.wav',
+        keyboard: './音效資產/04_系統與介面/按鍵盤聲.wav',
+        error: './音效資產/04_系統與介面/錯誤提示音.wav',
+        winSFX: './音效資產/04_系統與介面/勝利凱旋聲.wav',
+        loseSFX: './音效資產/04_系統與介面/失敗陰鬱聲.wav'
+      };
+    }
+    const path = this.sfxPaths[name];
+    if (path) {
+      try {
+        const a = new Audio(path);
+        a.volume = 0.85;
+        a.play().catch(() => {});
+      } catch (e) {
+        console.warn("Failed to play SFX:", name, e);
+      }
     }
   }
 
@@ -558,6 +586,7 @@ class Component extends DCLogic {
           this.setState({ showDevConsole: !this.state.showDevConsole });
           this.devClickCount = 0;
           this.log("DEV OVERRIDE INSTIGATED", "#ffb000");
+          this.playSFX('boot');
         }
       } else if (k !== 'shift' && k !== 'e' && !['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) {
         this.devClickCount = 0;
@@ -582,6 +611,11 @@ class Component extends DCLogic {
         try { this.audio[k].pause(); } catch (e) {}
       }
     }
+    if (this.loopingSFX) {
+      for (const k in this.loopingSFX) {
+        try { this.loopingSFX[k].pause(); } catch (e) {}
+      }
+    }
     cancelAnimationFrame(this._raf);
   }
 
@@ -594,6 +628,7 @@ class Component extends DCLogic {
   log(txt, color) {
     this.logs.unshift({ id: ++this.logId, txt, color: color || '#33ff00' });
     if (this.logs.length > 4) this.logs.length = 4;
+    this.playSFX('keyboard');
   }
 
   // ---------- map ----------
@@ -762,18 +797,35 @@ class Component extends DCLogic {
   operateDoor() {
     const w = this.world; if (!w) return;
     let best = null, bd = 1e9;
+    let anyBest = null, abd = 1e9;
     for (const d of w.doors) {
-      if (d.type === 'auto' || d.type === 'entrance') continue;
       const dx = (d.c + 0.5) * w.TILE - w.player.x, dy = (d.r + 0.5) * w.TILE - w.player.y;
       const dist = Math.hypot(dx, dy);
+      if (dist < abd) { abd = dist; anyBest = d; }
+      if (d.type === 'auto' || d.type === 'entrance') continue;
       if (dist < bd) { bd = dist; best = d; }
     }
     if (best && bd < w.TILE * 1.7) {
       // cycle: open -> closed -> locked -> open
-      if (best.open) { best.open = false; best.locked = false; this.log('DOOR ' + best.c + '-' + best.r + ' CLOSED.', '#ffb000'); }
-      else if (!best.locked) { best.locked = true; this.log('DOOR ' + best.c + '-' + best.r + ' LOCKED.', '#33ff00'); }
-      else { best.open = true; best.locked = false; this.log('DOOR ' + best.c + '-' + best.r + ' OPENED.', '#7dffb0'); }
+      if (best.open) { 
+        best.open = false; best.locked = false; 
+        this.log('DOOR ' + best.c + '-' + best.r + ' CLOSED.', '#ffb000'); 
+        this.playSFX('close');
+      }
+      else if (!best.locked) { 
+        best.locked = true; 
+        this.log('DOOR ' + best.c + '-' + best.r + ' LOCKED.', '#33ff00'); 
+        this.playSFX('lock');
+      }
+      else { 
+        best.open = true; best.locked = false; 
+        this.log('DOOR ' + best.c + '-' + best.r + ' OPENED.', '#7dffb0'); 
+        this.playSFX('unlock');
+      }
       if (best.link >= 0) { const p = w.doors[best.link]; p.open = !best.open; p.locked = false; }
+    } else if (anyBest && abd < w.TILE * 1.7) {
+      // Auto or entrance door
+      this.playSFX('blocked');
     }
   }
 
@@ -809,9 +861,11 @@ class Component extends DCLogic {
         const tgt = (Math.hypot(here.c - m0.c, here.r - m0.r) < 2) ? m1 : m0;
         dg.x = (tgt.c + 0.5) * w.TILE; dg.y = (tgt.r + 0.5) * w.TILE; dg.path = null;
         this.log('SIGNAL DISTORTION // SHE MOVED.', '#7fdfff');
+        this.playSFX('teleport');
       }
     } else {
       this.follow(dg, dt, 44);
+      if (Math.random() < 0.002) this.playSFX('sigh'); // random ghost wander sigh
       dg.mirrorCd -= dt;
       if (dg.mirrorCd <= 0) {
         const here = this.tileOf(dg);
@@ -830,7 +884,11 @@ class Component extends DCLogic {
       const seen = this.visibleGhost(g);
       if (g.type === 'basic') {
         if (seen) {
-          if (g.scare < 1) { this.log('GUEST SEES SOMETHING...', '#ffb000'); w.flash = 0.2; }
+          if (g.scare < 1) { 
+            this.log('GUEST SEES SOMETHING...', '#ffb000'); 
+            w.flash = 0.2; 
+            this.playSFX('screaming');
+          }
           g.scare += dt * (this.props.scareRate ?? 20);
         } else g.scare = Math.max(0, g.scare - dt * 9);
         if (g.scare > 25) scaredActive++;
@@ -838,11 +896,18 @@ class Component extends DCLogic {
           w.ghosts.push({ x: g.x, y: g.y, r: 9, path: null, pi: 0, stuck: 0, bob: 0 });
           w.guests.splice(i, 1); w.lostGuests++;
           this.log('GUEST LOST // NEW APPARITION SPAWNED.', '#ff3333');
-          w.flash = 0.5; continue;
+          w.flash = 0.5; 
+          this.playSFX('transform');
+          continue;
         }
         this.follow(g, dt, 38);
       } else { // brave
-        if (seen && !g.fleeing) { g.fleeing = true; this.log('BRAVE GUEST PANICS // RUNNING FOR THE DOOR!', '#ffb000'); this.retarget(g, { c: 16, r: 17 }); }
+        if (seen && !g.fleeing) { 
+          g.fleeing = true; 
+          this.log('BRAVE GUEST PANICS // RUNNING FOR THE DOOR!', '#ffb000'); 
+          this.retarget(g, { c: 16, r: 17 }); 
+          this.playSFX('gasping');
+        }
         if (g.fleeing) {
           this.follow(g, dt, 52);
           if (Math.hypot(g.x - w.cx(16), g.y - w.cy(17)) < 22) {
@@ -864,12 +929,19 @@ class Component extends DCLogic {
     if (w.inspector) {
       const ins = w.inspector;
       ins.dashCd -= dt;
-      if (ins.dashCd <= 0) { ins.speedMul = 2.4; ins.dashT = 0.4; ins.dashCd = 3 + Math.random() * 2.5; }
+      if (ins.dashCd <= 0) { 
+        ins.speedMul = 2.4; ins.dashT = 0.4; ins.dashCd = 3 + Math.random() * 2.5; 
+        this.playSFX('dash');
+      }
       if (ins.dashT > 0) { ins.dashT -= dt; if (ins.dashT <= 0) ins.speedMul = 1; }
       this.follow(ins, dt, 78);
       if (this.canSee(ins.x, ins.y, dg.x, dg.y, 7)) {
         ins.caught += dt; w.screenGlitch = 0.4;
-        if (ins.caught > 1.0 && !ins.warned) { this.log('!! INSPECTOR HAS EYES ON HER !!', '#ff3333'); ins.warned = true; }
+        if (ins.caught > 1.0 && !ins.warned) { 
+          this.log('!! INSPECTOR HAS EYES ON HER !!', '#ff3333'); 
+          ins.warned = true; 
+          this.playSFX('error');
+        }
         if (ins.caught >= 2.0) { this.lose('caught'); return; }
       } else { ins.caught = Math.max(0, ins.caught - dt * 0.8); ins.warned = false; }
     }
@@ -883,6 +955,10 @@ class Component extends DCLogic {
     // power flavor
     let closed = 0; for (const d of w.doors) if (!d.open) closed++;
     w.power += ((100 - closed * 6) - w.power) * dt * 1.5;
+    if (w.power < 30) {
+      this.powerWarnCd = (this.powerWarnCd || 0) - dt;
+      if (this.powerWarnCd <= 0) { this.playSFX('error'); this.powerWarnCd = 8; }
+    }
 
     // win
     if (w.t >= dur) { this.win(); return; }
@@ -894,13 +970,20 @@ class Component extends DCLogic {
     w.inspector = ins;
     w.screenGlitch = 1.2; w.flash = 0.6;
     this.log(early ? 'THE INSPECTOR FORCES THE DOOR.' : 'KNOCKING AT THE GATE // INSPECTOR ARRIVES.', '#ff3333');
+    this.playSFX('breakIn');
   }
-  win() { if (this.state.screen !== 'playing') return; this.world.endStats = 'GUESTS SAVED: ' + this.world.guests.length + '  /  APPARITIONS: ' + this.world.ghosts.length; this.setState({ screen: 'won' }); }
+  win() { 
+    if (this.state.screen !== 'playing') return; 
+    this.world.endStats = 'GUESTS SAVED: ' + this.world.guests.length + '  /  APPARITIONS: ' + this.world.ghosts.length; 
+    this.setState({ screen: 'won' }); 
+    this.playSFX('winSFX');
+  }
   lose(reason) {
     if (this.state.screen !== 'playing') return;
     this.world.loseReason = reason;
     this.world.endStats = 'PANIC: ' + Math.round(this.world.panic) + '%  /  GUESTS LOST: ' + this.world.lostGuests;
     this.setState({ screen: 'lost' });
+    this.playSFX('loseSFX');
   }
 
   // ---------- draw ----------
@@ -921,6 +1004,36 @@ class Component extends DCLogic {
     } else {
       // Won or Lost
       this.playMusic(null);
+    }
+
+    // Dynamic looping SFX routing (heartbeat and channeling)
+    if (this.state.screen === 'playing' && this.world) {
+      if (this.world.panic > 70) {
+        if (this.loopingSFX && this.loopingSFX.heartbeat && this.loopingSFX.heartbeat.paused) {
+          this.loopingSFX.heartbeat.play().catch(() => {});
+        }
+      } else {
+        if (this.loopingSFX && this.loopingSFX.heartbeat && !this.loopingSFX.heartbeat.paused) {
+          this.loopingSFX.heartbeat.pause();
+        }
+      }
+
+      if (this.world.daughter && this.world.daughter.channel > 0) {
+        if (this.loopingSFX && this.loopingSFX.channeling && this.loopingSFX.channeling.paused) {
+          this.loopingSFX.channeling.play().catch(() => {});
+        }
+      } else {
+        if (this.loopingSFX && this.loopingSFX.channeling && !this.loopingSFX.channeling.paused) {
+          this.loopingSFX.channeling.pause();
+        }
+      }
+    } else {
+      // Pause all looping SFX when not actively playing
+      if (this.loopingSFX) {
+        for (const k in this.loopingSFX) {
+          if (!this.loopingSFX[k].paused) this.loopingSFX[k].pause();
+        }
+      }
     }
 
     if (this.state.screen === 'playing') this.update(dt);
@@ -1168,6 +1281,7 @@ class Component extends DCLogic {
           this.setState({ showDevConsole: !this.state.showDevConsole });
           this.devClickCount = 0;
           this.log("DEV OVERRIDE INITIALIZED VIA TERMINAL TITLE", "#ffb000");
+          this.playSFX('boot');
         }
       },
       onCloseDev: () => this.setState({ showDevConsole: false }),
