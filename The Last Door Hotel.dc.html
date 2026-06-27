@@ -3359,6 +3359,7 @@ class Component extends DCLogic {
     g.assignedRoomIndex = g.assignedRoomIndex % rooms.length;
     g.assignedRoomLabel = room.label;
     g.assignedRoomTarget = { c: room.c, r: room.r };
+    g.checkedIn = true;
     g.state = 'toRoom';
     g.stayDuration = 16 + Math.random() * 12;
     g.stayElapsed = 0;
@@ -3396,6 +3397,7 @@ class Component extends DCLogic {
       sightShape: profile.sightShape, timeoutRule: profile.timeoutRule, ghostRule: profile.ghostRule,
       blinded: 0, invulnerable: 0, visitTimer: 0, spotted: false, checkingOut: false,
       waited: 0, overtime: false, halfPay: false, everScared: false,
+      checkedIn: false,
       state: 'waitingGate', queueOrder: ++w.guestSequence, assignedRoomIndex: this.nextGuestRoomIndex(),
       assignedRoomLabel: null, assignedRoomTarget: null, stayDuration: 0, stayElapsed: 0, progress: 0, payTimer: 0, goalKey: null,
       arrivalMode: 'approaching', approachSpeed: Math.max(18, (profile.moveSpeed || 34) * 0.72)
@@ -3535,7 +3537,7 @@ class Component extends DCLogic {
     for (let i = w.guests.length - 1; i >= 0; i--) {
       const g = w.guests[i];
       const profile = g.profile || this.getGuestProfile(g.type);
-      const seen = this.visibleGhost(g);
+      const seen = g.checkedIn ? this.visibleGhost(g) : null;
       g.spotted = !!seen;
       if (g.scare > 8) g.everScared = true; // a frightened guest won't leave a tip
       if (g.blinded > 0) {
@@ -3560,6 +3562,10 @@ class Component extends DCLogic {
           g.path = null; g.pi = 0; g.goal = null; g.goalKey = null;
           this.log('ROOM COMPLETE // ' + profile.title + ' RETURNING TO DESK FOR PAYMENT.', '#7fd6ff');
         }
+      }
+      if (!g.checkedIn) {
+        if (g.state === 'queueing' || g.state === 'checkinReady') g.progress = 0;
+        continue;
       }
       if (g.type === 'timidWoman') {
         if (seen) {
@@ -4019,18 +4025,19 @@ class Component extends DCLogic {
         ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(g.x - 10, g.y - 16, 20, 4);
         ctx.fillStyle = g.scare > 70 ? C.red : C.amber; ctx.fillRect(g.x - 10, g.y - 16, 20 * g.scare / 100, 4);
       }
-      if (g.state === 'staying' || g.state === 'returnQueue' || g.state === 'paying') {
+      if (g.checkedIn && (g.state === 'toRoom' || g.state === 'staying' || g.state === 'returnQueue' || g.state === 'payReady')) {
         const prog = Math.max(0, Math.min(1, g.progress || 0));
         ctx.fillStyle = 'rgba(0,0,0,0.66)'; ctx.fillRect(g.x - 12, g.y - 24, 24, 4);
-        ctx.fillStyle = g.state === 'paying' ? '#7fd6ff' : '#7dffb0'; ctx.fillRect(g.x - 12, g.y - 24, 24 * prog, 4);
+        ctx.fillStyle = (g.state === 'returnQueue' || g.state === 'payReady') ? '#7fd6ff' : '#7dffb0'; ctx.fillRect(g.x - 12, g.y - 24, 24 * prog, 4);
       }
-      if (g.state === 'checkinReady' || g.state === 'queueing' || g.state === 'toRoom' || g.state === 'staying') {
+      if (g.state === 'checkinReady' || g.state === 'queueing' || g.state === 'toRoom' || g.state === 'staying' || g.state === 'returnQueue' || g.state === 'payReady') {
         const roomText = g.assignedRoomLabel || ((w.roomTargets && w.roomTargets[g.assignedRoomIndex]) ? w.roomTargets[g.assignedRoomIndex].label : 'ROOM ?');
         ctx.save();
         ctx.font = '10px monospace';
         ctx.textAlign = 'center';
-        ctx.fillStyle = g.state === 'checkinReady' ? '#ffd060' : '#7fd6ff';
-        ctx.fillText(roomText, g.x, g.y - 28);
+        const text = (g.state === 'returnQueue' || g.state === 'payReady') ? (roomText + ' // PAY') : roomText;
+        ctx.fillStyle = g.state === 'checkinReady' ? '#ffd060' : ((g.state === 'returnQueue' || g.state === 'payReady') ? '#7fd6ff' : '#7fdff0');
+        ctx.fillText(text, g.x, g.y - 28);
         ctx.restore();
       }
     }
