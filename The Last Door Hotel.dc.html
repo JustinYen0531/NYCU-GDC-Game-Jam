@@ -269,12 +269,12 @@
         <div style="height:1px; width:340px; margin:0 auto; background:linear-gradient(90deg, transparent, #2a6b3a, transparent);"></div>
       </div>
 
-      <!-- menu buttons: bottom-center horizontal bar -->
-      <div style="position:absolute; left:50%; bottom:9%; transform:translateX(-50%); z-index:6; display:flex; gap:14px; align-items:center; justify-content:center;">
-        <div onClick="{{ onNewGame }}" onMouseEnter="{{ onHoverOn }}" onMouseLeave="{{ onHoverOff }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:22px; letter-spacing:2px; color:#33ff00; background:rgba(3,12,7,.78); border:1px solid #33ff00; box-shadow:0 0 10px rgba(51,255,0,.22); padding:9px 20px; text-shadow:0 0 6px #33ff00; transition:.15s;" style-hover="background:#33ff00; color:#04110d; text-shadow:none;">[ NEW GAME ]</div>
-        <div onClick="{{ onNewGame }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:22px; letter-spacing:2px; color:#7dffb0; background:rgba(3,12,7,.78); border:1px solid #2a6b3a; padding:9px 20px; transition:.15s;" style-hover="background:#33ff00; color:#04110d;">[ CONTINUE ]</div>
-        <div onClick="{{ onOptions }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:22px; letter-spacing:2px; color:#7dffb0; background:rgba(3,12,7,.78); border:1px solid #2a6b3a; padding:9px 20px; transition:.15s;" style-hover="background:#33ff00; color:#04110d;">[ OPTIONS ]</div>
-        <div onClick="{{ onExit }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:22px; letter-spacing:2px; color:#ff6b6b; background:rgba(12,3,3,.78); border:1px solid #6b2020; padding:9px 20px; transition:.15s;" style-hover="background:#ff3333; color:#04110d;">[ EXIT ]</div>
+      <!-- compact control bar -->
+      <div style="position:absolute; left:50%; top:27%; transform:translateX(-50%); z-index:6; padding:10px 14px; border:1px solid rgba(82,132,99,.4); background:linear-gradient(180deg, rgba(4,18,12,.58) 0%, rgba(3,12,8,.38) 100%); box-shadow:0 10px 28px rgba(0,0,0,.24); backdrop-filter:blur(6px); display:flex; gap:10px; align-items:center; justify-content:center; border-radius:999px;">
+        <div onClick="{{ onNewGame }}" onMouseEnter="{{ onHoverOn }}" onMouseLeave="{{ onHoverOff }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:16px; letter-spacing:2px; color:#d7ffe3; background:rgba(10,34,20,.5); border:1px solid rgba(89,181,116,.85); box-shadow:0 0 10px rgba(51,255,136,.12); padding:5px 12px; text-shadow:0 0 5px rgba(51,255,136,.35); transition:.15s; border-radius:999px;" style-hover="background:#33ff00; color:#04110d; text-shadow:none;">NEW GAME</div>
+        <div onClick="{{ onNewGame }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:16px; letter-spacing:2px; color:#a6dcb7; background:rgba(10,24,17,.34); border:1px solid rgba(72,112,81,.85); padding:5px 12px; transition:.15s; border-radius:999px;" style-hover="background:#33ff00; color:#04110d;">CONTINUE</div>
+        <div onClick="{{ onOptions }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:16px; letter-spacing:2px; color:#a6dcb7; background:rgba(10,24,17,.34); border:1px solid rgba(72,112,81,.85); padding:5px 12px; transition:.15s; border-radius:999px;" style-hover="background:#33ff00; color:#04110d;">OPTIONS</div>
+        <div onClick="{{ onExit }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:16px; letter-spacing:2px; color:#ffb9b9; background:rgba(30,10,10,.34); border:1px solid rgba(132,68,68,.85); padding:5px 12px; transition:.15s; border-radius:999px;" style-hover="background:#ff3333; color:#04110d;">EXIT</div>
       </div>
 
       <!-- options panel -->
