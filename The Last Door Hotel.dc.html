@@ -400,6 +400,22 @@ class Component extends DCLogic {
     this.hudAcc = 0;
     this.last = 0;
     this.devClickCount = 0;
+
+    // Load music files from local path
+    try {
+      this.audio = {
+        title: new Audio('./音樂資產/登陸頁面音樂.mp3'),
+        normal: new Audio('./音樂資產/常態關卡音樂.mp3'),
+        boss: new Audio('./音樂資產/稽查員Boss音樂.mp3')
+      };
+      this.audio.title.loop = true;
+      this.audio.normal.loop = true;
+      this.audio.boss.loop = true;
+    } catch (e) {
+      console.error("Failed to load audio files:", e);
+      this.audio = null;
+    }
+    this.currentMusic = null;
   }
 
   // ---------- colors ----------
@@ -409,9 +425,43 @@ class Component extends DCLogic {
       std:'#33ff00', auto:'#3bd6ff', linked:'#b061ff', entrance:'#e8ffe8' };
   }
 
+  playMusic(type) {
+    if (!this.audio) return;
+    if (this.currentMusic === type) return;
+    if (this.currentMusic && this.audio[this.currentMusic]) {
+      try {
+        this.audio[this.currentMusic].pause();
+        this.audio[this.currentMusic].currentTime = 0;
+      } catch (e) {}
+    }
+    this.currentMusic = type;
+    if (type && this.audio[type]) {
+      this.audio[type].play().catch(err => {
+        console.warn("Audio autoplay blocked by browser policy. Will unlock on interaction.", err);
+      });
+    }
+  }
+
   componentDidMount() {
     this.buildWorld();
     this.fit();
+
+    // Start title screen music
+    if (this.state.screen === 'title') {
+      this.playMusic('title');
+    } else {
+      this.playMusic('normal');
+    }
+
+    // Interaction workaround to bypass browser autoplay restrictions
+    this._unlockAudio = () => {
+      if (this.currentMusic && this.audio && this.audio[this.currentMusic]) {
+        this.audio[this.currentMusic].play().catch(() => {});
+      }
+      window.removeEventListener('click', this._unlockAudio);
+    };
+    window.addEventListener('click', this._unlockAudio);
+
     this._onKey = (e) => {
       const k = e.key.toLowerCase();
       this.keys[k] = true;
@@ -439,6 +489,12 @@ class Component extends DCLogic {
     window.removeEventListener('keydown', this._onKey);
     window.removeEventListener('keyup', this._onKeyUp);
     window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('click', this._unlockAudio);
+    if (this.audio) {
+      for (const k in this.audio) {
+        try { this.audio[k].pause(); } catch (e) {}
+      }
+    }
     cancelAnimationFrame(this._raf);
   }
 
@@ -765,6 +821,21 @@ class Component extends DCLogic {
     if (!this.last) this.last = ts;
     let dt = (ts - this.last) / 1000; this.last = ts;
     if (dt > 0.05) dt = 0.05;
+
+    // Direct background music routing based on game screen and active state
+    if (this.state.screen === 'title') {
+      this.playMusic('title');
+    } else if (this.state.screen === 'playing') {
+      if (this.world && this.world.inspector) {
+        this.playMusic('boss');
+      } else {
+        this.playMusic('normal');
+      }
+    } else {
+      // Won or Lost
+      this.playMusic(null);
+    }
+
     if (this.state.screen === 'playing') this.update(dt);
     this.draw();
     this.drawMini();
