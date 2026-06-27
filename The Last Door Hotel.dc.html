@@ -29,7 +29,7 @@
 
       <!-- top status strip -->
       <div style="display:flex; align-items:center; justify-content:space-between; border:1px solid #1a3d1a; background:#020704; padding:5px 14px; font-size:19px; letter-spacing:1px; text-shadow:0 0 6px rgba(51,255,0,.4);">
-        <span onClick="{{ onHeaderClick }}" style="color:#1f8f1f; cursor:pointer; user-select:none;">THE&nbsp;LAST&nbsp;DOOR // NIGHT-WATCH TERMINAL&nbsp;<span style="color:#33ff00;">v1.3</span></span>
+        <span onClick="{{ onHeaderClick }}" style="color:#1f8f1f; cursor:pointer; user-select:none;">LV&nbsp;{{ hud.level }} // MAP&nbsp;{{ hud.mapTier }} // DOOR&nbsp;TIER&nbsp;{{ hud.doorTier }}</span>
         <span style="font-size:26px; color:#33ff00; letter-spacing:3px;">{{ hud.clock }}&nbsp;<span style="color:#1f521f; font-size:16px;">[{{ hud.phase }}]</span></span>
         <span style="color:{{ hud.alertColor }}; min-width:230px; text-align:right; font-size:18px;">{{ hud.alert }}<span style="animation:caret 1s steps(1) infinite;">_</span></span>
       </div>
@@ -94,7 +94,7 @@
                     <polyline points="0,6.5 8,6.5 11,1.5 15,11.5 19,6.5 38,6.5 46,6.5 49,1.5 53,11.5 57,6.5 76,6.5 84,6.5 87,1.5 91,11.5 95,6.5 114,6.5 122,6.5 125,1.5 129,11.5 133,6.5 152,6.5 160,6.5" fill="none" stroke="#ff4040" stroke-width="1.1" style="filter:drop-shadow(0 0 2px #ff4040);"/>
                   </svg>
                 </span>
-                <span style="color:#ff4040; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.stdCount }}</span>
+                <span style="color:#ff4040; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.basicCount }}</span>
               </div>
 
               <div style="display:flex; align-items:center; gap:5px; height:15px;">
@@ -106,7 +106,7 @@
                     <polyline points="0,6.5 10,6.5 12,3.5 14,9.5 16,6.5 26,6.5 36,6.5 38,3.5 40,9.5 42,6.5 52,6.5 62,6.5 64,3.5 66,9.5 68,6.5 78,6.5 88,6.5 90,3.5 92,9.5 94,6.5 104,6.5 114,6.5 116,3.5 118,9.5 120,6.5 130,6.5 140,6.5 142,3.5 144,9.5 146,6.5 156,6.5 160,6.5" fill="none" stroke="#ff8c00" stroke-width="1.1" style="filter:drop-shadow(0 0 2px #ff8c00);"/>
                   </svg>
                 </span>
-                <span style="color:#ff8c00; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.autoCount }}</span>
+                <span style="color:#ff8c00; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.rashCount }}</span>
               </div>
 
               <div style="display:flex; align-items:center; gap:5px; height:15px;">
@@ -118,7 +118,7 @@
                     <polyline points="0,6.5 18,6.5 20,0.5 22,12.5 24,6.5 42,6.5 44,0.5 46,12.5 48,6.5 66,6.5 68,0.5 70,12.5 72,6.5 90,6.5 92,0.5 94,12.5 96,6.5 114,6.5 116,0.5 118,12.5 120,6.5 138,6.5 140,0.5 142,12.5 144,6.5 160,6.5" fill="none" stroke="#ffd000" stroke-width="1.1" style="filter:drop-shadow(0 0 2px #ffd000);"/>
                   </svg>
                 </span>
-                <span style="color:#ffd000; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.linkCount }}</span>
+                <span style="color:#3bd6ff; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.sensorCount }}</span>
               </div>
 
               <div style="display:flex; align-items:center; gap:5px; height:15px;">
@@ -130,7 +130,7 @@
                     <polyline points="0,6.5 6,6.5 8,4.5 10,8.5 12,6.5 18,6.5 24,6.5 26,4.5 28,8.5 30,6.5 36,6.5 42,6.5 44,4.5 46,8.5 48,6.5 54,6.5 60,6.5 62,4.5 64,8.5 66,6.5 72,6.5 78,6.5 80,4.5 82,8.5 84,6.5 90,6.5 96,6.5 98,4.5 100,8.5 102,6.5 108,6.5 114,6.5 116,4.5 118,8.5 120,6.5 126,6.5 132,6.5 134,4.5 136,8.5 138,6.5 144,6.5 150,6.5 152,4.5 154,8.5 156,6.5 160,6.5" fill="none" stroke="#3bd6ff" stroke-width="1.1" style="filter:drop-shadow(0 0 2px #3bd6ff);"/>
                   </svg>
                 </span>
-                <span style="color:#3bd6ff; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.exitCount }}</span>
+                <span style="color:#ffd000; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.rotateCount }}</span>
               </div>
 
               <div style="display:flex; align-items:center; gap:5px; height:15px;">
@@ -142,7 +142,7 @@
                     <polyline points="0,6.5 14,6.5 16,3.5 18,9.5 20,6.5 34,6.5 36,3.5 38,9.5 40,6.5 54,6.5 56,3.5 58,9.5 60,6.5 74,6.5 76,3.5 78,9.5 80,6.5 94,6.5 96,3.5 98,9.5 100,6.5 114,6.5 116,3.5 118,9.5 120,6.5 134,6.5 136,3.5 138,9.5 140,6.5 154,6.5 160,6.5" fill="none" stroke="#b061ff" stroke-width="1.1" style="filter:drop-shadow(0 0 2px #b061ff);"/>
                   </svg>
                 </span>
-                <span style="color:{{ hud.panicColor }}; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.panicPct }}%</span>
+                <span style="color:#b061ff; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.chainCount }}</span>
               </div>
 
               <div style="display:flex; align-items:center; gap:5px; height:15px;">
@@ -154,7 +154,7 @@
                     <polyline points="0,6.5 160,6.5" fill="none" stroke="#3a3a3a" stroke-width="1.1"/>
                   </svg>
                 </span>
-                <span style="color:#3a3a3a; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">--</span>
+                <span style="color:{{ hud.panicColor }}; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.panicPct }}%</span>
               </div>
 
             </div>
@@ -206,7 +206,7 @@
             <div style="position:absolute; inset:0; pointer-events:none; background:radial-gradient(120% 120% at 50% 50%, rgba(0,0,0,0) 52%, rgba(0,0,0,.6) 100%); border-radius:10px;"></div>
             <!-- door prompt -->
             <sc-if value="{{ hud.showPrompt }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute; left:50%; bottom:14px; transform:translateX(-50%); background:#020704; border:1px solid #33ff00; color:#33ff00; padding:5px 16px; font-size:20px; letter-spacing:2px; text-shadow:0 0 8px #33ff00; box-shadow:0 0 16px rgba(51,255,0,.4);">[E] {{ hud.doorPrompt }}</div>
+              <div style="position:absolute; left:50%; bottom:14px; transform:translateX(-50%); background:#020704; border:1px solid #33ff00; color:#33ff00; padding:5px 16px; font-size:20px; letter-spacing:2px; text-shadow:0 0 8px #33ff00; box-shadow:0 0 16px rgba(51,255,0,.4);">{{ hud.doorPrompt }}</div>
             </sc-if>
           </div>
         </div>
@@ -1114,7 +1114,7 @@ class Component extends DCLogic {
     if (mapTier === 1) return {
       name:'PINE LODGE', guestRoomCount:4,
       rooms:[R('ROOM 101','guest',2,2,8,5),R('LOUNGE','lounge',17,2,11,5),R('ROOM 102','guest',35,2,8,5),R('ROOM 103','guest',2,16,8,5),R('FRONT DESK','desk',17,16,11,5),R('ROOM 104','guest',35,16,8,5)],
-      corridors:[[2,8,41,3],[10,8,3,7],[21,7,3,9],[32,8,3,7],[10,13,25,2]],
+      corridors:[[2,8,41,3],[10,8,3,7],[21,7,3,9],[32,8,3,7],[2,13,41,2]],
       hallLabels:[{text:'MAIN CORRIDOR',c:18,r:9},{text:'CHECK-IN',c:19,r:14}],
       doorSlots:[D(5,7,'h','ROOM 101'),D(22,7,'h','LOUNGE'),D(39,7,'h','ROOM 102'),D(5,15,'h','ROOM 103'),D(22,15,'h','FRONT DESK'),D(39,15,'h','ROOM 104'),D(11,11,'h','WEST CORRIDOR'),D(22,11,'h','CENTRAL CORRIDOR'),D(33,11,'h','EAST CORRIDOR')],
       fixtures:[F(3,3,3,2,'bed'),F(37,3,3,2,'bed'),F(3,17,3,2,'bed'),F(37,17,3,2,'bed'),F(19,3,3,1,'sofa'),F(24,5,2,1,'sofa'),F(19,17,7,1,'counter')],
@@ -1937,7 +1937,7 @@ class Component extends DCLogic {
   hud() {
     const w = this.world;
     const dur = this.props.nightSeconds ?? 180;
-    if (!w) return { clock: '22:00', phase: 'NIGHT', alert: 'STANDBY', alertColor: '#1f8f1f', panicPct: 0, panicBar: '', panicColor: '#33ff00', stdCount: '0', autoCount: '0', linkCount: '0', exitCount: '0', statusText: 'OK', showPrompt: false, doorPrompt: '', endStats: '', loseTitle: '', loseMsg: '', ghosts: 0, guests: 0, pw0: 1, pw1: 1, pw2: 1, pw3: 1, pw4: 1, pw5: 0.15, pw6: 0.15 };
+    if(!w)return{clock:'22:00',phase:'NIGHT',level:'01',mapTier:'I',doorTier:'I',alert:'STANDBY',alertColor:'#1f8f1f',panicPct:0,panicBar:'',panicColor:'#33ff00',basicCount:'0',rashCount:'0',sensorCount:'0',rotateCount:'0',chainCount:'0',statusText:'OK',showPrompt:false,doorPrompt:'',endStats:'',loseTitle:'',loseMsg:'',ghosts:0,guests:0,pw0:1,pw1:1,pw2:1,pw3:1,pw4:1,pw5:.15,pw6:.15};
     const frac = Math.min(1, w.t / dur);
     const hour = 22 + frac * 8; const h = Math.floor(hour) % 24; const m = Math.floor((hour % 1) * 60);
     const pad = (n) => (n < 10 ? '0' : '') + n;
@@ -1953,10 +1953,7 @@ class Component extends DCLogic {
     else if (w.ghosts.length > 0) { alert = w.ghosts.length + ' LOOSE APPARITION(S)'; ac = '#ffb000'; }
     else if (w.guests.some(g => g.scare > 25)) { alert = 'GUEST DISTURBED'; ac = '#ffb000'; }
     // nearest door prompt
-    let prompt = '', show = false;
-    let bd = 1e9, best = null;
-    for (const d of w.doors) { if (d.type === 'auto' || d.type === 'entrance') continue; const dist = Math.hypot((d.c + 0.5) * w.TILE - w.player.x, (d.r + 0.5) * w.TILE - w.player.y); if (dist < bd) { bd = dist; best = d; } }
-    if (best && bd < w.TILE * 1.7) { show = true; prompt = best.open ? 'CLOSE DOOR' : best.locked ? 'UNLOCK DOOR' : 'LOCK DOOR'; }
+    const best=this.nearestDoor(),show=!!best;let prompt='';if(best){const action=best.type==='rotating'?'ROTATE':best.type==='chain'?'TOGGLE CHAIN':best.open?'CLOSE':'OPEN';prompt='[E] '+action+'  [SHIFT+E] '+(best.locked?'UNLOCK':'LOCK');}
     // power segments
     const pwr = w.power; const seg = (th) => pwr >= th ? 1 : 0.12;
     // lose strings
@@ -1964,10 +1961,10 @@ class Component extends DCLogic {
     if (w.loseReason === 'caught') { lt = 'DISCOVERED'; lm = 'The inspector found her. They take everything.'; }
     else if (w.loseReason === 'panic') { lt = 'PANDEMONIUM'; lm = 'The hotel descended into supernatural chaos.'; }
     return {
-      clock: pad(h) + ':' + pad(m), phase: 'NIGHT',
+      clock:pad(h)+':'+pad(m),phase:'NIGHT',level:pad(w.config.level),mapTier:['','I','II','III'][w.config.mapTier],doorTier:['','I','II','III','IV','V'][w.config.doorTier],
       alert, alertColor: ac,
       panicPct: Math.round(w.panic), panicBar: bar, panicColor: pc,
-      stdCount: cnt('standard'), autoCount: cnt('auto'), linkCount: cnt('linked'), exitCount: cnt('entrance'),
+      basicCount:cnt('basic'),rashCount:cnt('rashomon'),sensorCount:cnt('sensor'),rotateCount:cnt('rotating'),chainCount:cnt('chain'),
       statusText: w.screenGlitch > 0 ? 'DISTORTION' : (w.panic > 50 ? 'UNSTABLE' : 'STABLE'),
       showPrompt: show, doorPrompt: prompt,
       endStats: w.endStats || '', loseTitle: lt, loseMsg: lm,
