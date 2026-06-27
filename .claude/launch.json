@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "game",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["-e", "const http=require('http'),fs=require('fs'),path=require('path');const s=http.createServer((req,res)=>{let f='C:/Users/user/Desktop/NYCU Game Jam'+decodeURIComponent(req.url.split('?')[0]);if(f.endsWith('/'))f+='index.html';try{const d=fs.readFileSync(f);const ext=path.extname(f);const ct=ext==='.html'?'text/html':ext==='.js'?'application/javascript':'application/octet-stream';res.writeHead(200,{'Content-Type':ct});res.end(d);}catch(e){res.writeHead(404);res.end();}});s.listen(process.env.PORT||8766);"],
+      "port": 8766
+    }
+  ]
+}
