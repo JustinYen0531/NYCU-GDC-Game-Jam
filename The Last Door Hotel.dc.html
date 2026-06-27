@@ -220,36 +220,46 @@
           
           <!-- Slot 1: 遮布 -->
           <div onClick="{{ onUseItem1 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="遮布: 鏡子永久防穿">
-            <div style="width:40px; height:40px; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:120px 80px; background-position:0px 0px;"></div>
-            <div style="font-size:11px; color:#33ff00; transform:scale(0.85); margin-top:-4px; white-space:nowrap;">遮布 [{{ items.cloth }}]</div>
+            <div style="width:42px; height:42px; background:#c8c4a2; overflow:hidden; position:relative; flex:none; border-radius:1px;">
+              <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:0px 0px; mix-blend-mode:multiply;"></div>
+            </div>
+            <div style="font-size:10px; color:#33ff00; margin-top:2px; white-space:nowrap;">遮布 [{{ items.cloth }}]</div>
             <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">1</div>
           </div>
 
           <!-- Slot 2: 眼罩 -->
           <div onClick="{{ onUseItem2 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="眼罩: 顧客失明無敵">
-            <div style="width:40px; height:40px; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:120px 80px; background-position:-40px 0px;"></div>
-            <div style="font-size:11px; color:#33ff00; transform:scale(0.85); margin-top:-4px; white-space:nowrap;">眼罩 [{{ items.blindfold }}]</div>
+            <div style="width:42px; height:42px; background:#c8c4a2; overflow:hidden; position:relative; flex:none; border-radius:1px;">
+              <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:-42px 0px; mix-blend-mode:multiply;"></div>
+            </div>
+            <div style="font-size:10px; color:#33ff00; margin-top:2px; white-space:nowrap;">眼罩 [{{ items.blindfold }}]</div>
             <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">2</div>
           </div>
 
           <!-- Slot 3: 勞術 -->
           <div onClick="{{ onUseItem3 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="勞術: 短距離穿牆">
-            <div style="width:40px; height:40px; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:120px 80px; background-position:-80px 0px;"></div>
-            <div style="font-size:11px; color:#33ff00; transform:scale(0.85); margin-top:-4px; white-space:nowrap;">勞術 [{{ items.phase }}]</div>
+            <div style="width:42px; height:42px; background:#c8c4a2; overflow:hidden; position:relative; flex:none; border-radius:1px;">
+              <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:-84px 0px; mix-blend-mode:multiply;"></div>
+            </div>
+            <div style="font-size:10px; color:#33ff00; margin-top:2px; white-space:nowrap;">勞術 [{{ items.phase }}]</div>
             <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">3</div>
           </div>
 
           <!-- Slot 4: 門鎖 -->
           <div onClick="{{ onUseItem4 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="門鎖: 強行閉鎖門扉">
-            <div style="width:40px; height:40px; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:120px 80px; background-position:0px -40px;"></div>
-            <div style="font-size:11px; color:#33ff00; transform:scale(0.85); margin-top:-4px; white-space:nowrap;">門鎖 [{{ items.lock }}]</div>
+            <div style="width:42px; height:42px; background:#c8c4a2; overflow:hidden; position:relative; flex:none; border-radius:1px;">
+              <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:0px -42px; mix-blend-mode:multiply;"></div>
+            </div>
+            <div style="font-size:10px; color:#33ff00; margin-top:2px; white-space:nowrap;">門鎖 [{{ items.lock }}]</div>
             <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">4</div>
           </div>
 
           <!-- Slot 5: 口哨 -->
           <div onClick="{{ onUseItem5 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="口哨: 吸引鬼魂靠近">
-            <div style="width:40px; height:40px; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:120px 80px; background-position:-40px -40px;"></div>
-            <div style="font-size:11px; color:#33ff00; transform:scale(0.85); margin-top:-4px; white-space:nowrap;">口哨 [{{ items.whistle }}]</div>
+            <div style="width:42px; height:42px; background:#c8c4a2; overflow:hidden; position:relative; flex:none; border-radius:1px;">
+              <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:-42px -42px; mix-blend-mode:multiply;"></div>
+            </div>
+            <div style="font-size:10px; color:#33ff00; margin-top:2px; white-space:nowrap;">口哨 [{{ items.whistle }}]</div>
             <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">5</div>
           </div>
         </div>
@@ -286,16 +296,154 @@
         <div style="height:1px; width:340px; margin:0 auto; background:linear-gradient(90deg, transparent, #2a6b3a, transparent);"></div>
       </div>
 
-      <!-- simplified vertical central menu without wrapping panel background to prevent overlap -->
-      <div class="title-control-float" data-ui="title-controls" style="position:absolute; left:50%; top:58%; transform:translate(-50%,-50%); z-index:12; width:260px; display:flex; flex-direction:column; gap:12px; align-items:stretch;">
-        <div class="title-control-button" onClick="{{ onOpenLevelSelect }}" onMouseEnter="{{ onHoverOn }}" onMouseLeave="{{ onHoverOff }}" style="cursor:pointer; font-family:'Cinzel', serif; font-size:17px; font-weight:600; line-height:1; letter-spacing:3px; color:#d7ffe3; background:rgba(29,92,49,.42); border:1px solid rgba(102,224,134,.6); box-shadow:0 4px 10px rgba(0,0,0,.4); padding:13px 20px; text-shadow:0 0 5px rgba(51,255,136,.28); text-align:center; transition:.2s ease; border-radius:6px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d; border-color:#33ff00; text-shadow:none; box-shadow:0 0 15px rgba(51,255,0,0.4); transform:translateY(-1px);">NEW GAME</div>
-        <div class="title-control-button" onClick="{{ onContinue }}" style="cursor:pointer; font-family:'Cinzel', serif; font-size:17px; font-weight:600; line-height:1; letter-spacing:3px; color:#9fcfaf; background:rgba(10,24,17,.32); border:1px solid rgba(72,112,81,.5); box-shadow:0 4px 10px rgba(0,0,0,.4); padding:13px 20px; text-align:center; transition:.2s ease; border-radius:6px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d; border-color:#33ff00; text-shadow:none; box-shadow:0 0 15px rgba(51,255,0,0.4); transform:translateY(-1px);">CONTINUE</div>
-        <div class="title-control-button" onClick="{{ onOpenTutorial }}" style="cursor:pointer; font-family:'Cinzel', serif; font-size:17px; font-weight:600; line-height:1; letter-spacing:3px; color:#9fcfaf; background:rgba(10,24,17,.32); border:1px solid rgba(72,112,81,.5); box-shadow:0 4px 10px rgba(0,0,0,.4); padding:13px 20px; text-align:center; transition:.2s ease; border-radius:6px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d; border-color:#33ff00; text-shadow:none; box-shadow:0 0 15px rgba(51,255,0,0.4); transform:translateY(-1px);">TUTORIAL</div>
-        <div class="title-control-button" onClick="{{ onOptions }}" style="cursor:pointer; font-family:'Cinzel', serif; font-size:17px; font-weight:600; line-height:1; letter-spacing:3px; color:#9fcfaf; background:rgba(10,24,17,.32); border:1px solid rgba(72,112,81,.5); box-shadow:0 4px 10px rgba(0,0,0,.4); padding:13px 20px; text-align:center; transition:.2s ease; border-radius:6px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d; border-color:#33ff00; text-shadow:none; box-shadow:0 0 15px rgba(51,255,0,0.4); transform:translateY(-1px);">OPTIONS</div>
-        <div class="title-control-button" onClick="{{ onExit }}" style="cursor:pointer; font-family:'Cinzel', serif; font-size:17px; font-weight:600; line-height:1; letter-spacing:3px; color:#e5a8a8; background:rgba(43,13,13,.32); border:1px solid rgba(132,68,68,.5); box-shadow:0 4px 10px rgba(0,0,0,.4); padding:13px 20px; text-align:center; transition:.2s ease; border-radius:6px; white-space:nowrap;" style-hover="background:#ff3333; color:#04110d; border-color:#ff3333; text-shadow:none; box-shadow:0 0 15px rgba(255,51,51,0.4); transform:translateY(-1px);">EXIT</div>
+      <!-- solemn / eerie vertical central menu -->
+      <style>
+        @keyframes titleBtnBreathe { 0%,100% { box-shadow:0 6px 18px rgba(0,0,0,.6), inset 0 0 18px rgba(0,0,0,.55); } 50% { box-shadow:0 6px 22px rgba(0,0,0,.6), inset 0 0 24px rgba(0,0,0,.7); } }
+        .title-menu-btn {
+          cursor:pointer; position:relative; font-family:'Cinzel', serif; font-size:16px; font-weight:600;
+          line-height:1; letter-spacing:6px; text-indent:6px; color:#a7bcab;
+          background:linear-gradient(180deg, rgba(8,16,12,.72) 0%, rgba(2,6,4,.82) 100%);
+          border:1px solid rgba(96,140,108,.28); border-radius:3px;
+          box-shadow:0 6px 18px rgba(0,0,0,.6), inset 0 0 18px rgba(0,0,0,.55);
+          padding:15px 20px; text-align:center; white-space:nowrap; overflow:hidden;
+          text-shadow:0 1px 2px rgba(0,0,0,.9);
+          transition:color .45s ease, border-color .45s ease, background .45s ease, text-shadow .45s ease, transform .35s ease;
+          animation:titleBtnBreathe 6s ease-in-out infinite;
+        }
+        .title-menu-btn::before {
+          content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+          background:linear-gradient(180deg, transparent, rgba(120,200,140,.0), transparent);
+          transition:background .45s ease;
+        }
+        .title-menu-btn:hover {
+          color:#e6f6ea; border-color:rgba(120,210,150,.55);
+          background:linear-gradient(180deg, rgba(14,30,20,.85) 0%, rgba(4,12,8,.9) 100%);
+          text-shadow:0 0 12px rgba(95,235,150,.55), 0 1px 2px rgba(0,0,0,.95);
+          transform:translateY(-1px);
+        }
+        .title-menu-btn:hover::before { background:linear-gradient(180deg, transparent, rgba(120,210,150,.85), transparent); }
+        .title-menu-btn.is-danger { color:#b89a9a; border-color:rgba(150,90,90,.28); }
+        .title-menu-btn.is-danger:hover {
+          color:#ffdede; border-color:rgba(220,110,110,.6);
+          text-shadow:0 0 12px rgba(235,95,95,.55), 0 1px 2px rgba(0,0,0,.95);
+        }
+        .title-menu-btn.is-danger:hover::before { background:linear-gradient(180deg, transparent, rgba(225,110,110,.85), transparent); }
+      </style>
+      <div class="title-control-float" data-ui="title-controls" style="position:absolute; left:50%; top:58%; transform:translate(-50%,-50%); z-index:12; width:268px; display:flex; flex-direction:column; gap:13px; align-items:stretch;">
+        <div class="title-menu-btn" onClick="{{ onOpenLevelSelect }}" onMouseEnter="{{ onHoverOn }}" onMouseLeave="{{ onHoverOff }}">NEW GAME</div>
+        <div class="title-menu-btn" onClick="{{ onContinue }}">CONTINUE</div>
+        <div class="title-menu-btn" onClick="{{ onOpenTutorial }}">TUTORIAL</div>
+        <div class="title-menu-btn" onClick="{{ onEditor }}">EDITOR</div>
+        <div class="title-menu-btn is-danger" onClick="{{ onExit }}">EXIT</div>
       </div>
 
       <div style="position:absolute; bottom:8px; left:50%; transform:translateX(-50%); z-index:6; font-size:14px; color:#2a6b3a; letter-spacing:2px; text-shadow:0 0 4px rgba(0,0,0,.95);">NYCU GAME JAM &#183; THEME: DOOR &#183; SNOWBOUND PROTOCOL</div>
+    </div>
+  </sc-if>
+
+  <!-- ======================= LEVEL SELECT (3-floor elevator) ======================= -->
+  <sc-if value="{{ showLevelSelect }}" hint-placeholder-val="{{ false }}">
+    <style>
+      .lvl-overlay{position:fixed;inset:0;z-index:78;overflow:hidden;background:#02070a;font-family:'VT323',monospace;}
+      .lvl-viewport{position:absolute;inset:0;overflow:hidden;}
+      .lvl-floors{position:absolute;top:0;left:0;width:100%;height:300vh;transition:transform .6s cubic-bezier(.16,.84,.3,1);will-change:transform;}
+      .lvlfloor{position:relative;width:100%;height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+      .lvlfloor-veil{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 38%,rgba(0,0,0,0) 42%,rgba(0,0,0,.62) 100%);}
+      .lvlfloor-head{position:relative;z-index:2;text-align:center;margin-bottom:34px;text-shadow:0 0 4px rgba(0,0,0,.92),0 0 18px rgba(80,255,140,.35);pointer-events:none;}
+      .lvlfloor-name{font-family:'Cinzel',serif;font-size:40px;font-weight:700;letter-spacing:8px;color:#e6f6ea;}
+      .lvlfloor-sub{font-size:18px;letter-spacing:3px;color:#8fd6a6;margin-top:6px;}
+      .lvlrow{position:relative;z-index:2;display:flex;gap:22px;align-items:stretch;justify-content:center;}
+      .lvlnode{cursor:pointer;width:150px;height:198px;border:1px solid rgba(120,210,150,.4);border-radius:8px;background:linear-gradient(180deg,rgba(8,24,15,.82),rgba(3,11,8,.92));box-shadow:0 8px 24px rgba(0,0,0,.5),inset 0 0 24px rgba(0,0,0,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:transform .18s,border-color .18s,box-shadow .18s;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);}
+      .lvlnode:hover{transform:translateY(-6px);border-color:#8effb4;box-shadow:0 14px 30px rgba(0,0,0,.6),0 0 26px rgba(80,255,140,.28);}
+      .lvlnode .lvl-no{font-family:'Cinzel',serif;font-size:32px;font-weight:700;color:#bff5cf;letter-spacing:2px;text-shadow:0 0 12px rgba(80,255,140,.5);}
+      .lvlnode .lvl-name{font-size:24px;letter-spacing:5px;color:#e6f6ea;}
+      .lvlnode .lvl-map{font-size:12px;letter-spacing:1px;color:#6fb487;}
+      .lvlnode .lvl-badge{font-size:13px;letter-spacing:2px;color:#89efab;border:1px solid #2d7144;border-radius:3px;padding:1px 9px;margin-top:2px;}
+      .lvlnode.boss{border-color:rgba(255,120,80,.5);background:linear-gradient(180deg,rgba(34,14,10,.86),rgba(12,6,6,.94));}
+      .lvlnode.boss:hover{border-color:#ff8f66;box-shadow:0 14px 30px rgba(0,0,0,.6),0 0 26px rgba(255,120,60,.3);}
+      .lvlnode.boss .lvl-no,.lvlnode.boss .lvl-name{color:#ffd0bd;}
+      .lvlnode.boss .lvl-badge{color:#ff9e7a;border-color:#8a4f34;}
+      .lvl-elevator{position:absolute;right:26px;top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;align-items:center;gap:8px;background:rgba(2,10,6,.7);border:1px solid rgba(120,210,150,.3);border-radius:10px;padding:12px 10px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);}
+      .lvl-elv-arrow{cursor:pointer;width:42px;height:28px;display:flex;align-items:center;justify-content:center;color:#8fd6a6;font-size:18px;border:1px solid rgba(120,210,150,.25);border-radius:5px;transition:.15s;}
+      .lvl-elv-arrow:hover{color:#04110d;background:#33ff00;border-color:#33ff00;}
+      .lvl-elv-floor{cursor:pointer;width:42px;height:34px;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:15px;font-weight:700;border-radius:5px;transition:.15s;}
+      .lvl-back{position:absolute;left:26px;top:24px;z-index:6;cursor:pointer;font-family:'Cinzel',serif;font-size:15px;letter-spacing:3px;color:#a7bcab;border:1px solid rgba(120,180,130,.35);border-radius:5px;padding:8px 18px;background:rgba(4,12,8,.7);transition:.15s;}
+      .lvl-back:hover{color:#e6f6ea;border-color:#8effb4;background:rgba(10,26,16,.85);}
+      .lvl-hint{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:6;font-size:15px;letter-spacing:2px;color:#5fa074;text-shadow:0 0 4px rgba(0,0,0,.9);pointer-events:none;}
+    </style>
+    <div class="lvl-overlay">
+      <div class="lvl-viewport">
+        <div class="lvl-floors" ref="{{ floorsRef }}" style="transform:{{ floorShift }};">
+
+          <!-- ===== 三樓 FLOOR 3 (top, hardest) ===== -->
+          <!-- 背景圖佔位 FLOOR 3：之後把此 section 的 background 換成 background-image:url('你的三樓圖.png'); background-size:cover; background-position:center; -->
+          <section class="lvlfloor" style="background:radial-gradient(120% 80% at 50% 35%, #241016 0%, #160a0e 55%, #0a0407 100%);">
+            <div class="lvlfloor-veil"></div>
+            <div class="lvlfloor-head"><div class="lvlfloor-name">三樓 · 荊棘別墅</div><div class="lvlfloor-sub">FLOOR 3 // BLACKTHORN VILLA &#183; 難度 ★★★</div></div>
+            <div class="lvlrow">
+              <div class="lvlnode" data-lvl-node onClick="{{ pickL11 }}"><div class="lvl-no">11</div><div class="lvl-name">三之一</div><div class="lvl-map">BLACKTHORN</div><div class="lvl-badge">TIER IV</div></div>
+              <div class="lvlnode" data-lvl-node onClick="{{ pickL12 }}"><div class="lvl-no">12</div><div class="lvl-name">三之二</div><div class="lvl-map">BLACKTHORN</div><div class="lvl-badge">TIER IV</div></div>
+              <div class="lvlnode" data-lvl-node onClick="{{ pickL13 }}"><div class="lvl-no">13</div><div class="lvl-name">三之三</div><div class="lvl-map">BLACKTHORN</div><div class="lvl-badge">TIER V</div></div>
+              <div class="lvlnode" data-lvl-node onClick="{{ pickL14 }}"><div class="lvl-no">14</div><div class="lvl-name">三之四</div><div class="lvl-map">BLACKTHORN</div><div class="lvl-badge">TIER V</div></div>
+              <div class="lvlnode boss" data-lvl-node onClick="{{ pickL15 }}"><div class="lvl-no">15</div><div class="lvl-name">三之五</div><div class="lvl-map">BLACKTHORN</div><div class="lvl-badge">BOSS</div></div>
+            </div>
+          </section>
+
+          <!-- ===== 二樓 FLOOR 2 ===== -->
+          <!-- 背景圖佔位 FLOOR 2：之後替換為 background-image:url('你的二樓圖.png'); background-size:cover; -->
+          <section class="lvlfloor" style="background:radial-gradient(120% 80% at 50% 35%, #07202a 0%, #04141c 55%, #020a10 100%);">
+            <div class="lvlfloor-veil"></div>
+            <div class="lvlfloor-head"><div class="lvlfloor-name">二樓 · 雙翼莊園</div><div class="lvlfloor-sub">FLOOR 2 // TWIN-WING MANOR &#183; 難度 ★★☆</div></div>
+            <div class="lvlrow">
+              <div class="lvlnode" data-lvl-node onClick="{{ pickL6 }}"><div class="lvl-no">06</div><div class="lvl-name">二之一</div><div class="lvl-map">TWIN-WING</div><div class="lvl-badge">TIER II</div></div>
+              <div class="lvlnode" data-lvl-node onClick="{{ pickL7 }}"><div class="lvl-no">07</div><div class="lvl-name">二之二</div><div class="lvl-map">TWIN-WING</div><div class="lvl-badge">TIER III</div></div>
+              <div class="lvlnode" data-lvl-node onClick="{{ pickL8 }}"><div class="lvl-no">08</div><div class="lvl-name">二之三</div><div class="lvl-map">TWIN-WING</div><div class="lvl-badge">TIER III</div></div>
+              <div class="lvlnode" data-lvl-node onClick="{{ pickL9 }}"><div class="lvl-no">09</div><div class="lvl-name">二之四</div><div class="lvl-map">TWIN-WING</div><div class="lvl-badge">TIER III</div></div>
+              <div class="lvlnode boss" data-lvl-node onClick="{{ pickL10 }}"><div class="lvl-no">10</div><div class="lvl-name">二之五</div><div class="lvl-map">TWIN-WING</div><div class="lvl-badge">BOSS</div></div>
+            </div>
+          </section>
+
+          <!-- ===== 一樓 FLOOR 1 (bottom, easiest) ===== -->
+          <!-- 背景圖佔位 FLOOR 1：之後替換為 background-image:url('你的一樓圖.png'); background-size:cover; -->
+          <section class="lvlfloor" style="background:radial-gradient(120% 80% at 50% 35%, #0a2417 0%, #061a10 55%, #02100a 100%);">
+            <div class="lvlfloor-veil"></div>
+            <div class="lvlfloor-head"><div class="lvlfloor-name">一樓 · 松木旅舍</div><div class="lvlfloor-sub">FLOOR 1 // PINE LODGE &#183; 難度 ★☆☆</div></div>
+            <div class="lvlrow">
+              <div class="lvlnode" data-lvl-node onClick="{{ pickL1 }}"><div class="lvl-no">01</div><div class="lvl-name">一之一</div><div class="lvl-map">PINE LODGE</div><div class="lvl-badge">TIER I</div></div>
+              <div class="lvlnode" data-lvl-node onClick="{{ pickL2 }}"><div class="lvl-no">02</div><div class="lvl-name">一之二</div><div class="lvl-map">PINE LODGE</div><div class="lvl-badge">TIER I</div></div>
+              <div class="lvlnode" data-lvl-node onClick="{{ pickL3 }}"><div class="lvl-no">03</div><div class="lvl-name">一之三</div><div class="lvl-map">PINE LODGE</div><div class="lvl-badge">TIER I</div></div>
+              <div class="lvlnode" data-lvl-node onClick="{{ pickL4 }}"><div class="lvl-no">04</div><div class="lvl-name">一之四</div><div class="lvl-map">PINE LODGE</div><div class="lvl-badge">TIER II</div></div>
+              <div class="lvlnode boss" data-lvl-node onClick="{{ pickL5 }}"><div class="lvl-no">05</div><div class="lvl-name">一之五</div><div class="lvl-map">PINE LODGE</div><div class="lvl-badge">BOSS</div></div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+
+      <!-- back to title -->
+      <div class="lvl-back" data-no-drag onClick="{{ onCloseLevelSelect }}">&#8592; 返回</div>
+
+      <!-- elevator floor indicator -->
+      <div class="lvl-elevator" data-no-drag>
+        <div class="lvl-elv-arrow" onClick="{{ onFloorUp }}">&#9650;</div>
+        <div class="lvl-elv-floor" style="background:{{ f3Bg }}; color:{{ f3Fg }}; border:1px solid {{ f3Bd }};" onClick="{{ onGotoFloor3 }}">3F</div>
+        <div class="lvl-elv-floor" style="background:{{ f2Bg }}; color:{{ f2Fg }}; border:1px solid {{ f2Bd }};" onClick="{{ onGotoFloor2 }}">2F</div>
+        <div class="lvl-elv-floor" style="background:{{ f1Bg }}; color:{{ f1Fg }}; border:1px solid {{ f1Bd }};" onClick="{{ onGotoFloor1 }}">1F</div>
+        <div class="lvl-elv-arrow" onClick="{{ onFloorDown }}">&#9660;</div>
+      </div>
+
+      <div class="lvl-hint">滾輪 / 拖曳 上下切換樓層 &#183; 點擊關卡開始 &#183; 越往上越難</div>
+    </div>
+  </sc-if>
+
+  <!-- map editor overlay (in-page iframe) -->
+  <sc-if value="{{ showEditor }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; z-index:90; background:#02080a; display:flex; flex-direction:column; font-family:'VT323', monospace;">
+      <div style="flex:none; display:flex; align-items:center; justify-content:space-between; padding:8px 16px; border-bottom:1px solid rgba(102,224,134,.28); background:linear-gradient(180deg, rgba(8,16,12,.92), rgba(2,6,4,.92)); box-shadow:0 4px 14px rgba(0,0,0,.6);">
+        <div style="font-family:'Cinzel', serif; font-size:14px; font-weight:700; letter-spacing:4px; color:#a7bcab; text-shadow:0 0 8px rgba(95,235,150,.35);">MAP EDITOR</div>
+        <div onClick="{{ onCloseEditor }}" style="cursor:pointer; font-family:'Cinzel', serif; font-size:13px; font-weight:600; letter-spacing:3px; color:#b89a9a; border:1px solid rgba(150,90,90,.4); border-radius:3px; padding:7px 18px; transition:all .3s ease;" style-hover="color:#ffdede; border-color:rgba(220,110,110,.7); text-shadow:0 0 10px rgba(235,95,95,.5);">&#8592; BACK</div>
+      </div>
+      <iframe src="./地圖編輯器.html" style="flex:1; width:100%; border:0; background:#02080a;"></iframe>
     </div>
   </sc-if>
 
@@ -436,6 +584,42 @@
         </div>
         
       </div>
+  </sc-if>
+
+  <!-- ======================= LEVEL SELECT ======================= -->
+  <sc-if value="{{ showLevelSelect }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; z-index:78; background:rgba(1,8,4,.92); display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'VT323',monospace; -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);">
+
+      <!-- header -->
+      <div style="display:flex; align-items:center; justify-content:space-between; width:880px; margin-bottom:14px;">
+        <div onClick="{{ onCloseLevelSelect }}" style="cursor:pointer; font-family:'Cinzel',serif; font-size:14px; font-weight:600; letter-spacing:3px; color:#b89a9a; border:1px solid rgba(150,90,90,.4); border-radius:3px; padding:8px 18px; transition:all .3s ease;" style-hover="color:#ffdede; border-color:rgba(220,110,110,.7); text-shadow:0 0 10px rgba(235,95,95,.5);">&#8592; BACK</div>
+        <div style="text-align:center;">
+          <div style="font-family:'Cinzel',serif; font-size:26px; font-weight:700; color:#dff7e6; letter-spacing:5px; text-shadow:0 0 4px rgba(0,0,0,.95), 0 0 18px rgba(80,255,140,.55);">SELECT NIGHT</div>
+          <div style="font-family:'Cinzel',serif; font-size:13px; color:#9fe6b8; letter-spacing:2px; margin-top:2px;">{{ selectedLevelMeta }}</div>
+        </div>
+        <div onClick="{{ onStartSelectedLevel }}" style="cursor:pointer; font-family:'Cinzel',serif; font-size:14px; font-weight:600; letter-spacing:3px; color:#02080a; background:linear-gradient(180deg, #5fffa0 0%, #2bd06a 100%); border:1px solid #8effb4; border-radius:3px; padding:8px 22px; box-shadow:0 0 14px rgba(80,255,140,.45); transition:all .3s ease;" style-hover="background:linear-gradient(180deg, #7dffb4 0%, #38de7d 100%); box-shadow:0 0 22px rgba(80,255,140,.7);">BEGIN &#8594;</div>
+      </div>
+
+      <!-- night cards grid -->
+      <div style="width:880px; max-height:520px; overflow-y:auto; display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; padding:4px;">
+        <sc-for list="{{ levelSelectCards }}" as="card" hint-placeholder-count="5">
+          <div onClick="{{ card.onSelect }}" style="cursor:pointer; position:relative; border:1px solid {{ card.border }}; background:{{ card.bg }}; box-shadow:{{ card.shadow }}; border-radius:5px; padding:12px 10px; display:flex; flex-direction:column; gap:5px; min-height:140px; transition:transform .25s ease, box-shadow .25s ease;" style-hover="transform:translateY(-3px); box-shadow:0 8px 22px rgba(0,0,0,.55), 0 0 16px rgba(80,255,140,.25);">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <div style="font-family:'Cinzel',serif; font-size:24px; font-weight:700; color:{{ card.numberColor }}; line-height:1; text-shadow:0 0 8px currentColor;">{{ card.level }}</div>
+              <div style="font-family:'Cinzel',serif; font-size:9px; font-weight:600; letter-spacing:1px; color:{{ card.badgeColor }}; border:1px solid {{ card.badgeBorder }}; border-radius:2px; padding:2px 6px;">{{ card.badge }}</div>
+            </div>
+            <div style="font-family:'Cinzel',serif; font-size:11px; color:#e4f7e8; letter-spacing:.5px; font-weight:600;">{{ card.label }}</div>
+            <div style="font-size:12px; color:#7dffb0; letter-spacing:.5px; line-height:1.1;">{{ card.map }}</div>
+            <div style="font-size:11px; color:#56d97d; letter-spacing:.3px; line-height:1.15; margin-top:auto; opacity:.85;">{{ card.doorMix }}</div>
+            <div style="font-size:10px; color:{{ card.alertColor }}; letter-spacing:.5px; line-height:1; border-top:1px dashed rgba(78,166,105,.25); padding-top:4px;">{{ card.alert }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="margin-top:14px; font-size:13px; color:#5f9f6f; letter-spacing:1.5px; text-align:center;">Click a night to select &#183; BEGIN to deploy &#183; BACK to return</div>
+    </div>
+  </sc-if>
+
 <!-- ======================= WIN ======================= -->
   <sc-if value="{{ isWon }}" hint-placeholder-val="{{ false }}">
     <div style="position:fixed; inset:0; z-index:75; background:rgba(1,8,4,.9); display:flex; align-items:center; justify-content:center; font-family:'VT323',monospace;">
@@ -611,9 +795,10 @@ class Component extends DCLogic {
       optionsTab: 'rules', 
       showLevelSelect: false, 
       showDevConsole: false, 
-      currentLevel: 1, 
-      selectedLevel: 1, 
-      tick: 0, 
+      currentLevel: 1,
+      selectedLevel: 1,
+      selFloor: 1,
+      tick: 0,
       scale: 1,
       items: {
         cloth: 3,
@@ -625,6 +810,7 @@ class Component extends DCLogic {
     };
     this.canvasRef = React.createRef();
     this.miniRef = React.createRef();
+    this.floorsRef = React.createRef();
     this.keys = {};
     this.logs = [];
     this.logId = 0;
@@ -1062,15 +1248,57 @@ class Component extends DCLogic {
     };
     this._onKeyUp = (e) => { this.keys[e.key.toLowerCase()] = false; };
     this._onResize = () => this.fit();
+
+    // ----- level-select floor navigation (mouse wheel + drag) -----
+    this._lvlWheelCd = 0;
+    this._onWheel = (e) => {
+      if (!this.state.showLevelSelect) return;
+      e.preventDefault();
+      const now = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+      if (now < this._lvlWheelCd) return;
+      this._lvlWheelCd = now + 480;
+      if (e.deltaY < 0) this.changeFloor(1); else this.changeFloor(-1);
+    };
+    this._drag = null;
+    this._onPointerDown = (e) => {
+      if (!this.state.showLevelSelect) return;
+      if (e.target && e.target.closest && e.target.closest('[data-lvl-node],[data-no-drag]')) { this._drag = null; return; }
+      this._drag = { y: e.clientY, moved: 0 };
+    };
+    this._onPointerMove = (e) => {
+      if (!this._drag || !this.state.showLevelSelect) return;
+      const dy = e.clientY - this._drag.y; this._drag.moved = dy;
+      const el = this.floorsRef.current; if (!el) return;
+      el.style.transition = 'none';
+      el.style.transform = 'translateY(calc(-' + ((3 - (this.state.selFloor || 1)) * 100) + 'vh + ' + dy + 'px))';
+    };
+    this._onPointerUp = () => {
+      if (!this._drag) return;
+      const dy = this._drag.moved; this._drag = null;
+      const el = this.floorsRef.current; if (el) el.style.transition = '';
+      const th = Math.max(60, window.innerHeight * 0.12);
+      const f = this.state.selFloor || 1;
+      if (dy < -th) this.changeFloor(1);
+      else if (dy > th) this.changeFloor(-1);
+      else if (el) el.style.transform = 'translateY(-' + ((3 - f) * 100) + 'vh)';
+    };
     window.addEventListener('keydown', this._onKey);
     window.addEventListener('keyup', this._onKeyUp);
     window.addEventListener('resize', this._onResize);
+    window.addEventListener('wheel', this._onWheel, { passive: false });
+    window.addEventListener('pointerdown', this._onPointerDown);
+    window.addEventListener('pointermove', this._onPointerMove);
+    window.addEventListener('pointerup', this._onPointerUp);
     this._raf = requestAnimationFrame((t) => this.loop(t));
   }
   componentWillUnmount() {
     window.removeEventListener('keydown', this._onKey);
     window.removeEventListener('keyup', this._onKeyUp);
     window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('wheel', this._onWheel);
+    window.removeEventListener('pointerdown', this._onPointerDown);
+    window.removeEventListener('pointermove', this._onPointerMove);
+    window.removeEventListener('pointerup', this._onPointerUp);
     window.removeEventListener('click', this._unlockAudio);
     if (this.audio) {
       for (const k in this.audio) {
@@ -1089,6 +1317,19 @@ class Component extends DCLogic {
     const s = Math.min(1, window.innerWidth / 1290, window.innerHeight / 820);
     if (Math.abs(s - this.state.scale) > 0.01) this.setState({ scale: s });
     else this.state.scale = s;
+  }
+
+  // ---------- level-select floor carousel ----------
+  changeFloor(d) {
+    const cur = this.state.selFloor || 1;
+    const nf = Math.max(1, Math.min(3, cur + d));
+    const el = this.floorsRef.current; if (el) el.style.transition = '';
+    if (nf !== cur) this.setState({ selFloor: nf });
+  }
+  gotoFloor(f) {
+    const nf = Math.max(1, Math.min(3, Math.round(f)));
+    const el = this.floorsRef.current; if (el) el.style.transition = '';
+    if (nf !== (this.state.selFloor || 1)) this.setState({ selFloor: nf });
   }
 
   log(txt, color) {
@@ -1173,6 +1414,14 @@ class Component extends DCLogic {
     for(let i=0;i<chain.length;i++){const gi=i<3?0:i<5?1:2;chain[i].group='CHAIN-'+gi;chain[i].groupColor=chainColors[gi];}
     const entranceDoor=add({...layout.entrance,axis:'h',name:'MAIN GATE'},'entrance');
 
+    // Pinch every doorway down to a single tile: wall off the two tiles that flank
+    // each door along its wall line, so a shut door can no longer be slipped past on
+    // either side. (Validated to keep all rooms + the gate reachable on every map.)
+    for(const d of doors){
+      const flanks = d.axis==='h' ? [[d.c-1,d.r],[d.c+1,d.r]] : [[d.c,d.r-1],[d.c,d.r+1]];
+      for(const [fc,fr] of flanks){ if(grid[fr]&&grid[fr][fc]==='floor') grid[fr][fc]='wall'; }
+    }
+
     // Furniture also shapes the routes inside each room instead of acting as decoration only.
     const fixtures=layout.fixtures.slice();
     for(const f of fixtures)for(let rr=f.r;rr<f.r+f.h;rr++)for(let cc=f.c;cc<f.c+f.w;cc++)if(grid[rr]&&grid[rr][cc]==='floor')grid[rr][cc]='obstacle';
@@ -1253,28 +1502,24 @@ class Component extends DCLogic {
     const player = { x: cx(playerStart.c), y: cy(playerStart.r), r: 7 };
     const daughter = { x: cx(daughterHome.c), y: cy(daughterHome.r), r: 8, path: null, pi: 0, stuck: 0, channel: 0, mirrorCd: 8, bob: 0, hostile:true, forceProgress:0 };
 
-    // guests
+    // guests now arrive one-by-one through the main gate (see updateArrivals)
     const guestTypes=['timidWoman','boldMan','brat','timidWoman','boldMan','brat','timidWoman','brat'];
-    const gspec=layout.guestSpawns.map((p,i)=>({...p,type:guestTypes[i%guestTypes.length]}));
-    const n=Math.max(1,Math.min(Math.floor(layout.guestRoomCount/2),Math.round(this.props.guestCount??4),gspec.length));
-    const guests = gspec.slice(0, n).map((g, i) => {
-      const profile = this.getGuestProfile(g.type);
-      return {
-        x: cx(g.c), y: cy(g.r), r: 7, type: g.type, profile,
-        scare: 0, fleeing: false, path: null, pi: 0, stuck: 0, id: i,
-        sightShape: profile.sightShape, timeoutRule: profile.timeoutRule, ghostRule: profile.ghostRule,
-        blinded: 0, invulnerable: 0, visitTimer: 0
-      };
-    });
+    const maxConcurrent=Math.max(1,Math.floor(layout.guestRoomCount/2));
+    const totalArrivals=Math.max(1,Math.min(guestTypes.length, maxConcurrent + 3));
+    const queue=[];
+    for(let i=0;i<totalArrivals;i++)queue.push({type:guestTypes[i%guestTypes.length], id:i});
+    const roomTargets = rooms.filter(z=>z.role==='guest').map(z=>({c:Math.floor(z.x+z.w/2),r:Math.floor(z.y+z.h/2)}));
 
     this.world = {
       TILE, COLS, ROWS, grid, doors, doorMap, floorTiles, mapCanvas: mc, mirrors, roomCenters, config, layoutName:layout.name, chainColors,
       entranceDoor, exitApproach, inspectorSpawn, daughterHome, playerStart, mapOffsetX: 3, mapOffsetY: 3,
-      player, daughter, guests, ghosts: [], inspector: null, inspectorDone: false,
+      player, daughter, guests: [], ghosts: [], inspector: null, inspectorDone: false,
+      queue, arrival: null, maxConcurrent, nextArrivalT: 1.2, admitted: 0, turnedAway: 0, checkedOut: 0, roomTargets,
       itemDefs: this.itemDefs, inventory: this.makeInventory(),
       t: 0, panic: 0, power: 100, reported: false, lostGuests: 0, flash: 0, screenGlitch: 0,
       cx, cy
     };
+    if(typeof window!=='undefined')window.__game=this;
     this.logs = [];
     this.log('LEVEL '+config.level+' // '+layout.name+' ONLINE.', '#33ff00');
     this.log('KEEP HER OUT OF SIGHT. SURVIVE TO 06:00.', '#7dffb0');
@@ -1358,9 +1603,16 @@ class Component extends DCLogic {
     if (dist < 5) { e.pi++; return; }
     const sp = speed * (e.speedMul || 1) * dt;
     const ox = e.x, oy = e.y;
+    e.facing = Math.atan2(dy, dx); // remember which way we are looking
     this.tryMove(e, dx / dist * sp, dy / dist * sp);
     const moved = Math.hypot(e.x - ox, e.y - oy);
     if (moved < sp * 0.25) { e.stuck += dt; if (e.stuck > 0.7) { e.path = null; e.stuck = 0; } } else e.stuck = 0;
+  }
+  // per-guest field-of-view derived from their sight shape
+  visionParams(shape) {
+    if (shape === 'narrow-long') return { range: 6.6, half: 0.38 }; // detective-thin cone
+    if (shape === 'wide-short') return { range: 3.7, half: 0.95 };  // wide but shallow
+    return { range: 5.0, half: 0.62 };                              // balanced
   }
   canSee(ax, ay, bx, by, maxTiles) {
     const T = this.world.TILE, dx = bx - ax, dy = by - ay, dist = Math.hypot(dx, dy);
@@ -1372,11 +1624,40 @@ class Component extends DCLogic {
     }
     return true;
   }
+  // A ghost only counts as "seen" when it falls inside the guest's facing cone
+  // AND has clear line of sight (walls / shut doors block it; mirrors do not).
+  inCone(g, t) {
+    const w = this.world, vp = this.visionParams(g.sightShape);
+    const dx = t.x - g.x, dy = t.y - g.y, dist = Math.hypot(dx, dy);
+    if (dist > vp.range * w.TILE) return false;
+    if (dist > w.TILE * 0.6) {
+      let a = Math.atan2(dy, dx) - (g.facing ?? 0);
+      while (a > Math.PI) a -= 2 * Math.PI;
+      while (a < -Math.PI) a += 2 * Math.PI;
+      if (Math.abs(a) > vp.half) return false;
+    }
+    return this.canSee(g.x, g.y, t.x, t.y, vp.range);
+  }
   visibleGhost(g) {
     const w = this.world;
-    if (this.canSee(g.x, g.y, w.daughter.x, w.daughter.y, 6)) return w.daughter;
-    for (const gh of w.ghosts) if (this.canSee(g.x, g.y, gh.x, gh.y, 6)) return gh;
+    if (!w.daughter.covered && this.inCone(g, w.daughter)) return w.daughter;
+    for (const gh of w.ghosts) if (this.inCone(g, gh)) return gh;
     return null;
+  }
+  // Raycast the visible cone polygon (origin + fan of endpoints clipped by walls)
+  conePoly(g) {
+    const w = this.world, T = w.TILE, vp = this.visionParams(g.sightShape), facing = g.facing ?? 0;
+    const N = 22, R = vp.range * T, step = T * 0.34, pts = [{ x: g.x, y: g.y }];
+    for (let i = 0; i <= N; i++) {
+      const a = facing - vp.half + (2 * vp.half) * (i / N);
+      let reach = R;
+      for (let d = step; d <= R; d += step) {
+        const x = g.x + Math.cos(a) * d, y = g.y + Math.sin(a) * d;
+        if (!this.passable(Math.floor(x / T), Math.floor(y / T))) { reach = Math.max(0, d - step * 0.5); break; }
+      }
+      pts.push({ x: g.x + Math.cos(a) * reach, y: g.y + Math.sin(a) * reach });
+    }
+    return pts;
   }
 
   doorGroup(d){if(!d||!d.group)return d?[d]:[];return this.world.doors.filter(x=>x.group===d.group);}
@@ -1415,6 +1696,56 @@ class Component extends DCLogic {
     else{for(const x of group)x.open=true;}
     actor.forceProgress=0;actor.forceDoorKey=null;
     this.log('FORCED ENTRY // '+d.name,'#ff3333');this.playSFX('breakIn');
+  }
+
+  // ---------- guest arrivals (one-by-one through the main gate) ----------
+  makeGuest(spec, c, r) {
+    const w = this.world, profile = this.getGuestProfile(spec.type);
+    return {
+      x: w.cx(c), y: w.cy(r), r: 7, type: spec.type, profile,
+      facing: -Math.PI/2, scare: 0, fleeing: false, path: null, pi: 0, stuck: 0, id: spec.id,
+      sightShape: profile.sightShape, timeoutRule: profile.timeoutRule, ghostRule: profile.ghostRule,
+      blinded: 0, invulnerable: 0, visitTimer: 0, spotted: false, checkingOut: false
+    };
+  }
+  updateArrivals(dt) {
+    const w = this.world, ent = w.entranceDoor, ap = w.exitApproach;
+    if (w.arrival) {
+      const a = w.arrival;
+      a.facing = -Math.PI/2; // looking in through the gate
+      if (ent && ent.open && !ent.locked) {
+        if (w.guests.length < w.maxConcurrent) {
+          // admit: becomes a resident heading for a room
+          a.visitTimer = 16 + Math.random()*12;
+          const tgt = w.roomTargets.length ? w.roomTargets[(Math.random()*w.roomTargets.length)|0] : this.randomFloor();
+          this.retarget(a, tgt);
+          w.guests.push(a); w.arrival = null; w.admitted++;
+          w.nextArrivalT = 2.4 + Math.random()*2.2;
+          this.log('GUEST CHECKS IN // '+a.profile.title+'.', '#7dffb0');
+          this.playSFX('unlock');
+        } else {
+          // gate open but hotel full — wait, then give up
+          a.patience -= dt;
+          if (a.patience <= 0) { w.arrival = null; w.turnedAway++; w.nextArrivalT = 2.0 + Math.random()*1.5; this.log('GUEST LEAVES // NO VACANCY.', '#ffb000'); }
+        }
+      } else {
+        // gate closed: a guest who sees a shut door waits only briefly, then leaves
+        a.patience -= dt;
+        if (a.patience <= 0) { w.arrival = null; w.turnedAway++; w.nextArrivalT = 1.8 + Math.random()*1.6; this.log('GUEST TURNED AWAY // GATE WAS SHUT.', '#ffb000'); }
+      }
+      return;
+    }
+    if (w.queue.length) {
+      w.nextArrivalT -= dt;
+      if (w.nextArrivalT <= 0) {
+        const spec = w.queue.shift();
+        const a = this.makeGuest(spec, ap.c, ap.r);
+        a.patience = 6.0; a.state = 'waiting';
+        w.arrival = a;
+        this.log('SOMEONE AT THE GATE // '+a.profile.title+'.', '#33ff00');
+        this.playSFX('knock');
+      }
+    }
   }
 
   // ---------- update ----------
@@ -1471,16 +1802,32 @@ class Component extends DCLogic {
     // extra ghosts wander
     for (const gh of w.ghosts) this.follow(gh, dt, 40, true);
 
+    // guests queue up outside and enter one-by-one through the main gate
+    this.updateArrivals(dt);
+
     // guests
     let scaredActive = 0;
     for (let i = w.guests.length - 1; i >= 0; i--) {
       const g = w.guests[i];
       const profile = g.profile || this.getGuestProfile(g.type);
       const seen = this.visibleGhost(g);
+      g.spotted = !!seen;
       if (g.blinded > 0) {
         g.blinded = Math.max(0, g.blinded - dt);
         g.invulnerable = Math.max(0, g.invulnerable - dt);
         continue;
+      }
+      // visit timer -> head back to the gate and check out (keeps the queue flowing)
+      if (!g.fleeing && !g.checkingOut) {
+        g.visitTimer -= dt;
+        if (g.visitTimer <= 0) { g.checkingOut = true; this.retarget(g, w.exitApproach); this.log('GUEST CHECKS OUT // '+profile.title+'.', '#7dffb0'); }
+      }
+      if (g.checkingOut) {
+        this.follow(g, dt, (profile.moveSpeed||34)*1.05);
+        if (Math.hypot(g.x - w.cx(w.exitApproach.c), g.y - w.cy(w.exitApproach.r)) < w.TILE) {
+          const ent = w.entranceDoor;
+          if (ent && ent.open) { w.guests.splice(i, 1); w.checkedOut++; continue; }
+        }
       }
       if (g.type === 'timidWoman') {
         if (seen) {
@@ -1500,7 +1847,7 @@ class Component extends DCLogic {
           this.playSFX('transform');
           continue;
         }
-        this.follow(g, dt, profile.moveSpeed);
+        if (!g.checkingOut) this.follow(g, dt, profile.moveSpeed);
       } else if (g.type === 'brat') {
         if (seen) {
           if (g.scare < 1) {
@@ -1516,7 +1863,7 @@ class Component extends DCLogic {
           }
         } else g.scare = Math.max(0, g.scare - dt * profile.scareRecover);
         if (g.scare > 25) scaredActive++;
-        this.follow(g, dt, profile.moveSpeed);
+        if (!g.checkingOut) this.follow(g, dt, profile.moveSpeed);
       } else { // boldMan
         if (seen && !g.fleeing) { 
           g.fleeing = true; 
@@ -1534,7 +1881,7 @@ class Component extends DCLogic {
               if(w.config.boss&&!w.inspector&&!w.inspectorDone)this.spawnInspector(true);
             }
           }
-        } else this.follow(g, dt, profile.moveSpeed);
+        } else if (!g.checkingOut) this.follow(g, dt, profile.moveSpeed);
       }
     }
 
@@ -1656,7 +2003,11 @@ class Component extends DCLogic {
     this.draw();
     this.drawMini();
     this.hudAcc += dt;
-    if (this.hudAcc > 0.12) { this.hudAcc = 0; this.setState({ tick: this.state.tick + 1 }); }
+    if (this.state.screen === 'playing') {
+      if (this.hudAcc > 0.12) { this.hudAcc = 0; this.setState({ tick: this.state.tick + 1 }); }
+    } else {
+      this.hudAcc = 0;
+    }
     this._raf = requestAnimationFrame((t) => this.loop(t));
   }
 
@@ -1786,6 +2137,37 @@ class Component extends DCLogic {
       }
     }
 
+    // ---- semi-dark veil + guest vision cones ----
+    // The hotel sits in low light; each guest's sweeping gaze brightens what they see.
+    const polys = w.guests.filter(g => !(g.blinded > 0)).map(g => ({ g, pts: this.conePoly(g) }));
+    if (!this._lightCanvas) this._lightCanvas = document.createElement('canvas');
+    const lc = this._lightCanvas;
+    if (lc.width !== w.COLS * T) { lc.width = w.COLS * T; lc.height = w.ROWS * T; }
+    const lx = lc.getContext('2d');
+    lx.clearRect(0, 0, lc.width, lc.height);
+    lx.fillStyle = 'rgba(2,7,4,0.6)'; lx.fillRect(0, 0, lc.width, lc.height); // base gloom (map still readable)
+    lx.globalCompositeOperation = 'destination-out';
+    const carveRadial = (x, y, R, a0) => { const rg = lx.createRadialGradient(x, y, 0, x, y, R); rg.addColorStop(0, 'rgba(255,255,255,' + a0 + ')'); rg.addColorStop(0.7, 'rgba(255,255,255,' + (a0 * 0.5) + ')'); rg.addColorStop(1, 'rgba(255,255,255,0)'); lx.fillStyle = rg; lx.fillRect(x - R, y - R, 2 * R, 2 * R); };
+    carveRadial(w.player.x, w.player.y, T * 2.6, 0.85); // the keeper carries a little light
+    for (const m of w.mirrors) if (!m.covered) carveRadial((m.c + 0.5) * T, (m.r + 0.5) * T, T * 1.3, 0.4); // mirrors glimmer (see-through)
+    for (const { g, pts } of polys) {
+      const vp = this.visionParams(g.sightShape), R = vp.range * T;
+      lx.save();
+      lx.beginPath(); lx.moveTo(pts[0].x, pts[0].y); for (let i = 1; i < pts.length; i++) lx.lineTo(pts[i].x, pts[i].y); lx.closePath(); lx.clip();
+      carveRadial(g.x, g.y, R, 0.95);
+      lx.restore();
+    }
+    lx.globalCompositeOperation = 'source-over';
+    ctx.drawImage(lc, 0, 0);
+    // faint coloured cones so the player can read sightlines (red = ghost spotted)
+    for (const { g, pts } of polys) {
+      ctx.save();
+      ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y); for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y); ctx.closePath();
+      ctx.globalAlpha = g.spotted ? 0.22 : 0.10; ctx.fillStyle = g.spotted ? '#ff5a5a' : '#ffe39a'; ctx.fill();
+      ctx.globalAlpha = g.spotted ? 0.5 : 0.22; ctx.strokeStyle = g.spotted ? '#ff7a7a' : '#ffe39a'; ctx.lineWidth = 1; ctx.stroke();
+      ctx.restore();
+    }
+
     // doors
     for (const d of w.doors) {
       const cx = (d.c + 0.5) * T, cy = (d.r + 0.5) * T;
@@ -1859,6 +2241,18 @@ class Component extends DCLogic {
       ctx.beginPath(); ctx.arc(ins.x, ins.y, 8, 0, 7); ctx.fill();
       ctx.shadowBlur = 0; ctx.strokeStyle = '#0a0404'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(ins.x, ins.y - 5); ctx.lineTo(ins.x, ins.y + 5); ctx.moveTo(ins.x - 5, ins.y); ctx.lineTo(ins.x + 5, ins.y); ctx.stroke();
+      ctx.restore();
+    }
+
+    // guest waiting at the gate (knocking to be let in)
+    if (w.arrival) {
+      const a = w.arrival, pulse = 0.5 + 0.5 * Math.sin(w.t * 6);
+      this.drawGuestMarker(ctx, a, this.getGuestProfile(a.type).mapColor || C.amber);
+      ctx.save();
+      ctx.globalAlpha = 0.45 + 0.45 * pulse;
+      ctx.fillStyle = (w.entranceDoor && w.entranceDoor.open && !w.entranceDoor.locked) ? C.green : C.amber;
+      ctx.font = 'bold 13px monospace'; ctx.textAlign = 'center';
+      ctx.fillText((w.entranceDoor && w.entranceDoor.open && !w.entranceDoor.locked) ? '↓' : '!', a.x, a.y - 14);
       ctx.restore();
     }
 
@@ -2028,6 +2422,12 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state;
     const currentTab = s.optionsTab || 'rules';
+    const sf = s.selFloor || 1;
+    const picks = {};
+    for (let i = 1; i <= 15; i++) { const lv = i; picks['pickL' + lv] = () => this.startGame(lv); }
+    const elvOn = { bg: '#8effb4', fg: '#04110d', bd: '#8effb4' };
+    const elvOff = { bg: 'transparent', fg: '#5f9f6f', bd: 'rgba(120,210,150,.2)' };
+    const e1 = sf === 1 ? elvOn : elvOff, e2 = sf === 2 ? elvOn : elvOff, e3 = sf === 3 ? elvOn : elvOff;
     return {
       optionsTab: currentTab,
       showTabRules: currentTab === 'rules',
@@ -2079,6 +2479,7 @@ class Component extends DCLogic {
       isWon: s.screen === 'won',
       isLost: s.screen === 'lost',
       showOptions: s.showOptions,
+      showEditor: s.showEditor,
       showLevelSelect: s.showLevelSelect,
       selectedLevel: s.selectedLevel,
       selectedLevelMeta: this.getSelectedLevelMeta(s.selectedLevel),
@@ -2096,11 +2497,25 @@ class Component extends DCLogic {
       onUseItem5: () => this.useItem(5),
       logLines: this.logs.map(l => ({ txt: l.txt, color: l.color })),
       onNewGame: () => this.startGame(),
-      onOpenLevelSelect: () => this.setState({ showLevelSelect: true, showOptions: false, selectedLevel: s.selectedLevel || s.currentLevel || 1 }),
+      onOpenLevelSelect: () => this.setState({ showLevelSelect: true, showOptions: false, selectedLevel: s.selectedLevel || s.currentLevel || 1, selFloor: Math.max(1, Math.min(3, Math.ceil((s.currentLevel || 1) / 5))) }),
       onCloseLevelSelect: () => this.setState({ showLevelSelect: false }),
+      ...picks,
+      floorsRef: this.floorsRef,
+      selFloor: sf,
+      floorShift: 'translateY(-' + ((3 - sf) * 100) + 'vh)',
+      f1Bg: e1.bg, f1Fg: e1.fg, f1Bd: e1.bd,
+      f2Bg: e2.bg, f2Fg: e2.fg, f2Bd: e2.bd,
+      f3Bg: e3.bg, f3Fg: e3.fg, f3Bd: e3.bd,
+      onFloorUp: () => this.changeFloor(1),
+      onFloorDown: () => this.changeFloor(-1),
+      onGotoFloor1: () => this.gotoFloor(1),
+      onGotoFloor2: () => this.gotoFloor(2),
+      onGotoFloor3: () => this.gotoFloor(3),
       onContinue: () => this.startGame(s.currentLevel || 1),
       onStartSelectedLevel: () => this.startGame(s.selectedLevel || 1),
       onOptions: () => this.setState({ showOptions: !s.showOptions }),
+      onEditor: () => this.setState({ showEditor: true }),
+      onCloseEditor: () => this.setState({ showEditor: false }),
       onExit: () => { this.log('THERE IS NO WAY DOWN THE MOUNTAIN TONIGHT.', '#ff3333'); },
       onRestart: () => this.startGame(),
       onToTitle: () => { this.buildWorld(); this.setState({ screen: 'title' }); },
