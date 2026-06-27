@@ -648,11 +648,42 @@
     <style>
       .guest-roster-item .guest-detail { display:none; }
       .guest-roster-item:hover .guest-detail { display:flex; }
+      .tut-shell{display:flex;height:100%;min-height:0;gap:16px;}
+      .tut-nav{width:176px;flex:none;border:1px solid rgba(51,255,136,.18);background:linear-gradient(180deg,rgba(4,16,10,.72),rgba(2,10,6,.92));box-shadow:inset 0 0 0 1px rgba(180,255,212,.03);}
+      .tut-nav-head{padding:12px 14px 10px;border-bottom:1px solid rgba(51,255,136,.12);font-family:'Cinzel',serif;font-size:12px;letter-spacing:2px;color:#8fd6a6;}
+      .tut-nav-item{padding:11px 12px;border-bottom:1px solid rgba(51,255,136,.08);cursor:pointer;transition:background .16s, border-color .16s, transform .16s;}
+      .tut-nav-item:hover{background:rgba(51,255,136,.06);transform:translateX(2px);}
+      .tut-nav-item.is-active{background:linear-gradient(90deg,rgba(51,255,136,.14),rgba(51,255,136,.03));box-shadow:inset 2px 0 0 #33ff88;}
+      .tut-nav-code{font-size:11px;letter-spacing:2px;color:#5fa879;}
+      .tut-nav-title{font-size:14px;color:#e4f7e8;letter-spacing:1px;margin-top:3px;}
+      .tut-page{flex:1;min-width:0;border:1px solid rgba(51,255,136,.16);background:linear-gradient(180deg,rgba(4,14,10,.78),rgba(1,7,5,.96));display:flex;flex-direction:column;min-height:0;}
+      .tut-page-head{padding:16px 18px 14px;border-bottom:1px solid rgba(51,255,136,.12);background:linear-gradient(180deg,rgba(8,24,16,.78),rgba(4,12,8,.32));}
+      .tut-page-code{font-size:11px;letter-spacing:2px;color:#6ebc87;}
+      .tut-page-title{font-family:'Cinzel',serif;font-size:28px;letter-spacing:3px;color:#e8ffe8;margin-top:5px;}
+      .tut-page-sub{font-size:14px;letter-spacing:1px;margin-top:4px;}
+      .tut-page-body{flex:1;min-height:0;overflow:auto;padding:16px 18px 18px;display:flex;flex-direction:column;gap:14px;}
+      .tut-block{border:1px solid rgba(51,255,136,.14);background:linear-gradient(180deg,rgba(3,12,8,.8),rgba(2,8,6,.94));padding:12px 14px;}
+      .tut-block-title{font-family:'Cinzel',serif;font-size:14px;letter-spacing:2px;color:#9de7b7;margin-bottom:8px;}
+      .tut-grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+      .tut-metric{border:1px solid rgba(51,255,136,.12);background:rgba(6,18,12,.55);padding:10px;}
+      .tut-metric-label{font-size:11px;letter-spacing:1px;color:#6cb886;}
+      .tut-metric-value{font-size:18px;color:#e8ffe8;line-height:1.15;margin-top:4px;}
+      .tut-line{font-size:14px;line-height:1.45;color:#cfe8cf;}
+      .tut-list{display:flex;flex-direction:column;gap:8px;}
+      .tut-card{border:1px solid rgba(51,255,136,.12);background:rgba(6,18,12,.46);padding:10px 12px;}
+      .tut-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;}
+      .tut-card-title{font-family:'Cinzel',serif;font-size:15px;color:#e8ffe8;letter-spacing:1px;}
+      .tut-card-sub{font-size:12px;letter-spacing:1px;}
+      .tut-tag{padding:2px 8px;border:1px solid currentColor;font-size:11px;letter-spacing:1px;}
+      .tut-formula{font-size:16px;letter-spacing:1px;color:#e8ffe8;padding:10px 12px;border:1px dashed rgba(51,255,136,.22);background:rgba(4,16,10,.5);}
+      .tut-table{display:grid;grid-template-columns:130px 82px 82px 1fr;gap:1px;background:rgba(51,255,136,.12);border:1px solid rgba(51,255,136,.16);}
+      .tut-table > div{background:#06120d;padding:8px 9px;font-size:13px;line-height:1.35;color:#d6f1d8;}
+      .tut-table .head{background:#0a1b12;color:#8fe3ac;letter-spacing:1px;}
     </style>
     <div onClick="{{ onOptions }}" style="position:absolute; inset:0; background:rgba(0,0,0,.75); display:flex; align-items:center; justify-content:center; z-index:80; -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);">
       
       <!-- Tabbed Terminal Container -->
-      <div onClick="{{ onOptionCardClick }}" style="position:relative; width:720px; height:420px; border:2px solid #33ff00; background:linear-gradient(180deg, #020c07 0%, #000402 100%); box-shadow:0 0 50px rgba(51,255,0,.25), inset 0 0 30px rgba(0,0,0,0.9); display:flex; font-family:'VT323', monospace; color:#33ff00; border-radius:8px; overflow:visible;">
+      <div onClick="{{ onOptionCardClick }}" style="position:relative; width:min(1020px, calc(100vw - 40px)); height:min(640px, calc(100vh - 40px)); border:2px solid #33ff00; background:linear-gradient(180deg, #020c07 0%, #000402 100%); box-shadow:0 0 50px rgba(51,255,0,.25), inset 0 0 30px rgba(0,0,0,0.9); display:flex; font-family:'VT323', monospace; color:#33ff00; border-radius:8px; overflow:hidden;">
         
         <!-- Left Sidebar (Tabs) -->
         <div style="width:160px; flex:none; border-right:1px solid rgba(51,255,136,.25); background:rgba(2,12,6,.4); display:flex; flex-direction:column; justify-content:space-between; box-sizing:border-box;">
@@ -670,7 +701,7 @@
         </div>
         
         <!-- Right Content Area -->
-        <div style="flex:1; padding:20px 24px; display:flex; flex-direction:column; overflow:visible; justify-content:flex-start; box-sizing:border-box;">
+        <div style="flex:1; padding:20px 24px; display:flex; flex-direction:column; overflow:hidden; justify-content:flex-start; box-sizing:border-box;">
           
           <!-- Tab 1: RULES -->
           <sc-if value="{{ showTabRules }}" hint-placeholder-val="{{ true }}">
@@ -689,6 +720,176 @@
           
           <!-- Tab 2: TUTORIAL -->
           <sc-if value="{{ showTabTutorial }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; flex-direction:column; height:100%; overflow:hidden;">
+              <div style="font-size:20px; color:#33ff00; letter-spacing:2px; margin-bottom:12px; border-bottom:1px dashed rgba(51,255,136,0.25); padding-bottom:6px; font-family:'Cinzel', serif; text-shadow:0 0 6px #33ff00;">DATABASE // DESIGN DOSSIER</div>
+              <div class="tut-shell">
+                <div class="tut-nav">
+                  <div class="tut-nav-head">FOLDER INDEX</div>
+                  <sc-for list="{{ tutorialSections }}" as="section" hint-placeholder-count="6">
+                    <div class="tut-nav-item {{ section.active ? 'is-active' : '' }}" onClick="{{ section.onSelect }}">
+                      <div class="tut-nav-code">{{ section.code }} // {{ section.label }}</div>
+                      <div class="tut-nav-title">{{ section.title }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div class="tut-page">
+                  <div class="tut-page-head">
+                    <div class="tut-page-code">{{ tutorialActiveCode }} // {{ tutorialActiveLabel }}</div>
+                    <div class="tut-page-title" style="color:{{ tutorialActiveAccent }}; text-shadow:0 0 10px {{ tutorialActiveAccent }};">{{ tutorialActiveTitle }}</div>
+                    <div class="tut-page-sub" style="color:{{ tutorialActiveAccent }};">{{ tutorialActiveSubtitle }}</div>
+                  </div>
+                  <div class="tut-page-body">
+                    <sc-if value="{{ tutorialIsOverview }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:flex; flex-direction:column; gap:14px;">
+                        <div class="tut-block">
+                          <div class="tut-block-title">EMOTIONAL TARGET</div>
+                          <div class="tut-grid2">
+                            <div class="tut-metric"><div class="tut-metric-label">核心情緒</div><div class="tut-metric-value">掌控與恐慌的博弈</div></div>
+                            <div class="tut-metric"><div class="tut-metric-label">操作幻想</div><div class="tut-metric-value">你不是滑鼠神，而是必須親自奔跑的店主</div></div>
+                            <div class="tut-metric"><div class="tut-metric-label">視覺語言</div><div class="tut-metric-value">綠色 CRT、掃描線、封閉終端</div></div>
+                            <div class="tut-metric"><div class="tut-metric-label">Door 主題</div><div class="tut-metric-value">門就是秩序、風險與秘密的開關</div></div>
+                          </div>
+                        </div>
+                        <div class="tut-block">
+                          <div class="tut-block-title">PITCH</div>
+                          <div class="tut-line">你在復古終端機中經營一間旅館，同時隱瞞女兒鬼魂的存在。每一次開門、關門、接待、鎖門與遮鏡，都是在賺錢與防止失控之間做高壓抉擇。</div>
+                        </div>
+                        <div class="tut-block">
+                          <div class="tut-block-title">HOOKS</div>
+                          <div class="tut-list">
+                            <div class="tut-line">&gt; 你必須離開安全監控位，親自跑圖處理每一扇門。</div>
+                            <div class="tut-line">&gt; 經營與靈異不是兩套玩法，而是同一條壓力鏈。</div>
+                            <div class="tut-line">&gt; 綠色終端美學不是裝飾，而是孤立感與壓迫感的主體。</div>
+                          </div>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ tutorialIsLoop }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex; flex-direction:column; gap:14px;">
+                        <div class="tut-formula">[櫃檯辦理入住] -> [客房分配與管理] -> [門控與遮布阻擋鬼魂] -> [結帳取得金幣] -> [商店購買道具]</div>
+                        <div class="tut-block">
+                          <div class="tut-block-title">PRESSURE CHAIN</div>
+                          <div class="tut-list">
+                            <div class="tut-line">1. 顧客進門後，你得實體跑向櫃檯處理入住，慢了就會折價、通報或被偷錢。</div>
+                            <div class="tut-line">2. 入住後，真正的壓力不是看鬼而已，而是你是否還能維持整棟旅館的路徑秩序。</div>
+                            <div class="tut-line">3. 關門與遮鏡是拖延戰，不是永久防線。你是在買時間處理下一個火點。</div>
+                            <div class="tut-line">4. 賺到的錢會反過來決定你能不能用道具穩局，形成營運閉環。</div>
+                          </div>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ tutorialIsGuests }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex; flex-direction:column; gap:14px;">
+                        <div class="tut-block">
+                          <div class="tut-block-title">HOTEL GUEST DOSSIERS</div>
+                          <div class="tut-list">
+                            <sc-for list="{{ tutorialGuestCards }}" as="guest" hint-placeholder-count="3">
+                              <div class="tut-card" style="border-color:{{ guest.border }};">
+                                <div class="tut-card-head">
+                                  <div>
+                                    <div class="tut-card-title">{{ guest.title }}</div>
+                                    <div class="tut-card-sub" style="color:{{ guest.accent }};">{{ guest.subtitle }}</div>
+                                  </div>
+                                  <div class="tut-tag" style="color:{{ guest.accent }};">{{ guest.icon }}</div>
+                                </div>
+                                <div class="tut-line">視野：{{ guest.vision }}</div>
+                                <div class="tut-line">接待：{{ guest.checkIn }}</div>
+                                <div class="tut-line">行為：{{ guest.behavior }}</div>
+                                <div class="tut-line">撞鬼：{{ guest.ghost }}</div>
+                              </div>
+                            </sc-for>
+                          </div>
+                        </div>
+                        <div class="tut-block">
+                          <div class="tut-block-title">INSPECTOR DOSSIERS</div>
+                          <div class="tut-grid2">
+                            <sc-for list="{{ tutorialInspectorCards }}" as="inspector" hint-placeholder-count="3">
+                              <div class="tut-card" style="border-color:{{ inspector.border }};">
+                                <div class="tut-card-head">
+                                  <div>
+                                    <div class="tut-card-title">{{ inspector.title }}</div>
+                                    <div class="tut-card-sub" style="color:{{ inspector.accent }};">{{ inspector.subtitle }}</div>
+                                  </div>
+                                  <div class="tut-tag" style="color:{{ inspector.accent }};">{{ inspector.icon }}</div>
+                                </div>
+                                <div class="tut-line">{{ inspector.desc }}</div>
+                              </div>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ tutorialIsDoors }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex; flex-direction:column; gap:14px;">
+                        <div class="tut-block">
+                          <div class="tut-block-title">DOOR HIERARCHY</div>
+                          <div class="tut-list">
+                            <sc-for list="{{ tutorialDoorRows }}" as="door" hint-placeholder-count="5">
+                              <div class="tut-card">
+                                <div class="tut-card-head">
+                                  <div class="tut-card-title">{{ door.name }}</div>
+                                  <div class="tut-tag" style="color:{{ door.tone }};">{{ door.unlock }}</div>
+                                </div>
+                                <div class="tut-line">{{ door.detail }}</div>
+                              </div>
+                            </sc-for>
+                          </div>
+                        </div>
+                        <div class="tut-block">
+                          <div class="tut-block-title">MIX RULE</div>
+                          <div class="tut-line">高難度關卡不會替換低階門，而是把已解鎖的門全部混進來。越後期越像在一個失控機關陣裡經營旅館。</div>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ tutorialIsEconomy }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex; flex-direction:column; gap:14px;">
+                        <div class="tut-block">
+                          <div class="tut-block-title">INHERITANCE RULE</div>
+                          <div class="tut-list">
+                            <div class="tut-line">&gt; 金幣是唯一可繼承資源，會直接影響你下一關的起始容錯。</div>
+                            <div class="tut-line">&gt; 已通關關卡可重複挑戰，若刷出更高金幣，該關最高紀錄會被覆寫。</div>
+                            <div class="tut-line">&gt; 覆寫不回頭修改你以前的單次結算，但會影響你之後再挑戰更後面關卡時的起始本金。</div>
+                          </div>
+                        </div>
+                        <div class="tut-block">
+                          <div class="tut-block-title">ITEM ECONOMY</div>
+                          <div class="tut-table">
+                            <div class="head">道具</div><div class="head">價格</div><div class="head">冷卻</div><div class="head">效果</div>
+                            <sc-for list="{{ tutorialEconomyRows }}" as="row" hint-placeholder-count="5">
+                              <div>{{ row.title }}</div><div>{{ row.price }}</div><div>{{ row.cooldown }}</div><div>{{ row.effect }}</div>
+                            </sc-for>
+                          </div>
+                        </div>
+                        <div class="tut-block">
+                          <div class="tut-block-title">BALANCE INTENT</div>
+                          <div class="tut-line">最強的眼罩最貴；最常用的穿牆術最便宜；口哨雖便宜但冷卻長，避免鬼魂路徑被無腦重洗。每一次施放都該像營運決策，而不是消耗庫存。</div>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ tutorialIsProgression }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex; flex-direction:column; gap:14px;">
+                        <div class="tut-grid2">
+                          <div class="tut-card"><div class="tut-card-title">1 - 5 關</div><div class="tut-card-sub" style="color:#9dffb8;">PINE LODGE</div><div class="tut-line">先學會跑圖、接待節奏、穩定封門與遮鏡。</div></div>
+                          <div class="tut-card"><div class="tut-card-title">6 - 10 關</div><div class="tut-card-sub" style="color:#7fd6ff;">TWIN-WING MANOR</div><div class="tut-line">羅生門與自動門介入，開始逼你放棄單一路線思考。</div></div>
+                          <div class="tut-card"><div class="tut-card-title">11 - 15 關</div><div class="tut-card-sub" style="color:#ffcf8a;">BLACKTHORN VILLA</div><div class="tut-line">高密度複合門型、連鎖干擾與更緊的經濟壓力同時到位。</div></div>
+                          <div class="tut-card"><div class="tut-card-title">每 5 關 Boss</div><div class="tut-card-sub" style="color:#ff7a7a;">CHECKPOINT</div><div class="tut-line">像學期考一樣驗收你前面累積的營運習慣與控場能力。</div></div>
+                        </div>
+                        <div class="tut-block">
+                          <div class="tut-block-title">WHAT GETS HARDER</div>
+                          <div class="tut-list">
+                            <div class="tut-line">&gt; 房間數與可收旅客上限提高，但局勢更難讀。</div>
+                            <div class="tut-line">&gt; 門型混搭比例提高，使你不能再用單一招法應付全局。</div>
+                            <div class="tut-line">&gt; 前期最佳金幣表現，會決定你後面有沒有餘裕花錢救局。</div>
+                          </div>
+                        </div>
+                      </div>
+                    </sc-if>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ showTabTutorialLegacy }}" hint-placeholder-val="{{ false }}">
             <div style="display:flex; flex-direction:column; height:100%; overflow:visible;">
               <div style="font-size:20px; color:#33ff00; letter-spacing:2px; margin-bottom:12px; border-bottom:1px dashed rgba(51,255,136,0.25); padding-bottom:6px; font-family:'Cinzel', serif; text-shadow:0 0 6px #33ff00;">DATABASE // INTEL ARCHIVE</div>
               
@@ -956,6 +1157,7 @@ class Component extends DCLogic {
       screen: this.props.startScreen || 'title',
       showOptions: false,
       optionsTab: 'rules', 
+      tutorialSection: 'overview',
       showLevelSelect: false, 
       showLevelPreview: false,
       showDevConsole: false, 
@@ -1162,6 +1364,54 @@ class Component extends DCLogic {
       behavior: '行為｜' + profile.behavior,
       ghost: '撞鬼｜' + profile.ghost
     }));
+  }
+
+  getTutorialSections() {
+    return [
+      { id: 'overview', code: '00', label: '設計哲學', title: 'TERMINAL PHILOSOPHY', subtitle: '情緒、主題與操作幻想', accent: '#9dffb8' },
+      { id: 'loop', code: '01', label: '核心循環', title: 'OPERATION LOOP', subtitle: '從接待到驅鬼的壓力鏈', accent: '#7fd6ff' },
+      { id: 'guests', code: '02', label: '旅客檔案', title: 'RESIDENT DOSSIERS', subtitle: '旅客 / 稽查員 / 撞鬼反應', accent: '#ffd399' },
+      { id: 'doors', code: '03', label: '門系統', title: 'DOOR SYSTEM ARCHIVE', subtitle: '五種門型與混搭規則', accent: '#ffb000' },
+      { id: 'economy', code: '04', label: '金幣經濟', title: 'INHERITANCE LEDGER', subtitle: 'Quota、繼承與道具花費', accent: '#c18cff' },
+      { id: 'progression', code: '05', label: '關卡進程', title: 'WORLD PROGRESSION', subtitle: '地圖解鎖與後期壓力', accent: '#ff7a7a' }
+    ];
+  }
+
+  getTutorialGuestCards() {
+    return Object.values(this.guestProfiles).map((profile) => ({
+      title: profile.title,
+      subtitle: profile.subtitle,
+      icon: profile.icon,
+      accent: profile.accent,
+      border: profile.border,
+      vision: profile.vision,
+      checkIn: profile.checkIn,
+      behavior: profile.behavior,
+      ghost: profile.ghost
+    }));
+  }
+
+  getTutorialInspectorCards() {
+    return [
+      { title: '觀察員', subtitle: '記錄異常 / 放大失誤', icon: 'OBS', accent: '#ffb000', border: '#6b4a2a', desc: '在暗處記錄整個旅館的秩序失控。牠的存在代表玩家不只在求生，也在維持表面營運。' },
+      { title: '主考官', subtitle: '抽查門況 / 放大混亂', icon: 'EXM', accent: '#ffcc73', border: '#7a5734', desc: '會質問每一道門是否合理運作。你的防線若太依賴單一路徑，這類壓力會迅速把旅館逼到失控。' },
+      { title: '執法者', subtitle: '終局 Boss / 直接處決', icon: 'ENF', accent: '#ff6b6b', border: '#7a2d2d', desc: '終極追捕者。牠象徵所有經營失誤終於回頭索命，逼你用整張地圖的門與時間差做最後周旋。' }
+    ];
+  }
+
+  getTutorialDoorRows() {
+    return [
+      { name: '基礎門', unlock: 'Lv 1', tone: '#ff4040', detail: '最穩定的防線。適合當作你節奏與站位的基準點。' },
+      { name: '羅生門', unlock: 'Lv 4', tone: '#ff8c00', detail: '會週期切換開關，不能拿來做永久封鎖，只能拿來做節奏控制。' },
+      { name: '自動門', unlock: 'Lv 7', tone: '#3bd6ff', detail: '靠近就開。沒有門鎖道具時，幾乎無法形成可靠的人流與鬼流阻斷。' },
+      { name: '旋轉門', unlock: 'Lv 10', tone: '#ffd000', detail: '永遠保留部分縫隙，逼玩家抓行走時機，而不是只靠靜態封門。' },
+      { name: '連鎖門', unlock: 'Lv 13', tone: '#b061ff', detail: '同色門共享狀態。這是後期最像機關謎題的系統，也是最高壓的路徑管理工具。' }
+    ];
+  }
+
+  getTutorialEconomyRows() {
+    const defs = [this.itemDefs.mirrorCloth, this.itemDefs.blindfold, this.itemDefs.wallPass, this.itemDefs.lockSeal, this.itemDefs.whistle];
+    return defs.map((item) => ({ title: item.title, price: '$' + item.price, cooldown: item.cooldown + 's', effect: item.effect }));
   }
 
   pad2(n) {
@@ -2969,6 +3219,7 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state;
     const currentTab = s.optionsTab || 'rules';
+    const currentTutorialSection = s.tutorialSection || 'overview';
     const sf = s.selFloor || 1;
     const picks = {};
     for (let i = 1; i <= 15; i++) {
@@ -2980,6 +3231,12 @@ class Component extends DCLogic {
     const e1 = sf === 1 ? elvOn : elvOff, e2 = sf === 2 ? elvOn : elvOff, e3 = sf === 3 ? elvOn : elvOff;
     const worldIntel = this.getWorldIntel(sf);
     const preview = this.getLevelPreview(s.selectedLevel || 1);
+    const tutorialSections = this.getTutorialSections().map((section) => ({
+      ...section,
+      active: section.id === currentTutorialSection,
+      onSelect: () => this.setState({ tutorialSection: section.id })
+    }));
+    const tutorialActive = tutorialSections.find((section) => section.id === currentTutorialSection) || tutorialSections[0];
     return {
       optionsTab: currentTab,
       showTabRules: currentTab === 'rules',
@@ -2992,10 +3249,26 @@ class Component extends DCLogic {
       tabControlsColor: currentTab === 'controls' ? '#33ff00' : '#4ea66d',
       tabControlsBg: currentTab === 'controls' ? 'rgba(51,255,136,0.1)' : 'transparent',
       onSelectTabRules: () => this.setState({ optionsTab: 'rules' }),
-      onSelectTabTutorial: () => this.setState({ optionsTab: 'tutorial' }),
+      onSelectTabTutorial: () => this.setState({ optionsTab: 'tutorial', tutorialSection: currentTutorialSection }),
       onSelectTabControls: () => this.setState({ optionsTab: 'controls' }),
       onOptionCardClick: (e) => { e.stopPropagation(); },
-      onOpenTutorial: () => this.setState({ showOptions: true, optionsTab: 'tutorial' }),
+      onOpenTutorial: () => this.setState({ showOptions: true, optionsTab: 'tutorial', tutorialSection: 'overview' }),
+      tutorialSections,
+      tutorialActiveCode: tutorialActive.code,
+      tutorialActiveLabel: tutorialActive.label,
+      tutorialActiveTitle: tutorialActive.title,
+      tutorialActiveSubtitle: tutorialActive.subtitle,
+      tutorialActiveAccent: tutorialActive.accent,
+      tutorialIsOverview: currentTutorialSection === 'overview',
+      tutorialIsLoop: currentTutorialSection === 'loop',
+      tutorialIsGuests: currentTutorialSection === 'guests',
+      tutorialIsDoors: currentTutorialSection === 'doors',
+      tutorialIsEconomy: currentTutorialSection === 'economy',
+      tutorialIsProgression: currentTutorialSection === 'progression',
+      tutorialGuestCards: this.getTutorialGuestCards(),
+      tutorialInspectorCards: this.getTutorialInspectorCards(),
+      tutorialDoorRows: this.getTutorialDoorRows(),
+      tutorialEconomyRows: this.getTutorialEconomyRows(),
       titleInspectorCards: [
         {
           title: 'THE OBSERVER',
