@@ -21,38 +21,11 @@
   @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 </style>
 </helmet>
-<div style="position:fixed; inset:0; --crt-shell-w:min(1500px, 98vw); --crt-shell-h:min(980px, 98vh); --crt-screen-pad-x:44px; --crt-screen-pad-top:34px; --crt-screen-pad-bottom:86px; background:
-radial-gradient(120% 120% at 50% 8%, rgba(255,247,230,.2) 0%, rgba(255,247,230,0) 28%),
-linear-gradient(180deg, #cdbda8 0%, #b3a18d 28%, #9f8d7b 48%, #684e3e 48.3%, #4d372d 100%);
-font-family:'VT323', ui-monospace, monospace; color:#7dffb0; overflow:hidden;">
-
-  <div style="position:absolute; inset:0; pointer-events:none; background:
-  radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,.14) 0%, rgba(255,255,255,0) 36%),
-  linear-gradient(180deg, rgba(73,47,35,.0) 0%, rgba(73,47,35,.0) 55%, rgba(38,23,16,.18) 72%, rgba(20,12,9,.42) 100%);"></div>
-  <div style="position:absolute; left:0; right:0; bottom:0; height:34vh; pointer-events:none; background:
-  linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(45,28,20,.12) 8%, rgba(66,41,28,.94) 8.3%, rgba(84,56,40,.98) 100%);
-  box-shadow:inset 0 16px 34px rgba(255,233,204,.08);"></div>
-  <div style="position:absolute; left:50%; bottom:7.5vh; transform:translateX(-50%); width:180px; height:124px; pointer-events:none; z-index:2;">
-    <div style="position:absolute; left:50%; top:0; transform:translateX(-50%); width:34px; height:78px; border-radius:10px; background:linear-gradient(180deg, #e6e0d5 0%, #cfc7b7 55%, #bab19f 100%); box-shadow:inset 0 0 0 2px rgba(255,255,255,.26), 0 14px 18px rgba(0,0,0,.22);"></div>
-    <div style="position:absolute; left:50%; bottom:12px; transform:translateX(-50%); width:158px; height:24px; border-radius:999px; background:linear-gradient(180deg, #d8d0c1 0%, #b9af9d 100%); box-shadow:0 16px 22px rgba(0,0,0,.25), inset 0 0 0 2px rgba(255,255,255,.2);"></div>
-    <div style="position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:210px; height:16px; border-radius:999px; background:linear-gradient(180deg, #bba98e 0%, #8c7059 100%); opacity:.52;"></div>
-  </div>
-  <div style="position:absolute; left:calc(50% - min(1500px, 98vw) / 2 + 42px); bottom:5.6vh; width:120px; height:120px; pointer-events:none; z-index:2;">
-    <div style="position:absolute; left:20px; top:26px; width:68px; height:68px; border-radius:50%; background:linear-gradient(180deg, #f5f2ea 0%, #ddd5c8 100%); box-shadow:0 12px 22px rgba(0,0,0,.22), inset 0 0 0 3px rgba(255,255,255,.35);"></div>
-    <div style="position:absolute; left:40px; top:45px; width:28px; height:28px; border-radius:50%; background:rgba(94,62,42,.72); box-shadow:inset 0 0 8px rgba(0,0,0,.28);"></div>
-    <div style="position:absolute; left:74px; top:40px; width:24px; height:26px; border:6px solid #e6dfd4; border-left:none; border-radius:0 20px 20px 0;"></div>
-    <div style="position:absolute; left:10px; bottom:6px; width:98px; height:12px; border-radius:999px; background:rgba(25,12,7,.28); filter:blur(4px);"></div>
-  </div>
-  <div style="position:absolute; right:calc(50% - min(1500px, 98vw) / 2 + 46px); bottom:5.5vh; width:196px; height:126px; pointer-events:none; z-index:2;">
-    <div style="position:absolute; right:16px; top:10px; width:138px; height:96px; transform:rotate(-5deg); border-radius:6px; background:linear-gradient(180deg, #ddd3c2 0%, #c8baa5 100%); box-shadow:0 14px 22px rgba(0,0,0,.22);"></div>
-    <div style="position:absolute; right:26px; top:22px; width:118px; height:2px; background:rgba(108,89,74,.55); box-shadow:0 18px 0 rgba(108,89,74,.28), 0 36px 0 rgba(108,89,74,.28), 0 54px 0 rgba(108,89,74,.28);"></div>
-    <div style="position:absolute; right:132px; top:78px; width:70px; height:8px; transform:rotate(14deg); border-radius:999px; background:linear-gradient(90deg, #1f2633 0%, #3e6bb8 100%); box-shadow:0 6px 10px rgba(0,0,0,.2);"></div>
-    <div style="position:absolute; right:12px; bottom:6px; width:122px; height:12px; border-radius:999px; background:rgba(25,12,7,.28); filter:blur(4px);"></div>
-  </div>
+<div style="position:fixed; inset:0; background:radial-gradient(120% 100% at 50% 40%, #040e0a 0%, #010604 55%, #000 100%); font-family:'VT323', ui-monospace, monospace; color:#33ff00; overflow:hidden;">
 
   <!-- ======================= GAME STAGE ======================= -->
   <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
-    <div style="transform:{{ stageScale }}; transform-origin:center center; width:1252px; filter:brightness(1.18) saturate(1.12);">
+    <div style="transform:{{ stageScale }}; transform-origin:center center; width:1252px;">
 
       <!-- top status strip -->
       <div style="display:flex; align-items:center; justify-content:space-between; border:1px solid #1a3d1a; background:#020704; padding:5px 14px; font-size:19px; letter-spacing:1px; text-shadow:0 0 6px rgba(51,255,0,.4);">
@@ -239,26 +212,6 @@ font-family:'VT323', ui-monospace, monospace; color:#7dffb0; overflow:hidden;">
         <div style="flex:1; position:relative; border:14px solid #060c07; border-radius:22px; background:#000; box-shadow:0 0 0 2px #122a12, 0 0 60px rgba(51,255,0,.10), inset 0 0 80px rgba(0,0,0,.95);">
           <div style="position:relative; border-radius:10px; overflow:hidden;">
             <canvas ref="{{ canvasRef }}" width="952" height="532" style="display:block; width:100%; background:#04080a;"></canvas>
-            <sc-if value="{{ hud.bossVisible }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute; left:14px; top:14px; width:252px; border:1px solid {{ hud.bossAccent }}; background:linear-gradient(180deg, rgba(10,18,14,.94), rgba(4,8,6,.96)); box-shadow:0 0 16px rgba(0,0,0,.5), 0 0 18px {{ hud.bossAccentGlow }}; padding:8px 10px; color:#e8ffe8;">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
-                  <div>
-                    <div style="font-family:'Cinzel', serif; font-size:16px; letter-spacing:1.5px; color:{{ hud.bossAccent }}; text-shadow:0 0 6px {{ hud.bossAccentGlow }};">{{ hud.bossName }}</div>
-                    <div style="font-size:11px; color:#89b999; letter-spacing:1px;">{{ hud.bossTitle }}</div>
-                  </div>
-                  <div style="font-size:11px; color:{{ hud.bossAccent }}; text-align:right; letter-spacing:1px;">{{ hud.bossStatus }}</div>
-                </div>
-                <div style="margin-top:8px; font-size:11px; color:#83a68c; letter-spacing:1px;">SUSPICION // {{ hud.bossSuspicionLabel }}</div>
-                <div style="height:10px; border:1px solid rgba(255,255,255,.16); background:rgba(0,0,0,.46); margin-top:3px; position:relative; overflow:hidden;">
-                  <div style="position:absolute; inset:1px auto 1px 1px; width:{{ hud.bossSuspicionPct }}%; background:linear-gradient(90deg, #ffb000, #ff5555); box-shadow:0 0 10px rgba(255,90,90,.45);"></div>
-                </div>
-                <div style="margin-top:7px; font-size:11px; color:#83a68c; letter-spacing:1px;">INSPECTION // {{ hud.bossInspectionLabel }}</div>
-                <div style="height:10px; border:1px solid rgba(255,255,255,.16); background:rgba(0,0,0,.46); margin-top:3px; position:relative; overflow:hidden;">
-                  <div style="position:absolute; inset:1px auto 1px 1px; width:{{ hud.bossInspectionPct }}%; background:linear-gradient(90deg, #2ddf73, #9fffbe); box-shadow:0 0 8px rgba(90,255,150,.32);"></div>
-                </div>
-                <div style="margin-top:8px; min-height:28px; border-top:1px solid rgba(255,255,255,.08); padding-top:6px; font-size:12px; color:{{ hud.bossWarningColor }}; text-shadow:0 0 6px {{ hud.bossWarningGlow }};">{{ hud.bossWarning }}</div>
-              </div>
-            </sc-if>
             <!-- screen curvature/vignette -->
             <div style="position:absolute; inset:0; pointer-events:none; background:radial-gradient(120% 120% at 50% 50%, rgba(0,0,0,0) 52%, rgba(0,0,0,.6) 100%); border-radius:10px;"></div>
             <!-- door prompt -->
@@ -349,37 +302,9 @@ font-family:'VT323', ui-monospace, monospace; color:#7dffb0; overflow:hidden;">
     </div>
   </sc-if>
 
-  <style>
-    @keyframes badLineDrop {
-      0% { transform:translateY(-18%); opacity:.18; }
-      8% { opacity:.36; }
-      45% { opacity:.24; }
-      100% { transform:translateY(118%); opacity:.08; }
-    }
-    @keyframes badLineJitter {
-      0%,100% { transform:translateX(0); }
-      20% { transform:translateX(-4px); }
-      23% { transform:translateX(3px); }
-      48% { transform:translateX(-2px); }
-      61% { transform:translateX(5px); }
-      75% { transform:translateX(-3px); }
-    }
-  </style>
-
   <!-- ======================= CRT SCANLINE OVERLAY ======================= -->
-  <div style="position:fixed; left:calc(50% - var(--crt-shell-w) / 2); top:calc(50% - var(--crt-shell-h) / 2); width:var(--crt-shell-w); height:var(--crt-screen-pad-top); pointer-events:none; z-index:91; background:linear-gradient(180deg, #f0eadf 0%, #e0d7c8 100%); border-radius:32px 32px 0 0;"></div>
-  <div style="position:fixed; left:calc(50% - var(--crt-shell-w) / 2); top:calc(50% - var(--crt-shell-h) / 2 + var(--crt-screen-pad-top)); width:var(--crt-screen-pad-x); height:calc(var(--crt-shell-h) - var(--crt-screen-pad-top) - var(--crt-screen-pad-bottom)); pointer-events:none; z-index:91; background:#e3dbce;"></div>
-  <div style="position:fixed; right:calc(50% - var(--crt-shell-w) / 2); top:calc(50% - var(--crt-shell-h) / 2 + var(--crt-screen-pad-top)); width:var(--crt-screen-pad-x); height:calc(var(--crt-shell-h) - var(--crt-screen-pad-top) - var(--crt-screen-pad-bottom)); pointer-events:none; z-index:91; background:#e3dbce;"></div>
-  <div style="position:fixed; left:calc(50% - var(--crt-shell-w) / 2); bottom:calc(50% - var(--crt-shell-h) / 2); width:var(--crt-shell-w); height:var(--crt-screen-pad-bottom); pointer-events:none; z-index:91; background:linear-gradient(180deg, #dbd3c4 0%, #cfc5b4 46%, #c5baa7 100%); border-radius:0 0 32px 32px;"></div>
-  <div style="position:fixed; left:calc(50% - var(--crt-shell-w) / 2 + var(--crt-screen-pad-x)); top:calc(50% - var(--crt-shell-h) / 2 + var(--crt-screen-pad-top)); width:calc(var(--crt-shell-w) - var(--crt-screen-pad-x) * 2); height:calc(var(--crt-shell-h) - var(--crt-screen-pad-top) - var(--crt-screen-pad-bottom)); pointer-events:none; z-index:92; opacity:calc({{ scanOpacity }} + 0.12); background:repeating-linear-gradient(to bottom, rgba(255,255,255,.02) 0px, rgba(255,255,255,.02) 2px, rgba(0,18,8,.34) 3px, rgba(0,18,8,.34) 4px); animation:flick 5s infinite; border-radius:18px; overflow:hidden;"></div>
-  <div style="position:fixed; left:calc(50% - var(--crt-shell-w) / 2 + var(--crt-screen-pad-x)); top:calc(50% - var(--crt-shell-h) / 2 + var(--crt-screen-pad-top)); width:calc(var(--crt-shell-w) - var(--crt-screen-pad-x) * 2); height:calc(var(--crt-shell-h) - var(--crt-screen-pad-top) - var(--crt-screen-pad-bottom)); pointer-events:none; z-index:93; border-radius:18px; overflow:hidden;">
-    <div style="position:absolute; left:-4%; width:108%; height:78px; background:linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.2) 18%, rgba(255,255,255,.7) 46%, rgba(120,255,210,.24) 56%, rgba(0,0,0,0) 100%); mix-blend-mode:screen; opacity:.22; animation:badLineDrop 8.4s linear infinite, badLineJitter .32s steps(2) infinite;"></div>
-    <div style="position:absolute; inset:0; background:linear-gradient(115deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.04) 16%, rgba(255,255,255,0) 32%), radial-gradient(130% 120% at 50% 50%, rgba(0,0,0,0) 58%, rgba(0,0,0,.48) 100%);"></div>
-  </div>
-  <div style="position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); width:var(--crt-shell-w); height:var(--crt-shell-h); pointer-events:none; z-index:94; border-radius:32px; box-shadow:inset 0 0 0 2px rgba(255,255,255,.28), inset 0 0 0 10px rgba(214,205,190,.84), inset 0 0 0 28px #e3dbce, inset 0 -34px 60px rgba(95,76,61,.24), 0 32px 50px rgba(20,12,9,.28);"></div>
-  <div style="position:fixed; left:calc(50% - var(--crt-shell-w) / 2); top:calc(50% - var(--crt-shell-h) / 2); width:var(--crt-shell-w); height:34px; pointer-events:none; z-index:95; color:#7d7366; font-family:'Cinzel',serif; font-size:16px; letter-spacing:3px; display:flex; align-items:center; justify-content:flex-end; padding:0 34px; box-sizing:border-box; text-shadow:0 1px 0 rgba(255,255,255,.45);">MICROSOFT HOME TERMINAL</div>
-  <div style="position:fixed; left:calc(50% - var(--crt-shell-w) / 2 + 36px); top:calc(50% - var(--crt-shell-h) / 2 + 18px); width:56px; height:24px; pointer-events:none; z-index:95; border-radius:3px; background:#f3e672; transform:rotate(-4deg); box-shadow:0 8px 10px rgba(0,0,0,.12);"></div>
-  <div style="position:fixed; left:calc(50% - var(--crt-shell-w) / 2 + 84px); top:calc(50% - var(--crt-shell-h) / 2 + 22px); width:42px; height:18px; pointer-events:none; z-index:95; border-radius:3px; background:#f5b4bb; transform:rotate(3deg); box-shadow:0 8px 10px rgba(0,0,0,.12);"></div>
+  <div style="position:fixed; inset:0; pointer-events:none; z-index:60; opacity:{{ scanOpacity }}; background:repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,12,4,.6) 3px, rgba(0,12,4,.6) 4px); animation:flick 5s infinite;"></div>
+  <div style="position:fixed; inset:0; pointer-events:none; z-index:61; background:radial-gradient(130% 120% at 50% 50%, rgba(0,0,0,0) 60%, rgba(0,0,0,.6) 100%);"></div>
 
   <!-- ======================= TITLE SCREEN ======================= -->
   <sc-if value="{{ isTitle }}" hint-placeholder-val="{{ true }}">
@@ -487,6 +412,7 @@ font-family:'VT323', ui-monospace, monospace; color:#7dffb0; overflow:hidden;">
       .lvl-hall-text{position:absolute;padding:1px 5px;font-size:10px;letter-spacing:1px;color:#8ee2a7;background:rgba(2,8,6,.82);border:1px solid rgba(102,214,140,.16);white-space:nowrap;}
       .lvl-door-dot{position:absolute;border-radius:3px;box-shadow:0 0 10px currentColor;}
       .lvl-mirror-mark{position:absolute;border:1px solid currentColor;box-shadow:0 0 10px currentColor, inset 0 0 8px rgba(255,255,255,.18);background:rgba(105,225,255,.12);}
+      .lvl-mirror-link{position:absolute;height:1px;transform-origin:left center;pointer-events:none;opacity:.75;}
       .lvl-mini-legend{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;color:#7ed69b;}
       .lvl-mini-tag{display:flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid rgba(102,214,140,.18);background:rgba(11,28,17,.46);}
       .lvl-mini-swatch{width:10px;height:10px;border-radius:2px;box-shadow:0 0 7px currentColor;}
@@ -545,6 +471,9 @@ font-family:'VT323', ui-monospace, monospace; color:#7dffb0; overflow:hidden;">
                 </sc-for>
                 <sc-for list="{{ worldIntelLabels }}" as="label" hint-placeholder-count="3">
                   <div class="lvl-hall-text" style="left:{{ label.left }}; top:{{ label.top }};">{{ label.text }}</div>
+                </sc-for>
+                <sc-for list="{{ worldIntelMirrorLinks }}" as="link" hint-placeholder-count="4">
+                  <div class="lvl-mirror-link" style="left:{{ link.left }}; top:{{ link.top }}; width:{{ link.width }}; transform:rotate({{ link.angle }}deg); background:{{ link.color }}; box-shadow:0 0 6px {{ link.color }};"></div>
                 </sc-for>
                 <sc-for list="{{ worldIntelMirrors }}" as="mirror" hint-placeholder-count="6">
                   <div class="lvl-mirror-mark" style="left:{{ mirror.left }}; top:{{ mirror.top }}; width:{{ mirror.width }}; height:{{ mirror.height }}; color:{{ mirror.color }};" title="{{ mirror.name }}"></div>
@@ -692,6 +621,9 @@ font-family:'VT323', ui-monospace, monospace; color:#7dffb0; overflow:hidden;">
                   </sc-for>
                   <sc-for list="{{ previewDoors }}" as="door" hint-placeholder-count="8">
                     <div class="lvl-door-dot" style="left:{{ door.left }}; top:{{ door.top }}; width:{{ door.width }}; height:{{ door.height }}; color:{{ door.color }}; background:{{ door.color }};" title="{{ door.name }}"></div>
+                  </sc-for>
+                  <sc-for list="{{ previewMirrorLinks }}" as="link" hint-placeholder-count="4">
+                    <div class="lvl-mirror-link" style="left:{{ link.left }}; top:{{ link.top }}; width:{{ link.width }}; transform:rotate({{ link.angle }}deg); background:{{ link.color }}; box-shadow:0 0 6px {{ link.color }};"></div>
                   </sc-for>
                   <sc-for list="{{ previewMirrors }}" as="mirror" hint-placeholder-count="6">
                     <div class="lvl-mirror-mark" style="left:{{ mirror.left }}; top:{{ mirror.top }}; width:{{ mirror.width }}; height:{{ mirror.height }}; color:{{ mirror.color }};" title="{{ mirror.name }}"></div>
@@ -1322,7 +1254,6 @@ class Component extends DCLogic {
         border: '#2d6c45',
         mapColor: '#9dffb8',
         moveSpeed: 34,
-        deskPatience: 12,
         scareGain: 1.15,
         scareRecover: 9,
         scareThreshold: 100,
@@ -1346,7 +1277,6 @@ class Component extends DCLogic {
         mapColor: '#ffd060',
         moveSpeed: 38,
         panicRunSpeed: 52,
-        deskPatience: 16,
         scareGain: 0.85,
         scareRecover: 11,
         scareThreshold: 100,
@@ -1369,7 +1299,6 @@ class Component extends DCLogic {
         border: '#255c74',
         mapColor: '#7fd6ff',
         moveSpeed: 44,
-        deskPatience: 9,
         scareGain: 0.5,
         scareRecover: 6,
         scareThreshold: 100,
@@ -1453,49 +1382,10 @@ class Component extends DCLogic {
         effect: '吹響口哨吸引鬼魂，使其暫時以最短路徑向店主靠近。'
       }
     };
-    this.bossDefs = {
-      toxicFog: {
-        id: 'toxicFog',
-        name: '毒霧稽核官',
-        title: 'TOXIC FOG AUDITOR',
-        inspectionTimeMax: 78,
-        suspicionMax: 100,
-        skillIds: ['toxicFog', 'spectralGoggles', 'necroFootsteps'],
-        uiTone: '#ff9e7a',
-        cooldowns: { toxicFog: 15, spectralGoggles: 11, necroFootsteps: 8 },
-        previewTag: '毒霧 / 穿牆視野 / 足跡追查'
-      },
-      miner: {
-        id: 'miner',
-        name: '探照燈礦工',
-        title: 'SPOTLIGHT MINER',
-        inspectionTimeMax: 92,
-        suspicionMax: 100,
-        skillIds: ['trackingSpotlight', 'tunnelBreach', 'mineRats'],
-        uiTone: '#ffd060',
-        cooldowns: { trackingSpotlight: 12, tunnelBreach: 14, mineRats: 16 },
-        previewTag: '探照燈 / 掘洞 / 礦鼠搜查'
-      },
-      general: {
-        id: 'general',
-        name: '死靈將軍',
-        title: 'NECRO GENERAL',
-        inspectionTimeMax: 108,
-        suspicionMax: 100,
-        skillIds: ['halfGhostStalk', 'skeletalSplit', 'rifleShock'],
-        uiTone: '#ff6b6b',
-        cooldowns: { halfGhostStalk: 10, skeletalSplit: 15, rifleShock: 18 },
-        previewTag: '半身幽靈 / 骷髏化 / 步槍震懾'
-      }
-    };
   }
 
   getGuestProfile(type) {
     return this.guestProfiles[type] || this.guestProfiles.timidWoman;
-  }
-
-  getBossDef(id) {
-    return this.bossDefs[id] || this.bossDefs.toxicFog;
   }
 
   getTitleGuestCards() {
@@ -1540,9 +1430,9 @@ class Component extends DCLogic {
 
   getTutorialInspectorCards() {
     return [
-      { title: '毒霧稽核官', subtitle: '封房 / 穿牆視野 / 足跡追查', icon: 'OBS', accent: '#ffb000', border: '#6b4a2a', desc: '第一位稽查員會用毒霧封房、穿牆視野與鬼魂足跡追查來逼你改線，重點是累積懷疑，不是瞬間判死。' },
-      { title: '探照燈礦工', subtitle: '追光 / 掘洞 / 礦鼠補搜', icon: 'EXM', accent: '#ffcc73', border: '#7a5734', desc: '第二位稽查員會慢慢壓縮安全區，拆掉你對單一道門與單一路線的依賴。' },
-      { title: '死靈將軍', subtitle: '隱形追蹤 / 分身 / 節奏震懾', icon: 'ENF', accent: '#ff6b6b', border: '#7a2d2d', desc: '最終稽查員靠極長的稽查時間與資訊壓迫逼你失序；所有技能都只是低可信線索，但會把場面拖進全面崩潰。' }
+      { title: '觀察員', subtitle: '記錄異常 / 放大失誤', icon: 'OBS', accent: '#ffb000', border: '#6b4a2a', desc: '在暗處記錄整個旅館的秩序失控。牠的存在代表玩家不只在求生，也在維持表面營運。' },
+      { title: '主考官', subtitle: '抽查門況 / 放大混亂', icon: 'EXM', accent: '#ffcc73', border: '#7a5734', desc: '會質問每一道門是否合理運作。你的防線若太依賴單一路徑，這類壓力會迅速把旅館逼到失控。' },
+      { title: '執法者', subtitle: '終局 Boss / 直接處決', icon: 'ENF', accent: '#ff6b6b', border: '#7a2d2d', desc: '終極追捕者。牠象徵所有經營失誤終於回頭索命，逼你用整張地圖的門與時間差做最後周旋。' }
     ];
   }
 
@@ -1638,6 +1528,24 @@ class Component extends DCLogic {
   pct(n, total) {
     return ((n / total) * 100).toFixed(3) + '%';
   }
+  mirrorLinkSegments(mirrors, W, H) {
+    const out = [];
+    for (let i = 0; i + 1 < mirrors.length; i += 2) {
+      const a = mirrors[i], b = mirrors[i + 1];
+      const ax = a.c + 0.5, ay = a.r + 0.5, bx = b.c + 0.5, by = b.r + 0.5;
+      const dx = bx - ax, dy = by - ay;
+      const dist = Math.hypot(dx, dy);
+      out.push({
+        id:'ML' + i,
+        left:this.pct(ax, W),
+        top:this.pct(ay, H),
+        width:this.pct(dist, W),
+        angle:(Math.atan2(dy, dx) * 180 / Math.PI).toFixed(2),
+        color:'rgba(141,239,255,0.72)'
+      });
+    }
+    return out;
+  }
 
   buildMapPreview(layout, config) {
     const W = 45, H = 25;
@@ -1709,7 +1617,8 @@ class Component extends DCLogic {
         color:'#8defff'
       }))
     ];
-    return { corridors, rooms, labels, doors, mirrors };
+    const mirrorLinks = this.mirrorLinkSegments(layout.mirrors || [], W, H);
+    return { corridors, rooms, labels, doors, mirrors, mirrorLinks };
   }
 
   getWorldIntel(worldTier) {
@@ -1777,7 +1686,7 @@ class Component extends DCLogic {
   getSelectedLevelMeta(level) {
     const config = this.getLevelConfig(level);
     const layout = this.getMapLayout(config.mapTier);
-    const bossTag = config.boss ? (' // ' + this.getBossDef(config.bossId).name) : '';
+    const bossTag = config.boss ? ' // INSPECTOR BOSS NIGHT' : '';
     return layout.name + ' // TIER ' + config.doorTier + ' // QUOTA $' + config.moneyTarget + bossTag;
   }
 
@@ -1790,7 +1699,6 @@ class Component extends DCLogic {
       const floor = this.levelToFloor(level);
       const window = this.getPatternWindow(level);
       const map = mapNames[config.mapTier] || 'UNKNOWN SITE';
-      const bossDef = config.bossId ? this.getBossDef(config.bossId) : null;
       const badge = config.boss ? 'BOSS' : ('TIER ' + config.doorTier);
       const badgeColor = config.boss ? '#ffb38f' : '#89efab';
       const badgeBorder = config.boss ? '#8a4f34' : '#2d7144';
@@ -1807,7 +1715,7 @@ class Component extends DCLogic {
         floor,
         levelCode:this.pad2(level),
         displayName:this.levelDisplayName(level),
-        label: config.boss ? bossDef.name : 'Night Patrol',
+        label: config.boss ? 'Inspector Confrontation' : 'Night Patrol',
         map: map + ' · 目標 $' + config.moneyTarget,
         badge,
         badgeColor,
@@ -1817,7 +1725,7 @@ class Component extends DCLogic {
         bg,
         shadow: level === selected ? '0 0 22px rgba(80,255,140,.18)' : 'inset 0 0 0 1px rgba(186,255,209,.03)',
         doorMix: entries.join(' / '),
-        alert: config.boss ? ('ALERT // ' + bossDef.title) : ('SECTOR // MAP ' + config.mapTier),
+        alert: config.boss ? 'ALERT // INSPECTOR DEPLOYED' : ('SECTOR // MAP ' + config.mapTier),
         alertColor: config.boss ? '#ff9e7a' : '#71c58c',
         reviewFlag: window.label + (config.boss ? ' // BOSS' : ' // REVIEW'),
         footer: '旅客 ' + Math.min(30, Math.max(1, Math.floor(this.getMapLayout(config.mapTier).guestRoomCount / 2)) * 2 + config.level) + ' // 配額 $' + config.moneyTarget,
@@ -1840,7 +1748,6 @@ class Component extends DCLogic {
     const maxConcurrent = Math.max(1, Math.floor(layout.guestRoomCount / 2));
     const travellers = Math.min(30, maxConcurrent * 2 + config.level);
     const blueprint = this.buildMapPreview(layout, config);
-    const bossDef = config.bossId ? this.getBossDef(config.bossId) : null;
     const legend = ['basic','rashomon','sensor','rotating','chain'].filter((type) => config.counts[type]).map((type) => {
       const meta = this.doorTypeCatalog(type);
       return { label:meta.label + ' x' + config.counts[type], color:meta.color };
@@ -1849,7 +1756,7 @@ class Component extends DCLogic {
     const notes = [
       '門型視窗：' + pattern.label + ' 共用同一套門位分布，進場前先重新對色。',
       '走廊 / 大廳 / 櫃檯皆已淡色標出，右圖看到的就是實際跑線骨架。',
-      config.boss ? ('本夜為 ' + bossDef.name + ' 的稽查夜，門口與中央櫃檯都會變成高風險區。') : '本夜仍屬常規巡邏，但旅客數與收益要求會繼續提高。'
+      config.boss ? '本夜含 INSPECTOR BOSS，門口與中央櫃檯都會變成高風險區。' : '本夜仍屬常規巡邏，但旅客數與收益要求會繼續提高。'
     ];
     return {
       levelCode:this.pad2(lv),
@@ -1864,7 +1771,7 @@ class Component extends DCLogic {
         { label:'TRAVELLERS', value:'' + travellers, color:'#e8ffe8' },
         { label:'QUOTA', value:'$' + config.moneyTarget, color:'#ffd060' },
         { label:'ROOMS', value:'' + layout.guestRoomCount, color:'#8effb4' },
-        { label:'BOSS', value:config.boss ? bossDef.name : 'NO', color:config.boss ? '#ff8f66' : '#7dffb0' }
+        { label:'BOSS', value:config.boss ? 'YES' : 'NO', color:config.boss ? '#ff8f66' : '#7dffb0' }
       ],
       notes,
       doorLegend:legend,
@@ -2849,7 +2756,6 @@ class Component extends DCLogic {
       itemDefs: this.itemDefs, inventory: this.makeInventory(),
       itemCooldowns: { cloth: 0, blindfold: 0, phase: 0, lock: 0, whistle: 0 },
       t: 0, panic: 0, power: 100, reported: false, lostGuests: 0, flash: 0, screenGlitch: 0,
-      daughterTrail: [], daughterTrailTick: 0,
       arrivalLaneStart: { c: COLS + 1.5, r: layout.entrance.r },
       arrivalLaneGate: { c: layout.entrance.c + 0.2, r: layout.entrance.r },
       arrivalLaneExit: { c: -3, r: layout.entrance.r },
@@ -3758,9 +3664,6 @@ class Component extends DCLogic {
       blinded: 0, invulnerable: 0, visitTimer: 0, spotted: false, checkingOut: false,
       waited: 0, overtime: false, halfPay: false, everScared: false,
       checkedIn: false,
-      // desk-queue patience + speech-bubble bookkeeping
-      waitDesk: 0, deskPatience: profile.deskPatience || 13, toughed: false, warnedWait: false,
-      leaving: false, bubble: null, ambientStay: null,
       state: 'waitingGate', queueOrder: ++w.guestSequence, assignedRoomIndex: this.nextGuestRoomIndex(),
       assignedRoomLabel: null, assignedRoomTarget: null, stayDuration: 0, stayElapsed: 0, progress: 0, payTimer: 0, goalKey: null,
       arrivalMode: 'approaching', approachSpeed: Math.max(18, (profile.moveSpeed || 34) * 0.72)
@@ -3992,7 +3895,6 @@ class Component extends DCLogic {
       if (gh.channel > 0 && gh.channelMode) this.resolveGhostChannel(gh, dt);
       else this.updateGhostRoam(gh, dt, 24);
     }
-    this.recordDaughterTrail(dt);
 
     // guests queue up outside and enter one-by-one through the main gate
     this.updateArrivals(dt);
@@ -4101,7 +4003,7 @@ class Component extends DCLogic {
               w.guests.splice(i, 1);
               this.log(w.config.boss?'BOLD MAN ESCAPED // INSPECTOR INBOUND!':'BOLD MAN ESCAPED // FILED A COMPLAINT.',w.config.boss?'#ff3333':'#ffb000');
               this.addStrike('大膽男人通報稽查');
-              if(w.config.bossId&&!w.inspector&&!w.inspectorDone)this.spawnInspector(true);
+              if(w.config.boss&&!w.inspector&&!w.inspectorDone)this.spawnInspector(true);
             }
           }
         } else if (!inDeskQueue && g.state !== 'staying' && g.state !== 'toRoom') this.follow(g, dt, profile.moveSpeed);
@@ -4109,11 +4011,27 @@ class Component extends DCLogic {
     }
 
     // inspector spawn timing
-    if(w.config.bossId&&!w.inspector&&!w.inspectorDone&&w.t>dur*.5)this.spawnInspector(false);
+    if(w.config.boss&&!w.inspector&&!w.inspectorDone&&w.t>dur*.5)this.spawnInspector(false);
 
     // inspector
     if (w.inspector) {
-      if (this.updateBossRuntime(dt)) return;
+      const ins = w.inspector;
+      ins.dashCd -= dt;
+      if (ins.dashCd <= 0) { 
+        ins.speedMul = 2.4; ins.dashT = 0.4; ins.dashCd = 3 + Math.random() * 2.5; 
+        this.playSFX('dash');
+      }
+      if (ins.dashT > 0) { ins.dashT -= dt; if (ins.dashT <= 0) ins.speedMul = 1; }
+      this.follow(ins, dt, 78, true);
+      if (this.canSee(ins.x, ins.y, dg.x, dg.y, 7)) {
+        ins.caught += dt; w.screenGlitch = 0.4;
+        if (ins.caught > 1.0 && !ins.warned) { 
+          this.log('!! INSPECTOR HAS EYES ON HER !!', '#ff3333'); 
+          ins.warned = true; 
+          this.playSFX('error');
+        }
+        if (ins.caught >= 2.0) { this.lose('caught'); return; }
+      } else { ins.caught = Math.max(0, ins.caught - dt * 0.8); ins.warned = false; }
     }
 
     // panic
@@ -4137,11 +4055,10 @@ class Component extends DCLogic {
 
   spawnInspector(early) {
     const w = this.world;
-    const bossId = (w.config && w.config.bossId) || 'toxicFog';
-    const def = this.getBossDef(bossId);
-    w.inspector = this.createBossRuntime(bossId);
+    const ins = { x:w.cx(w.inspectorSpawn.c),y:w.cy(w.inspectorSpawn.r),r:7,path:null,pi:0,stuck:0,caught:0,speedMul:1,dashCd:2,dashT:0,warned:false,hostile:true,forceProgress:0 };
+    w.inspector = ins;
     w.screenGlitch = 1.2; w.flash = 0.6;
-    this.log((early ? 'FORCED ENTRY // ' : 'GATE AUDIT // ') + def.title + ' ARRIVES.', def.uiTone);
+    this.log(early ? 'THE INSPECTOR FORCES THE DOOR.' : 'KNOCKING AT THE GATE // INSPECTOR ARRIVES.', '#ff3333');
     this.playSFX('breakIn');
   }
   win() {
@@ -4324,49 +4241,6 @@ class Component extends DCLogic {
     ctx.restore();
   }
 
-  drawBossEffects(ctx) {
-    const w = this.world;
-    const ins = w && w.inspector;
-    if (!w || !ins) return;
-    const T = w.TILE;
-    if (ins.activeEffects && Array.isArray(ins.activeEffects.fogs)) {
-      for (const fog of ins.activeEffects.fogs) {
-        const room = this.roomByLabel(fog.roomLabel);
-        if (!room) continue;
-        const pulse = 0.45 + 0.25 * Math.sin((w.t + fog.c + fog.r) * 2.4);
-        ctx.save();
-        ctx.fillStyle = 'rgba(120,255,170,' + (0.06 + pulse * 0.12) + ')';
-        ctx.strokeStyle = 'rgba(160,255,210,' + (0.18 + pulse * 0.2) + ')';
-        ctx.lineWidth = 2;
-        ctx.fillRect(room.x * T + 2, room.y * T + 2, room.w * T - 4, room.h * T - 4);
-        ctx.strokeRect(room.x * T + 2, room.y * T + 2, room.w * T - 4, room.h * T - 4);
-        ctx.restore();
-      }
-    }
-    if (ins.footstepPing) {
-      const px = (ins.footstepPing.c + 0.5) * T;
-      const py = (ins.footstepPing.r + 0.5) * T;
-      ctx.save();
-      ctx.globalAlpha = 0.55;
-      ctx.strokeStyle = '#ffd060';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(px - 7, py - 7, 14, 14);
-      ctx.strokeRect(px - 3.5, py - 3.5, 7, 7);
-      ctx.restore();
-    }
-    if ((ins.activeEffects && ins.activeEffects.goggles > 0) || ins.sightLinePulse > 0) {
-      ctx.save();
-      ctx.globalAlpha = 0.15 + Math.min(0.24, (ins.sightLinePulse || 0) * 0.25);
-      ctx.strokeStyle = ins.activeEffects && ins.activeEffects.goggles > 0 ? '#7fdfff' : '#ff5555';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(ins.x, ins.y);
-      ctx.lineTo(w.daughter.x, w.daughter.y);
-      ctx.stroke();
-      ctx.restore();
-    }
-  }
-
   draw() {
     const cv = this.canvasRef.current; if (!cv || !this.world) return;
     const ctx = cv.getContext('2d'); const w = this.world; const C = this.COL(); const T = w.TILE;
@@ -4492,12 +4366,10 @@ class Component extends DCLogic {
       ctx.restore();
     }
 
-    this.drawBossEffects(ctx);
-
     // inspector LOS cone (when hunting)
-    if (w.inspector && (w.inspector.directSight > 0 || w.inspector.sightLinePulse > 0)) {
-      ctx.save(); ctx.globalAlpha = 0.16 + 0.2 * Math.min(1, (w.inspector.directSight || 0) / 2);
-      ctx.strokeStyle = w.inspector.uiTone || C.red; ctx.lineWidth = 2; ctx.beginPath();
+    if (w.inspector && w.inspector.caught > 0) {
+      ctx.save(); ctx.globalAlpha = 0.18 + 0.2 * Math.min(1, w.inspector.caught);
+      ctx.strokeStyle = C.red; ctx.lineWidth = 2; ctx.beginPath();
       ctx.moveTo(w.inspector.x, w.inspector.y); ctx.lineTo(w.daughter.x, w.daughter.y); ctx.stroke(); ctx.restore();
     }
 
@@ -4560,8 +4432,7 @@ class Component extends DCLogic {
     // inspector
     if (w.inspector) {
       const ins = w.inspector;
-      const tone = ins.uiTone || '#ff3333';
-      ctx.save(); ctx.shadowColor = tone; ctx.shadowBlur = (ins.activeEffects && ins.activeEffects.goggles > 0) ? 18 : 10; ctx.fillStyle = tone;
+      ctx.save(); ctx.shadowColor = C.red; ctx.shadowBlur = ins.dashT > 0 ? 18 : 10; ctx.fillStyle = C.red;
       ctx.beginPath(); ctx.arc(ins.x, ins.y, 8, 0, 7); ctx.fill();
       ctx.shadowBlur = 0; ctx.strokeStyle = '#0a0404'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(ins.x, ins.y - 5); ctx.lineTo(ins.x, ins.y + 5); ctx.moveTo(ins.x - 5, ins.y); ctx.lineTo(ins.x + 5, ins.y); ctx.stroke();
@@ -4651,7 +4522,7 @@ class Component extends DCLogic {
     for (const g of w.guests) circle(g, '#ffb000', 5);
     for (const gh of w.ghosts) star(gh, '#9dffb8', 6);
     diamond(w.daughter, '#e8ffe8', 7);
-    if (w.inspector) square(w.inspector, w.inspector.uiTone || '#ff3333', 6);
+    if (w.inspector) square(w.inspector, '#ff3333', 6);
     triangle(w.player, '#33ff00', 7);
   }
 
@@ -4659,7 +4530,7 @@ class Component extends DCLogic {
   hud() {
     const w = this.world;
     const dur = this.props.nightSeconds ?? 180;
-    if(!w)return{clock:'22:00',phase:'NIGHT',level:'01',mapTier:'I',doorTier:'I',alert:'STANDBY',alertColor:'#1f8f1f',panicPct:0,panicBar:'',panicColor:'#33ff00',basicCount:'0',rashCount:'0',sensorCount:'0',rotateCount:'0',chainCount:'0',statusText:'OK',showPrompt:false,doorPrompt:'',endStats:'',loseTitle:'',loseMsg:'',ghosts:0,guests:0,money:0,earned:0,quota:0,goalColor:'#ff5555',goalText:'SHORT',moneyTrendPoints:'0,29 200,29',moneyTrendBase:'0,29 200,29',repColor:'#33ff00',repText:'CLEAR',rep0:1,rep1:1,rep2:1,rep3:1,rep4:1,rep5:1,pw0:1,pw1:1,pw2:1,pw3:1,pw4:1,pw5:.15,pw6:.15,bossVisible:false,bossName:'',bossTitle:'',bossSuspicionPct:0,bossInspectionPct:0,bossSuspicionLabel:'0%',bossInspectionLabel:'0s',bossStatus:'',bossWarning:'',bossAccent:'#ff9e7a',bossAccentGlow:'rgba(255,158,122,.34)',bossWarningColor:'#ff9e7a',bossWarningGlow:'rgba(255,158,122,.32)'};
+    if(!w)return{clock:'22:00',phase:'NIGHT',level:'01',mapTier:'I',doorTier:'I',alert:'STANDBY',alertColor:'#1f8f1f',panicPct:0,panicBar:'',panicColor:'#33ff00',basicCount:'0',rashCount:'0',sensorCount:'0',rotateCount:'0',chainCount:'0',statusText:'OK',showPrompt:false,doorPrompt:'',endStats:'',loseTitle:'',loseMsg:'',ghosts:0,guests:0,money:0,earned:0,quota:0,goalColor:'#ff5555',goalText:'SHORT',moneyTrendPoints:'0,29 200,29',moneyTrendBase:'0,29 200,29',repColor:'#33ff00',repText:'CLEAR',rep0:1,rep1:1,rep2:1,rep3:1,rep4:1,rep5:1,pw0:1,pw1:1,pw2:1,pw3:1,pw4:1,pw5:.15,pw6:.15};
     const frac = Math.min(1, w.t / dur);
     const hour = 22 + frac * 8; const h = Math.floor(hour) % 24; const m = Math.floor((hour % 1) * 60);
     const pad = (n) => (n < 10 ? '0' : '') + n;
@@ -4671,10 +4542,9 @@ class Component extends DCLogic {
     const cnt = (type) => { let o = 0, x = 0; for (const d of w.doors) if (d.type === type) { if (d.open) o++; else x++; } return o + 'O/' + x + 'C'; };
     const deskGuest = this.getFrontDeskGuest();
     const deskActive = this.canUseDeskControls();
-    const boss = w.inspector;
     // alert
     let alert = 'ALL CLEAR', ac = '#33ff00';
-    if (boss) { alert = 'BOSS // ' + (boss.title || 'INSPECTOR'); ac = boss.uiTone || '#ff3333'; }
+    if (w.inspector) { alert = 'INSPECTOR ON SITE'; ac = '#ff3333'; }
     else if (w.ghosts.length > 0) { alert = w.ghosts.length + ' LOOSE APPARITION(S)'; ac = '#ffb000'; }
     else if (w.guests.some(g => g.scare > 25)) { alert = 'GUEST DISTURBED'; ac = '#ffb000'; }
     // nearest door prompt
@@ -4696,17 +4566,13 @@ class Component extends DCLogic {
     const pwr = w.power; const seg = (th) => pwr >= th ? 1 : 0.12;
     // lose strings
     let lt = 'GAME OVER', lm = '';
-    if (w.loseReason === 'caught') { lt = 'DISCOVERED'; lm = 'Suspicion maxed. The audit found enough evidence.'; }
+    if (w.loseReason === 'caught') { lt = 'DISCOVERED'; lm = 'The inspector found her. They take everything.'; }
     else if (w.loseReason === 'panic') { lt = 'PANDEMONIUM'; lm = 'The hotel descended into supernatural chaos.'; }
     else if (w.loseReason === 'strikes') { lt = 'EXPOSED'; lm = 'Too many incidents drew fatal attention.'; }
     else if (w.loseReason === 'quota') { lt = 'INSOLVENT'; lm = 'Dawn came before the hotel made quota.'; }
     const earned = Math.floor(w.earned || 0);
     const quota = w.moneyTarget || 0;
     const goalMet = earned >= quota;
-    const bossSuspicionPct = boss ? Math.max(0, Math.min(100, ((boss.suspicion || 0) / Math.max(1, boss.suspicionMax || 1)) * 100)) : 0;
-    const bossInspectionPct = boss ? Math.max(0, Math.min(100, ((boss.inspectionTime || 0) / Math.max(1, boss.inspectionTimeMax || 1)) * 100)) : 0;
-    const bossAccent = boss ? (boss.uiTone || '#ff9e7a') : '#ff9e7a';
-    const bossWarningColor = boss ? (boss.warningColor || bossAccent) : bossAccent;
     return {
       clock:pad(h)+':'+pad(m),phase:'NIGHT',level:pad(w.config.level),mapTier:['','I','II','III'][w.config.mapTier],doorTier:['','I','II','III','IV','V'][w.config.doorTier],
       alert, alertColor: ac,
@@ -4723,20 +4589,7 @@ class Component extends DCLogic {
       repColor: ((w.strikes||0)>=2?'#ff3333':(w.strikes||0)===1?'#ffb000':'#33ff00'),
       repText: ((w.strikes||0)===0?'CLEAR':('醜'+(['','一','二','三'][w.strikes||0]||(w.strikes||0)))),
       rep0:(0<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep1:(1<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep2:(2<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep3:(3<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep4:(4<Math.max(0,6-(w.strikes||0)*2)?1:0.12), rep5:(5<Math.max(0,6-(w.strikes||0)*2)?1:0.12),
-      pw0: seg(8), pw1: seg(24), pw2: seg(40), pw3: seg(56), pw4: seg(72), pw5: seg(86), pw6: seg(96),
-      bossVisible: !!boss,
-      bossName: boss ? boss.name : '',
-      bossTitle: boss ? boss.title : '',
-      bossSuspicionPct: bossSuspicionPct.toFixed(1),
-      bossInspectionPct: bossInspectionPct.toFixed(1),
-      bossSuspicionLabel: boss ? (Math.round(boss.suspicion || 0) + ' / ' + Math.round(boss.suspicionMax || 0)) : '0 / 0',
-      bossInspectionLabel: boss ? (Math.ceil(boss.inspectionTime || 0) + 's') : '0s',
-      bossStatus: boss ? (boss.state || boss.phase || 'SWEEPING') : '',
-      bossWarning: boss ? (boss.warning || 'AUDIT IN PROGRESS') : '',
-      bossAccent,
-      bossAccentGlow: boss ? ('rgba(' + (bossAccent === '#ffd060' ? '255,208,96' : bossAccent === '#ff6b6b' ? '255,107,107' : '255,158,122') + ',.34)') : 'rgba(255,158,122,.34)',
-      bossWarningColor,
-      bossWarningGlow: boss ? ('rgba(' + (bossWarningColor === '#7fdfff' ? '127,223,255' : bossWarningColor === '#ffd060' ? '255,208,96' : bossWarningColor === '#ff5555' ? '255,85,85' : bossWarningColor === '#ff6b6b' ? '255,107,107' : '255,158,122') + ',.32)') : 'rgba(255,158,122,.32)'
+      pw0: seg(8), pw1: seg(24), pw2: seg(40), pw3: seg(56), pw4: seg(72), pw5: seg(86), pw6: seg(96)
     };
   }
 
@@ -4745,8 +4598,8 @@ class Component extends DCLogic {
     if (!w) return { power: 100, inspectorState: 'INACTIVE', inspectorColor: '#1f8f1f' };
     return {
       power: Math.round(w.power),
-      inspectorState: w.inspector ? ((w.inspector.title || 'ACTIVE') + ' // ' + (w.inspector.state || 'SWEEPING')) : 'INACTIVE',
-      inspectorColor: w.inspector ? (w.inspector.uiTone || '#ff3333') : '#1f8f1f'
+      inspectorState: w.inspector ? 'ACTIVE' : 'INACTIVE',
+      inspectorColor: w.inspector ? '#ff3333' : '#1f8f1f'
     };
   }
   devResetPanic() {
@@ -4768,10 +4621,9 @@ class Component extends DCLogic {
         this.world.inspector = null;
         this.log("DEV: INSPECTOR DISMISSED", "#33ff00");
       } else {
-        const bossId = (this.world.config && this.world.config.bossId) || 'toxicFog';
-        const def = this.getBossDef(bossId);
-        this.world.inspector = this.createBossRuntime(bossId);
-        this.log("DEV: " + def.title + " SPAWNED", def.uiTone);
+        const w = this.world;
+        this.world.inspector = { x: w.cx(w.inspectorSpawn.c), y: w.cy(w.inspectorSpawn.r), r: 7, target: null, path: null, pi: 0, stuck: 0, dashCd: 0, dashT: 0, caught: 0, speedMul: 1, warned: false };
+        this.log("DEV: INSPECTOR SPAWNED", "#ff3333");
       }
     }
   }
@@ -4853,31 +4705,31 @@ class Component extends DCLogic {
       tutorialEconomyRows: this.getTutorialEconomyRows(),
       titleInspectorCards: [
         {
-          title: 'TOXIC AUDITOR',
-          subtitle: 'They seal rooms and read traces.',
+          title: 'THE OBSERVER',
+          subtitle: 'They watch. They take notes.',
           icon: '⚔',
           accent: '#ffb000',
           glow: 'rgba(255,176,0,.7)',
           border: '#4d2e1c',
-          desc: '毒霧稽核官：用毒霧、穿牆視野與足跡追查累積懷疑值。牠不是一眼判死，而是逐步把證據湊齊。'
+          desc: '觀察員：在暗處記錄一切行為。若撞鬼造成慌張會加倍扣分，平時維持穩定。'
         },
         {
-          title: 'SPOTLIGHT MINER',
-          subtitle: 'They push light through your routes.',
+          title: 'THE EXAMINER',
+          subtitle: 'They question. They find flaws.',
           icon: '⚔',
           accent: '#ffb000',
           glow: 'rgba(255,176,0,.7)',
           border: '#4d2e1c',
-          desc: '探照燈礦工：用追蹤探照燈、掘洞與礦鼠拆掉你對單一道門的依賴，慢慢把安全區擠壓乾淨。'
+          desc: '主考官：隨機抽查房門狀態，若發現有損壞或未上鎖的門，將提高整體恐慌度。'
         },
         {
-          title: 'NECRO GENERAL',
-          subtitle: 'They erase your sense of control.',
+          title: 'THE ENFORCER',
+          subtitle: 'They punish. They take everything.',
           icon: '⚔',
           accent: '#ff5555',
           glow: 'rgba(255,85,85,.7)',
           border: '#6b2020',
-          desc: '死靈將軍：最長稽查時間、分身與隱形追蹤。牠不是直接處決，而是靠高壓調查把你拖到懷疑值滿條。'
+          desc: '執法者：終極BOSS。撞見他直接判定遊戲結束，必須在06:00前存活並迴避他。'
         }
       ],
       stageScale: 'scale(' + s.scale + ')',
@@ -4907,7 +4759,8 @@ class Component extends DCLogic {
       worldIntelCorridors: worldIntel.map.corridors,
       worldIntelRooms: worldIntel.map.rooms,
       worldIntelLabels: worldIntel.map.labels,
-      worldIntelMirrors: worldIntel.map.mirrors,
+        worldIntelMirrorLinks: worldIntel.map.mirrorLinks,
+        worldIntelMirrors: worldIntel.map.mirrors,
       worldIntelHandleText: (s.worldIntelWidth || 58) > 120 ? 'WORLD INTEL // DRAG CLOSE' : 'WORLD INTEL // DRAG OPEN',
       previewLevelCode: preview.levelCode,
       previewDisplayName: preview.displayName,
@@ -4924,7 +4777,8 @@ class Component extends DCLogic {
       previewRooms: preview.map.rooms,
       previewLabels: preview.map.labels,
       previewDoors: preview.map.doors,
-      previewMirrors: preview.map.mirrors,
+        previewMirrorLinks: preview.map.mirrorLinks,
+        previewMirrors: preview.map.mirrors,
       previewScrollRef: this.previewScrollRef,
       previewStartHint: 'DEPLOYMENT SYSTEM READY // READY TO BEGIN',
       previewStartLabel: 'BEGIN DEPLOYMENT ->',
