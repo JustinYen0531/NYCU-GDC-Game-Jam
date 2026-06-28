@@ -2693,27 +2693,14 @@ class Component extends DCLogic {
       guestSpawns:[{c:22,r:4},{c:13,r:4},{c:31,r:4},{c:40,r:4},{c:4,r:12},{c:41,r:12},{c:4,r:20},{c:14,r:20},{c:31,r:20},{c:41,r:20}]
     };
     return {
-      name:'BLACKTHORN VILLA', guestRoomCount:12,
-      rooms:[R('ROOM 301','guest',1,1,7,5),R('ROOM 302','guest',10,1,8,5),R('LOUNGE','lounge',20,1,6,5),R('ROOM 303','guest',28,1,7,5),R('ROOM 304','guest',37,1,7,5),R('ROOM 305','guest',1,10,6,5),R('ROOM 306','guest',1,17,6,4),R('ROOM 307','guest',12,10,4,5),R('ROOM 308','guest',12,17,4,4),R('FRONT DESK','desk',17,10,11,11),R('ROOM 309','guest',29,10,4,5),R('ROOM 310','guest',29,17,4,4),R('ROOM 311','guest',38,10,6,5),R('ROOM 312','guest',38,17,6,4)],
+      name:'BLACKTHORN VILLA', guestRoomCount:10,
+      rooms:[R('ROOM 301','guest',1,1,7,5),R('ROOM 302','guest',10,1,8,5),R('LOUNGE','lounge',20,1,6,5),R('ROOM 303','guest',28,1,7,5),R('ROOM 304','guest',37,1,7,5),R('ROOM 305','guest',1,10,6,5),R('ROOM 306','guest',1,17,6,4),R('ROOM 307','guest',12,10,4,11),R('FRONT DESK','desk',17,10,11,11),R('ROOM 309','guest',29,10,4,11),R('ROOM 311','guest',38,10,6,5),R('ROOM 312','guest',38,17,6,4)],
       corridors:[[2,7,41,2],[8,7,3,16],[21,7,3,16],[34,7,3,16],[8,22,29,2]],
       hallLabels:[{text:'NORTH CORRIDOR',c:17,r:7},{text:'SOUTH CORRIDOR',c:17,r:23},{text:'CHECK-IN HALL',c:18,r:10}],
-      doorSlots:[D(4,6,'h','ROOM 301'),D(14,6,'h','ROOM 302'),D(22,6,'h','LOUNGE'),D(31,6,'h','ROOM 303'),D(40,6,'h','ROOM 304'),D(9,9,'h','WEST CORRIDOR'),D(22,9,'h','FRONT DESK NORTH'),D(35,9,'h','EAST CORRIDOR'),D(7,12,'v','ROOM 305'),D(11,12,'v','ROOM 307 WEST'),D(16,12,'v','ROOM 307 EAST'),D(28,12,'v','ROOM 309 WEST'),D(33,12,'v','ROOM 309 EAST'),D(37,12,'v','ROOM 311'),D(7,19,'v','ROOM 306'),D(11,19,'v','ROOM 308 WEST'),D(16,19,'v','ROOM 308 EAST'),D(28,19,'v','ROOM 310 WEST'),D(33,19,'v','ROOM 310 EAST'),D(37,19,'v','ROOM 312'),D(22,21,'h','FRONT DESK SOUTH')],
+      doorSlots:[D(4,6,'h','ROOM 301'),D(14,6,'h','ROOM 302'),D(22,6,'h','LOUNGE'),D(31,6,'h','ROOM 303'),D(40,6,'h','ROOM 304'),D(9,9,'h','WEST CORRIDOR'),D(22,9,'h','FRONT DESK NORTH'),D(35,9,'h','EAST CORRIDOR'),D(7,12,'v','ROOM 305'),D(11,12,'v','ROOM 307 NORTH WEST'),D(16,12,'v','ROOM 307 NORTH EAST'),D(28,12,'v','ROOM 309 NORTH WEST'),D(33,12,'v','ROOM 309 NORTH EAST'),D(37,12,'v','ROOM 311'),D(7,19,'v','ROOM 306'),D(11,19,'v','ROOM 307 SOUTH WEST'),D(16,19,'v','ROOM 307 SOUTH EAST'),D(28,19,'v','ROOM 309 SOUTH WEST'),D(33,19,'v','ROOM 309 SOUTH EAST'),D(37,19,'v','ROOM 312'),D(22,21,'h','FRONT DESK SOUTH')],
       fixtures:[F(2,2,3,2,'bed'),F(12,2,3,2,'bed'),F(29,2,4,2,'bed'),F(39,2,3,2,'bed'),F(2,11,3,2,'bed'),F(2,18,3,1,'bed'),F(13,11,2,2,'bed'),F(13,18,2,1,'bed'),F(30,11,2,2,'bed'),F(30,18,2,1,'bed'),F(39,11,3,2,'bed'),F(39,18,3,1,'bed'),F(21,2,2,1,'sofa'),F(24,4,1,1,'sofa'),F(19,11,7,1,'counter'),F(21,15,3,3,'fountain'),F(18,18,2,2,'table'),F(25,18,2,1,'sofa'),F(17,12,1,1,'plant'),F(27,12,1,1,'plant')],
-      mirrors:[{c:16,r:4},{c:43,r:12}],wallGlass:[
-        {c:8,r:3,dir:'v',room:'ROOM 301',targetRoom:'ROOM 302'},
-        {c:9,r:3,dir:'v',room:'ROOM 302',targetRoom:'ROOM 301'},
-        {c:35,r:3,dir:'v',room:'ROOM 303',targetRoom:'ROOM 304'},
-        {c:36,r:3,dir:'v',room:'ROOM 304',targetRoom:'ROOM 303'},
-        {c:7,r:12,dir:'v',room:'ROOM 305',targetRoom:'ROOM 307'},
-        {c:11,r:12,dir:'v',room:'ROOM 307',targetRoom:'ROOM 305'},
-        {c:7,r:19,dir:'v',room:'ROOM 306',targetRoom:'ROOM 308'},
-        {c:11,r:19,dir:'v',room:'ROOM 308',targetRoom:'ROOM 306'},
-        {c:33,r:12,dir:'v',room:'ROOM 309',targetRoom:'ROOM 311'},
-        {c:37,r:12,dir:'v',room:'ROOM 311',targetRoom:'ROOM 309'},
-        {c:33,r:19,dir:'v',room:'ROOM 310',targetRoom:'ROOM 312'},
-        {c:37,r:19,dir:'v',room:'ROOM 312',targetRoom:'ROOM 310'}
-      ],deskService:{c:22,r:12},deskAction:{c:22,r:10},deskQueueSpots:[{c:19,r:8},{c:16,r:8},{c:13,r:8},{c:10,r:8},{c:7,r:8}],playerStart:{c:19,r:18},daughterHome:{c:4,r:4},exitApproach:{c:22,r:23},inspectorSpawn:{c:22,r:23},entrance:{c:22,r:24},
-      guestSpawns:[{c:17,r:4},{c:35,r:8},{c:4,r:5},{c:29,r:14},{c:24,r:4},{c:40,r:14},{c:4,r:19},{c:31,r:19}]
+      mirrors:[{c:4,r:4},{c:14,r:4},{c:31,r:4},{c:40,r:4},{c:4,r:12},{c:4,r:19},{c:14,r:12},{c:14,r:18},{c:31,r:12},{c:31,r:18},{c:40,r:12},{c:40,r:19}],wallGlass:[],deskService:{c:22,r:12},deskAction:{c:22,r:10},deskQueueSpots:[{c:19,r:8},{c:16,r:8},{c:13,r:8},{c:10,r:8},{c:7,r:8}],playerStart:{c:19,r:18},daughterHome:{c:4,r:4},exitApproach:{c:22,r:23},inspectorSpawn:{c:22,r:23},entrance:{c:22,r:24},
+      guestSpawns:[{c:4,r:4},{c:14,r:4},{c:31,r:4},{c:40,r:4},{c:4,r:12},{c:14,r:15},{c:31,r:15},{c:40,r:12},{c:4,r:19},{c:40,r:19}]
     };
   }
 
@@ -3735,7 +3722,9 @@ class Component extends DCLogic {
     g.stayDuration = 16 + Math.random() * 12;
     g.stayElapsed = 0;
     g.progress = 0;
+    g.waitDesk = 0; g.warnedWait = false;
     this.setGuestGoal(g, g.assignedRoomTarget, 'room:' + room.label);
+    this.guestSay(g, '我要入住' + room.label + '了。', 3);
     w.admitted++;
     this.log('CHECK-IN COMPLETE // ' + g.profile.title + ' -> ' + room.label + '.', g.overtime ? '#ffb000' : '#7dffb0');
     this.playSFX('unlock');
@@ -4564,6 +4553,8 @@ class Component extends DCLogic {
         ctx.fillText(text, g.x, g.y - 28);
         ctx.restore();
       }
+      // intent speech bubble (drawn on top of all guest markers)
+      this.drawGuestBubble(ctx, g);
     }
 
     // inspector
