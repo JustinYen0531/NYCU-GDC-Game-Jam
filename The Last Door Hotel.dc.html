@@ -40,7 +40,7 @@
         <div style="width:216px; flex:none; display:flex; flex-direction:column; gap:6px;">
 
           <!-- camera preview -->
-          <div style="border:1px solid #1a3d1a; background:#010508; height:124px; position:relative; overflow:hidden; flex:none;">
+          <div style="border:1px solid #4f8b60; box-shadow:0 0 12px rgba(140,255,185,.12); background:#010508; height:124px; position:relative; overflow:hidden; flex:none;">
             <svg viewBox="0 0 216 124" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute; inset:0; width:100%; height:100%;">
               <defs>
                 <linearGradient id="camsky" x1="0" y1="0" x2="0" y2="1">
@@ -81,7 +81,7 @@
           </div>
 
           <!-- door control -->
-          <div style="border:1px solid #1a3d1a; background:#020704; padding:7px 9px; flex:none;">
+          <div style="border:1px solid #4f8b60; box-shadow:0 0 12px rgba(140,255,185,.1); background:#020704; padding:7px 9px; flex:none;">
             <div style="font-size:14px; color:#1f8f1f; letter-spacing:2px; border-bottom:1px solid #122a12; padding-bottom:3px; margin-bottom:5px;">DOOR&nbsp;CONTROL</div>
             <div style="display:flex; flex-direction:column; gap:5px;">
 
@@ -161,7 +161,7 @@
           </div>
 
           <!-- system process -->
-          <div style="border:1px solid #1a3d1a; background:#020704; padding:7px 9px; flex:none;">
+          <div style="border:1px solid #4f8b60; box-shadow:0 0 12px rgba(140,255,185,.1); background:#020704; padding:7px 9px; flex:none;">
             <div style="font-size:14px; color:#1f8f1f; letter-spacing:2px; margin-bottom:4px;">SYSTEM&nbsp;PROCESS</div>
             <div style="height:34px; overflow:hidden; position:relative;">
               <svg viewBox="0 0 200 34" preserveAspectRatio="none" style="width:100%; height:34px; display:block;">
@@ -180,7 +180,7 @@
           </div>
 
           <!-- reputation / 醜值 (each complaint drops 2 bars; colour shifts green->yellow->red) -->
-          <div style="border:1px solid #1a3d1a; background:#020704; padding:7px 9px; flex:none;">
+          <div style="border:1px solid #4f8b60; box-shadow:0 0 12px rgba(140,255,185,.1); background:#020704; padding:7px 9px; flex:none;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
               <span style="font-size:14px; color:#1f8f1f; letter-spacing:2px;">醜值 // REPUTATION</span>
               <span style="font-size:13px; color:{{ hud.repColor }}; text-shadow:0 0 6px currentColor;">{{ hud.repText }}</span>
@@ -196,7 +196,7 @@
           </div>
 
           <!-- minimap -->
-          <div style="border:1px solid #1a3d1a; background:#020704; padding:7px 9px; flex:1; display:flex; flex-direction:column; min-height:72px;">
+          <div style="border:1px solid #4f8b60; box-shadow:0 0 12px rgba(140,255,185,.1); background:#020704; padding:7px 9px; flex:1; display:flex; flex-direction:column; min-height:72px;">
             <canvas ref="{{ miniRef }}" width="198" height="110" style="width:100%; flex:1; display:block; image-rendering:pixelated;"></canvas>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:2px 8px; margin-top:6px; font-size:10px; color:#7dffb0; letter-spacing:0.5px;">
               <div>▲ 主人</div>
@@ -226,62 +226,62 @@
       <!-- bottom section: inventory & logs -->
       <div style="display:flex; gap:8px; margin-top:7px; height:74px; align-items:stretch; width:100%;">
         <!-- Inventory UI -->
-        <div style="display:flex; border:1px solid #1a3d1a; background:#020704; padding:2px 8px; gap:8px; align-items:center; flex-shrink:0;">
+        <div style="display:flex; border:1px solid #4f8b60; box-shadow:0 0 14px rgba(140,255,185,.12); background:#020704; padding:2px 8px; gap:8px; align-items:center; flex-shrink:0;">
           <div style="font-size:12px; color:#1f8f1f; writing-mode:vertical-lr; text-orientation:mixed; letter-spacing:1px; border-right:1px solid #122a12; padding-right:4px; height:100%; display:flex; align-items:center; justify-content:center;">ITEMS</div>
           
           <!-- Slot 1: 遮布 -->
-          <div onClick="{{ onUseItem1 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="遮布: 鏡子永久防穿">
+          <div onClick="{{ onUseItem1 }}" style="width:64px; height:64px; border:1px solid #4f8b60; box-shadow:0 0 10px rgba(140,255,185,.1); background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#b7ffd0; background:rgba(51,255,0,0.05);" title="遮布: 鏡子永久防穿">
             <div style="width:42px; height:42px; overflow:hidden; position:relative; flex:none;">
               <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:0px 0px; filter:invert(1) brightness(0.85);"></div>
             </div>
             <div style="font-size:10px; color:{{ itemUi.clothColor }}; margin-top:2px; white-space:nowrap;">遮布 ${{ itemUi.clothCost }}</div>
             <div style="font-size:9px; color:{{ itemUi.clothCdColor }}; white-space:nowrap;">{{ itemUi.clothCd }}</div>
-            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">1</div>
+            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #5e9a70; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">1</div>
           </div>
 
           <!-- Slot 2: 眼罩 -->
-          <div onClick="{{ onUseItem2 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="眼罩: 顧客失明無敵">
+          <div onClick="{{ onUseItem2 }}" style="width:64px; height:64px; border:1px solid #4f8b60; box-shadow:0 0 10px rgba(140,255,185,.1); background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#b7ffd0; background:rgba(51,255,0,0.05);" title="眼罩: 顧客失明無敵">
             <div style="width:42px; height:42px; overflow:hidden; position:relative; flex:none;">
               <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:-42px 0px; filter:invert(1) brightness(0.85);"></div>
             </div>
             <div style="font-size:10px; color:{{ itemUi.blindfoldColor }}; margin-top:2px; white-space:nowrap;">眼罩 ${{ itemUi.blindfoldCost }}</div>
             <div style="font-size:9px; color:{{ itemUi.blindfoldCdColor }}; white-space:nowrap;">{{ itemUi.blindfoldCd }}</div>
-            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">2</div>
+            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #5e9a70; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">2</div>
           </div>
 
           <!-- Slot 3: 勞術 -->
-          <div onClick="{{ onUseItem3 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="勞術: 短距離穿牆">
+          <div onClick="{{ onUseItem3 }}" style="width:64px; height:64px; border:1px solid #4f8b60; box-shadow:0 0 10px rgba(140,255,185,.1); background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#b7ffd0; background:rgba(51,255,0,0.05);" title="勞術: 短距離穿牆">
             <div style="width:42px; height:42px; overflow:hidden; position:relative; flex:none;">
               <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:-84px 0px; filter:invert(1) brightness(0.85);"></div>
             </div>
             <div style="font-size:10px; color:{{ itemUi.phaseColor }}; margin-top:2px; white-space:nowrap;">勞術 ${{ itemUi.phaseCost }}</div>
             <div style="font-size:9px; color:{{ itemUi.phaseCdColor }}; white-space:nowrap;">{{ itemUi.phaseCd }}</div>
-            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">3</div>
+            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #5e9a70; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">3</div>
           </div>
 
           <!-- Slot 4: 門鎖 -->
-          <div onClick="{{ onUseItem4 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="門鎖: 強行閉鎖門扉">
+          <div onClick="{{ onUseItem4 }}" style="width:64px; height:64px; border:1px solid #4f8b60; box-shadow:0 0 10px rgba(140,255,185,.1); background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#b7ffd0; background:rgba(51,255,0,0.05);" title="門鎖: 強行閉鎖門扉">
             <div style="width:42px; height:42px; overflow:hidden; position:relative; flex:none;">
               <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:0px -42px; filter:invert(1) brightness(0.85);"></div>
             </div>
             <div style="font-size:10px; color:{{ itemUi.lockColor }}; margin-top:2px; white-space:nowrap;">門鎖 ${{ itemUi.lockCost }}</div>
             <div style="font-size:9px; color:{{ itemUi.lockCdColor }}; white-space:nowrap;">{{ itemUi.lockCd }}</div>
-            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">4</div>
+            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #5e9a70; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">4</div>
           </div>
 
           <!-- Slot 5: 口哨 -->
-          <div onClick="{{ onUseItem5 }}" style="width:64px; height:64px; border:1px solid #1a3d1a; background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#33ff00; background:rgba(51,255,0,0.05);" title="口哨: 吸引鬼魂靠近">
+          <div onClick="{{ onUseItem5 }}" style="width:64px; height:64px; border:1px solid #4f8b60; box-shadow:0 0 10px rgba(140,255,185,.1); background:#010503; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;" style-hover="border-color:#b7ffd0; background:rgba(51,255,0,0.05);" title="口哨: 吸引鬼魂靠近">
             <div style="width:42px; height:42px; overflow:hidden; position:relative; flex:none;">
               <div style="position:absolute; inset:0; background-image:url('./示意圖/遊戲素材道具圖.png'); background-size:126px 84px; background-position:-42px -42px; filter:invert(1) brightness(0.85);"></div>
             </div>
             <div style="font-size:10px; color:{{ itemUi.whistleColor }}; margin-top:2px; white-space:nowrap;">口哨 ${{ itemUi.whistleCost }}</div>
             <div style="font-size:9px; color:{{ itemUi.whistleCdColor }}; white-space:nowrap;">{{ itemUi.whistleCd }}</div>
-            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #1a3d1a; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">5</div>
+            <div style="position:absolute; top:2px; right:3px; background:#122a12; color:#33ff00; border:1px solid #5e9a70; font-size:10px; padding:0 3px; line-height:1; font-weight:bold; border-radius:2px;">5</div>
           </div>
         </div>
 
         <!-- System Log -->
-        <div style="flex:1; border:1px solid #1a3d1a; background:#020704; padding:5px 14px; overflow:hidden; font-size:16px; line-height:1.3;">
+        <div style="flex:1; border:1px solid #4f8b60; box-shadow:0 0 14px rgba(140,255,185,.12); background:#020704; padding:5px 14px; overflow:hidden; font-size:16px; line-height:1.3;">
           <span style="color:#1f521f; letter-spacing:2px; font-size:13px;">SYSTEM&nbsp;LOG&nbsp;//</span>
           <sc-for list="{{ logLines }}" as="line" hint-placeholder-count="3">
             <div style="color:{{ line.color }}; text-shadow:0 0 5px currentColor;">&gt; {{ line.txt }}</div>
@@ -2603,7 +2603,21 @@ class Component extends DCLogic {
       hallLabels:[{text:'NORTH CORRIDOR',c:17,r:7},{text:'SOUTH CORRIDOR',c:17,r:23},{text:'CHECK-IN HALL',c:18,r:10}],
       doorSlots:[D(4,6,'h','ROOM 301'),D(14,6,'h','ROOM 302'),D(22,6,'h','LOUNGE'),D(31,6,'h','ROOM 303'),D(40,6,'h','ROOM 304'),D(9,9,'h','WEST CORRIDOR'),D(22,9,'h','FRONT DESK NORTH'),D(35,9,'h','EAST CORRIDOR'),D(7,12,'v','ROOM 305'),D(11,12,'v','ROOM 307 NORTH WEST'),D(16,12,'v','ROOM 307 NORTH EAST'),D(28,12,'v','ROOM 309 NORTH WEST'),D(33,12,'v','ROOM 309 NORTH EAST'),D(37,12,'v','ROOM 311'),D(7,19,'v','ROOM 306'),D(11,19,'v','ROOM 307 SOUTH WEST'),D(16,19,'v','ROOM 307 SOUTH EAST'),D(28,19,'v','ROOM 309 SOUTH WEST'),D(33,19,'v','ROOM 309 SOUTH EAST'),D(37,19,'v','ROOM 312'),D(22,21,'h','FRONT DESK SOUTH')],
       fixtures:[F(2,2,3,2,'bed'),F(12,2,3,2,'bed'),F(29,2,4,2,'bed'),F(39,2,3,2,'bed'),F(2,11,3,2,'bed'),F(2,18,3,1,'bed'),F(13,11,2,2,'bed'),F(13,18,2,1,'bed'),F(30,11,2,2,'bed'),F(30,18,2,1,'bed'),F(39,11,3,2,'bed'),F(39,18,3,1,'bed'),F(21,2,2,1,'sofa'),F(24,4,1,1,'sofa'),F(19,11,7,1,'counter'),F(21,15,3,3,'fountain'),F(18,18,2,2,'table'),F(25,18,2,1,'sofa'),F(17,12,1,1,'plant'),F(27,12,1,1,'plant')],
-      mirrors:[{c:4,r:4},{c:14,r:4},{c:31,r:4},{c:40,r:4},{c:4,r:12},{c:4,r:19},{c:14,r:12},{c:14,r:18},{c:31,r:12},{c:31,r:18},{c:40,r:12},{c:40,r:19}],wallGlass:[],deskService:{c:22,r:12},deskAction:{c:22,r:10},deskQueueSpots:[{c:19,r:8},{c:16,r:8},{c:13,r:8},{c:10,r:8},{c:7,r:8}],playerStart:{c:19,r:18},daughterHome:{c:4,r:4},exitApproach:{c:22,r:23},inspectorSpawn:{c:22,r:23},entrance:{c:22,r:24},
+      mirrors:[
+        {c:4,r:4},
+        {c:4,r:19},
+        {c:31,r:4},
+        {c:14,r:15},
+        {c:14,r:4},
+        {c:31,r:15},
+        {c:40,r:4},
+        {c:40,r:19}
+      ],wallGlass:[
+        {c:4,r:15,dir:'h',room:'ROOM 305',targetRoom:'ROOM 306'},
+        {c:4,r:16,dir:'h',room:'ROOM 306',targetRoom:'ROOM 305'},
+        {c:40,r:15,dir:'h',room:'ROOM 311',targetRoom:'ROOM 312'},
+        {c:40,r:16,dir:'h',room:'ROOM 312',targetRoom:'ROOM 311'}
+      ],deskService:{c:22,r:12},deskAction:{c:22,r:10},deskQueueSpots:[{c:19,r:8},{c:16,r:8},{c:13,r:8},{c:10,r:8},{c:7,r:8}],playerStart:{c:19,r:18},daughterHome:{c:4,r:4},exitApproach:{c:22,r:23},inspectorSpawn:{c:22,r:23},entrance:{c:22,r:24},
       guestSpawns:[{c:4,r:4},{c:14,r:4},{c:31,r:4},{c:40,r:4},{c:4,r:12},{c:14,r:15},{c:31,r:15},{c:40,r:12},{c:4,r:19},{c:40,r:19}]
     };
   }
