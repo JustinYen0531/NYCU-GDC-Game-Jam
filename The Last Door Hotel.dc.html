@@ -4265,6 +4265,23 @@ class Component extends DCLogic {
       ctx.restore();
     }
 
+    // mirror links
+    for (let i = 0; i + 1 < w.mirrors.length; i += 2) {
+      const a = w.mirrors[i], b = w.mirrors[i + 1];
+      const ax = (a.c + 0.5) * T, ay = (a.r + 0.5) * T;
+      const bx = (b.c + 0.5) * T, by = (b.r + 0.5) * T;
+      ctx.save();
+      ctx.strokeStyle = (a.covered || b.covered) ? 'rgba(141,239,255,0.18)' : 'rgba(141,239,255,0.5)';
+      ctx.shadowColor = 'rgba(141,239,255,0.35)';
+      ctx.shadowBlur = 4;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(ax, ay);
+      ctx.lineTo(bx, by);
+      ctx.stroke();
+      ctx.restore();
+    }
+
     // mirrors
     for (const m of w.mirrors) {
       const x = m.c * T, y = m.r * T;
@@ -4759,8 +4776,8 @@ class Component extends DCLogic {
       worldIntelCorridors: worldIntel.map.corridors,
       worldIntelRooms: worldIntel.map.rooms,
       worldIntelLabels: worldIntel.map.labels,
-        worldIntelMirrorLinks: worldIntel.map.mirrorLinks,
-        worldIntelMirrors: worldIntel.map.mirrors,
+      worldIntelMirrorLinks: worldIntel.map.mirrorLinks,
+      worldIntelMirrors: worldIntel.map.mirrors,
       worldIntelHandleText: (s.worldIntelWidth || 58) > 120 ? 'WORLD INTEL // DRAG CLOSE' : 'WORLD INTEL // DRAG OPEN',
       previewLevelCode: preview.levelCode,
       previewDisplayName: preview.displayName,
@@ -4777,8 +4794,8 @@ class Component extends DCLogic {
       previewRooms: preview.map.rooms,
       previewLabels: preview.map.labels,
       previewDoors: preview.map.doors,
-        previewMirrorLinks: preview.map.mirrorLinks,
-        previewMirrors: preview.map.mirrors,
+      previewMirrorLinks: preview.map.mirrorLinks,
+      previewMirrors: preview.map.mirrors,
       previewScrollRef: this.previewScrollRef,
       previewStartHint: 'DEPLOYMENT SYSTEM READY // READY TO BEGIN',
       previewStartLabel: 'BEGIN DEPLOYMENT ->',
