@@ -2381,9 +2381,9 @@ class Component extends DCLogic {
     const MT = [0, 60, 95, 130, 175, 220, 270, 320, 370, 420, 480, 540, 610, 680, 760, 850][lv];
     if (lv <= 3) return { level:lv, mapTier:1, doorTier:1, counts:{ basic:9 }, boss:false, bossId:null, moneyTarget:MT };
     if (lv <= 5) return { level:lv, mapTier:1, doorTier:2, counts:{ basic:5, rashomon:4 }, boss:lv===5, bossId:lv===5 ? 'toxicFog' : null, moneyTarget:MT };
-    if (lv === 6) return { level:lv, mapTier:2, doorTier:2, counts:{ basic:9, rashomon:7 }, boss:false, bossId:null, moneyTarget:MT };
-    if (lv <= 9) return { level:lv, mapTier:2, doorTier:3, counts:{ basic:5, rashomon:5, sensor:6 }, boss:false, bossId:null, moneyTarget:MT };
-    if (lv === 10) return { level:lv, mapTier:2, doorTier:4, counts:{ basic:3, rashomon:3, sensor:4, rotating:6 }, boss:true, bossId:'miner', moneyTarget:MT };
+    if (lv === 6) return { level:lv, mapTier:2, doorTier:2, counts:{ basic:11, rashomon:7 }, boss:false, bossId:null, moneyTarget:MT };
+    if (lv <= 9) return { level:lv, mapTier:2, doorTier:3, counts:{ basic:7, rashomon:5, sensor:6 }, boss:false, bossId:null, moneyTarget:MT };
+    if (lv === 10) return { level:lv, mapTier:2, doorTier:4, counts:{ basic:5, rashomon:3, sensor:4, rotating:6 }, boss:true, bossId:'miner', moneyTarget:MT };
     if (lv <= 12) return { level:lv, mapTier:3, doorTier:4, counts:{ basic:4, rashomon:4, sensor:5, rotating:8 }, boss:false, bossId:null, moneyTarget:MT };
     return { level:lv, mapTier:3, doorTier:5, counts:{ basic:3, rashomon:3, sensor:4, rotating:4, chain:7 }, boss:lv===15, bossId:lv===15 ? 'general' : null, moneyTarget:MT };
   }
@@ -2672,23 +2672,25 @@ class Component extends DCLogic {
       guestSpawns:[{c:20,r:18},{c:5,r:5}]
     };
     if (mapTier === 2) return {
-      name:'TWIN-WING MANOR', guestRoomCount:8,
-      rooms:[R('ROOM 201','guest',1,1,7,5),R('ROOM 202','guest',10,1,7,5),R('LOUNGE','lounge',19,1,7,5),R('ROOM 203','guest',28,1,7,5),R('ROOM 204','guest',37,1,7,5),R('ROOM 205','guest',1,17,6,5),R('ROOM 206','guest',12,17,4,5),R('FRONT DESK','desk',17,10,11,11),R('ROOM 207','guest',29,17,4,5),R('ROOM 208','guest',38,17,6,5)],
+      name:'TWIN-WING MANOR', guestRoomCount:10,
+      rooms:[R('ROOM 201','guest',1,1,7,5),R('ROOM 202','guest',10,1,7,5),R('LOUNGE','lounge',19,1,7,5),R('ROOM 203','guest',28,1,7,5),R('ROOM 204','guest',37,1,7,5),R('ROOM 209','guest',1,10,6,5),R('FRONT DESK','desk',17,10,11,11),R('ROOM 210','guest',38,10,6,5),R('ROOM 205','guest',1,17,6,5),R('ROOM 206','guest',12,17,4,5),R('ROOM 207','guest',29,17,4,5),R('ROOM 208','guest',38,17,6,5)],
       corridors:[[2,7,41,2],[8,7,3,16],[21,7,3,16],[34,7,3,16],[8,22,29,2],[10,11,8,3]],
       hallLabels:[{text:'NORTH CORRIDOR',c:17,r:7},{text:'WEST WING',c:8,r:13},{text:'EAST WING',c:34,r:13}],
-      doorSlots:[D(4,6,'h','ROOM 201'),D(13,6,'h','ROOM 202'),D(22,6,'h','LOUNGE'),D(31,6,'h','ROOM 203'),D(40,6,'h','ROOM 204'),D(9,9,'h','WEST WING NORTH'),D(22,9,'h','FRONT DESK NORTH'),D(35,9,'h','EAST WING NORTH'),D(7,19,'v','ROOM 205'),D(11,19,'v','ROOM 206 WEST'),D(16,19,'v','ROOM 206 EAST'),D(28,19,'v','ROOM 207 WEST'),D(33,19,'v','ROOM 207 EAST'),D(37,19,'v','ROOM 208'),D(22,21,'h','FRONT DESK SOUTH'),D(16,12,'v','WEST CROSS-CORRIDOR')],
-      fixtures:[F(2,2,3,2,'bed'),F(12,2,3,2,'bed'),F(30,2,3,2,'bed'),F(39,2,3,2,'bed'),F(2,18,3,2,'bed'),F(13,18,2,2,'bed'),F(30,18,2,2,'bed'),F(40,18,3,2,'bed'),F(20,2,2,1,'sofa'),F(23,4,2,1,'sofa'),F(19,11,7,1,'counter'),F(21,15,3,3,'fountain'),F(20,18,2,2,'table'),F(25,18,1,1,'plant'),F(18,13,1,1,'plant')],
-      mirrors:[{c:6,r:4},{c:42,r:19}],wallGlass:[
+      doorSlots:[D(4,6,'h','ROOM 201'),D(13,6,'h','ROOM 202'),D(22,6,'h','LOUNGE'),D(31,6,'h','ROOM 203'),D(40,6,'h','ROOM 204'),D(9,9,'h','WEST WING NORTH'),D(22,9,'h','FRONT DESK NORTH'),D(35,9,'h','EAST WING NORTH'),D(7,12,'v','ROOM 209'),D(37,12,'v','ROOM 210'),D(7,19,'v','ROOM 205'),D(11,19,'v','ROOM 206 WEST'),D(16,19,'v','ROOM 206 EAST'),D(28,19,'v','ROOM 207 WEST'),D(33,19,'v','ROOM 207 EAST'),D(37,19,'v','ROOM 208'),D(22,21,'h','FRONT DESK SOUTH'),D(16,12,'v','WEST CROSS-CORRIDOR')],
+      fixtures:[F(2,2,3,2,'bed'),F(12,2,3,2,'bed'),F(30,2,3,2,'bed'),F(39,2,3,2,'bed'),F(2,11,3,2,'bed'),F(39,11,3,2,'bed'),F(2,18,3,2,'bed'),F(13,18,2,2,'bed'),F(30,18,2,2,'bed'),F(40,18,3,2,'bed'),F(20,2,2,1,'sofa'),F(23,4,2,1,'sofa'),F(19,11,7,1,'counter'),F(21,15,3,3,'fountain'),F(20,18,2,2,'table'),F(25,18,1,1,'plant'),F(18,13,1,1,'plant')],
+      mirrors:[{c:13,r:4},{c:31,r:4},{c:4,r:12},{c:41,r:12}],wallGlass:[
         {c:8,r:3,dir:'v',room:'ROOM 201',targetRoom:'ROOM 202'},
         {c:9,r:3,dir:'v',room:'ROOM 202',targetRoom:'ROOM 201'},
         {c:35,r:3,dir:'v',room:'ROOM 203',targetRoom:'ROOM 204'},
         {c:36,r:3,dir:'v',room:'ROOM 204',targetRoom:'ROOM 203'},
+        {c:7,r:12,dir:'v',room:'ROOM 209',targetRoom:'WEST WING'},
+        {c:37,r:12,dir:'v',room:'ROOM 210',targetRoom:'EAST WING'},
         {c:7,r:19,dir:'v',room:'ROOM 205',targetRoom:'ROOM 206'},
         {c:11,r:19,dir:'v',room:'ROOM 206',targetRoom:'ROOM 205'},
         {c:33,r:19,dir:'v',room:'ROOM 207',targetRoom:'ROOM 208'},
         {c:37,r:19,dir:'v',room:'ROOM 208',targetRoom:'ROOM 207'}
       ],deskService:{c:22,r:12},deskAction:{c:22,r:10},deskQueueSpots:[{c:19,r:8},{c:16,r:8},{c:13,r:8},{c:10,r:8},{c:7,r:8}],playerStart:{c:19,r:18},daughterHome:{c:4,r:4},exitApproach:{c:22,r:23},inspectorSpawn:{c:22,r:23},entrance:{c:22,r:24},
-      guestSpawns:[{c:22,r:4},{c:6,r:4},{c:14,r:4},{c:32,r:4},{c:40,r:4},{c:4,r:20},{c:14,r:20},{c:31,r:20}]
+      guestSpawns:[{c:22,r:4},{c:13,r:4},{c:31,r:4},{c:40,r:4},{c:4,r:12},{c:41,r:12},{c:4,r:20},{c:14,r:20},{c:31,r:20},{c:41,r:20}]
     };
     return {
       name:'BLACKTHORN VILLA', guestRoomCount:12,
