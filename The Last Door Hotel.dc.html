@@ -3262,14 +3262,42 @@ class Component extends DCLogic {
   }
   randomRoomTile(room) {
     if (!room) return this.randomFloor();
-    const padX = Math.max(0, Math.min(1, Math.floor((room.w - 1) / 2)));
-    const padY = Math.max(0, Math.min(1, Math.floor((room.h - 1) / 2)));
-    const minC = room.x + padX, maxC = room.x + room.w - 1 - padX;
-    const minR = room.y + padY, maxR = room.y + room.h - 1 - padY;
-    return {
-      c: minC + ((Math.random() * Math.max(1, maxC - minC + 1)) | 0),
-      r: minR + ((Math.random() * Math.max(1, maxR - minR + 1)) | 0)
+    const candidates = [];
+    for (let r = room.y; r < room.y + room.h; r++) {
+      for (let c = room.x; c < room.x + room.w; c++) {
+        if (this.world.grid[r] && this.world.grid[r][c] === 'floor') candidates.push({ c, r });
+      }
+    }
+    return candidates.length ? candidates[(Math.random() * candidates.length) | 0] : this.randomFloor();
+  }
+  findSafeGhostLanding(target, actor) {
+    if (!target || !this.world) return null;
+    const w = this.world;
+    const room = this.roomAtTile(target.c, target.r);
+    const candidates = [];
+    const addCandidate = (c, r) => {
+      if (!w.grid[r] || w.grid[r][c] !== 'floor') return;
+      const x = w.cx(c), y = w.cy(r);
+      if (this.blockedAt(x, y, (actor && actor.r) || 8, null)) return;
+      const hasExit = [[1,0],[-1,0],[0,1],[0,-1]].some(([dc, dr]) => this.passable(c + dc, r + dr, true));
+      if (hasExit) candidates.push({ c, r, dist:Math.hypot(c - target.c, r - target.r) });
     };
+    if (room) {
+      for (let r = room.y; r < room.y + room.h; r++) {
+        for (let c = room.x; c < room.x + room.w; c++) addCandidate(c, r);
+      }
+    } else {
+      for (let radius = 0; radius <= 6; radius++) {
+        for (let dr = -radius; dr <= radius; dr++) {
+          for (let dc = -radius; dc <= radius; dc++) {
+            if (Math.max(Math.abs(dc), Math.abs(dr)) === radius) addCandidate(target.c + dc, target.r + dr);
+          }
+        }
+        if (candidates.length) break;
+      }
+    }
+    candidates.sort((a, b) => a.dist - b.dist);
+    return candidates.length ? { c:candidates[0].c, r:candidates[0].r } : null;
   }
   nearestRoom(tile) {
     const w = this.world;
@@ -3351,9 +3379,10 @@ class Component extends DCLogic {
     actor.channel -= dt;
     this.world.screenGlitch = Math.max(this.world.screenGlitch, actor.channelMode === 'remote' ? 0.3 : 0.18);
     if (actor.channel > 0) return true;
-    if (actor.channelTarget) {
-      actor.x = this.world.cx(actor.channelTarget.c);
-      actor.y = this.world.cy(actor.channelTarget.r);
+    const landing = this.findSafeGhostLanding(actor.channelTarget, actor);
+    if (landing) {
+      actor.x = this.world.cx(landing.c);
+      actor.y = this.world.cy(landing.r);
     }
     const usedRemote = actor.channelMode === 'remote';
     actor.channel = 0;
@@ -3364,8 +3393,8 @@ class Component extends DCLogic {
     actor.pi = 0;
     actor.goal = null;
     actor.mirrorCd = usedRemote ? 12 : 5;
-    if (usedRemote && actor === this.world.daughter) this.log('SIGNAL DISTORTION // SHE MOVED.', '#7fdfff');
-    if (usedRemote) this.playSFX('teleport');
+    if (usedRemote && landing && actor === this.world.daughter) this.log('SIGNAL DISTORTION // SHE MOVED.', '#7fdfff');
+    if (usedRemote && landing) this.playSFX('teleport');
     return true;
   }
   ghostWallMirrorRoute(actor) {
@@ -3422,7 +3451,8 @@ class Component extends DCLogic {
       const nextRoom = this.chooseGhostRoom(actor, room);
       target = this.randomRoomTile(nextRoom);
     }
-    return { mode:'remote', source, target, charge:1.7 };
+    const landing = this.findSafeGhostLanding(target, actor);
+    return landing ? { mode:'remote', source, target:landing, charge:1.7 } : null;
   }
   tryGhostMirrorEscape(actor, barrier, dt) {
     if (actor.channel > 0 && actor.channelMode) return this.resolveGhostChannel(actor, dt);
@@ -3693,7 +3723,8 @@ class Component extends DCLogic {
   // 50% storm off, 50% tough it out and stay/pay at half price.
   applyDeskPatience(g, dt) {
     const MIN_DESK_PATIENCE = 15;
-    const waiting = ['queueing', 'checkinReady', 'returnQueue', 'payReady'].includes(g.state);
+    // Patience starts only after the guest physically reaches the service recess.
+    const waiting = g.state === 'checkinReady' || g.state === 'payReady';
     if (g.fleeing || g.leaving || !waiting) {
       g.waitDesk = 0; g.warnedWait = false; g.toughed = false;
       return;
