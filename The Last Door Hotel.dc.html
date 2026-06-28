@@ -21,22 +21,22 @@
   @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 </style>
 </helmet>
-<div class="game-shell {{ shellClass }}" style="position:fixed; inset:0; background:radial-gradient(120% 100% at 50% 34%, rgba(160,255,196,.16) 0%, rgba(64,170,110,.14) 18%, #07140f 44%, #020705 72%, #000 100%); font-family:'VT323', ui-monospace, monospace; color:#7dffb0; overflow:hidden;">
+<div class="game-shell {{ shellClass }}" style="position:fixed; inset:0; background:radial-gradient(120% 100% at 50% 34%, rgba(160,255,196,.16) 0%, rgba(64,170,110,.14) 18%, #07140f 44%, #020705 72%, #000 100%); font-family:'VT323', ui-monospace, monospace; color:#7dffb0; overflow:hidden; {{ computerFrameVars }}">
   <style>
     .computer-room-view { display:none; }
     .game-runtime { position:fixed; inset:0; overflow:hidden; }
     .computer-view { background:#020302; }
     .computer-view .computer-room-view {
-      display:block; position:fixed; inset:-25%; z-index:0; pointer-events:none;
+      display:block; position:fixed; inset:var(--computer-inset, -25%); z-index:0; pointer-events:none;
       background:#020302 url('./示意圖/遊戲畫面背景169.png') center center / 100% 100% no-repeat;
     }
     .computer-view .computer-screen-mask {
-      display:block; position:fixed; left:16.85vw; top:12.05vh; width:65.7vw; height:49.8vh;
+      display:block; position:fixed; left:var(--computer-left, 16.85vw); top:var(--computer-top, 12.05vh); width:var(--computer-width, 65.7vw); height:var(--computer-height, 49.8vh);
       z-index:0; pointer-events:none; background:#010101; border-radius:3px;
     }
     .computer-view .game-runtime {
-      inset:auto; left:16.85vw; top:12.05vh; width:100vw; height:100vh;
-      transform:scale(.657,.498); transform-origin:top left; z-index:1;
+      inset:auto; left:var(--computer-left, 16.85vw); top:var(--computer-top, 12.05vh); width:100vw; height:100vh;
+      transform:scale(var(--computer-scale-x, .657), var(--computer-scale-y, .498)); transform-origin:top left; z-index:1;
       background:#010101; border-radius:3px; box-shadow:none;
     }
   </style>
@@ -1463,6 +1463,7 @@ class Component extends DCLogic {
       selFloor: 1,
       worldIntelWidth: 58,
       previewReachedBottom: false,
+      computerZoom: 1.5,
       tick: 0,
       scale: 1
     };
@@ -2533,13 +2534,20 @@ class Component extends DCLogic {
     // ----- level-select floor navigation (mouse wheel + drag) -----
     this._lvlWheelCd = 0;
     this._onWheel = (e) => {
-      if (!this.state.showLevelSelect) return;
-      if (this.state.showLevelPreview) return; // Allow normal scrolling inside level preview modal
+      if (this.state.showLevelSelect) {
+        if (this.state.showLevelPreview) return; // Allow normal scrolling inside level preview modal
+        e.preventDefault();
+        const now = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+        if (now < this._lvlWheelCd) return;
+        this._lvlWheelCd = now + 480;
+        if (e.deltaY < 0) this.changeFloor(1); else this.changeFloor(-1);
+        return;
+      }
+      if (this.state.screen === 'title') return;
       e.preventDefault();
-      const now = (typeof performance !== 'undefined' ? performance.now() : Date.now());
-      if (now < this._lvlWheelCd) return;
-      this._lvlWheelCd = now + 480;
-      if (e.deltaY < 0) this.changeFloor(1); else this.changeFloor(-1);
+      const cur = this.state.computerZoom || 1.5;
+      const next = Math.max(1.15, Math.min(1.85, cur + (e.deltaY < 0 ? 0.05 : -0.05)));
+      if (Math.abs(next - cur) > 0.001) this.setState({ computerZoom: next });
     };
     this._drag = null;
     this._intelDrag = null;
@@ -5276,7 +5284,18 @@ class Component extends DCLogic {
       onSelect: () => this.setState({ tutorialSection: section.id })
     }));
     const tutorialActive = tutorialSections.find((section) => section.id === currentTutorialSection) || tutorialSections[0];
+    const computerZoom = Math.max(1.15, Math.min(1.85, s.computerZoom || 1.5));
+    const computerFrameVars = [
+      '--computer-inset:' + (((1 - computerZoom) * 50).toFixed(2)) + '%',
+      '--computer-left:' + (50 - 22.1 * computerZoom).toFixed(2) + 'vw',
+      '--computer-top:' + (50 - 25.3 * computerZoom).toFixed(2) + 'vh',
+      '--computer-width:' + (43.8 * computerZoom).toFixed(2) + 'vw',
+      '--computer-height:' + (33.2 * computerZoom).toFixed(2) + 'vh',
+      '--computer-scale-x:' + (0.438 * computerZoom).toFixed(3),
+      '--computer-scale-y:' + (0.332 * computerZoom).toFixed(3)
+    ].join(';') + ';';
     return {
+      computerFrameVars,
       optionsTab: currentTab,
       showTabRules: currentTab === 'rules',
       showTabTutorial: currentTab === 'tutorial',
