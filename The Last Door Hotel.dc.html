@@ -2415,9 +2415,9 @@ class Component extends DCLogic {
       warningColor: def.uiTone,
       warningTimer: 2.8,
       skillCooldowns: {
-        toxicFog: (def.cooldowns && def.cooldowns.toxicFog) || 999,
-        spectralGoggles: (def.cooldowns && def.cooldowns.spectralGoggles) || 999,
-        necroFootsteps: (def.cooldowns && def.cooldowns.necroFootsteps) || 999
+        toxicFog: def.id === 'toxicFog' ? 4.5 : 999,
+        spectralGoggles: def.id === 'toxicFog' ? 7.5 : 999,
+        necroFootsteps: def.id === 'toxicFog' ? 5.5 : 999
       },
       activeEffects: {
         fogs: [],
@@ -2520,7 +2520,10 @@ class Component extends DCLogic {
   activateNecroFootsteps(ins) {
     const w = this.world;
     const trail = (w.daughterTrail || []).filter(step => step.age < 5.2);
-    if (!trail.length) return;
+    if (!trail.length) {
+      ins.skillCooldowns.necroFootsteps = 1.25;
+      return false;
+    }
     const latest = trail[trail.length - 1];
     ins.skillCooldowns.necroFootsteps = this.getBossDef(ins.bossId).cooldowns.necroFootsteps || 8;
     ins.state = 'READING FOOTSTEPS';
@@ -3772,6 +3775,108 @@ class Component extends DCLogic {
       arrivalMode: 'approaching', approachSpeed: Math.max(18, (profile.moveSpeed || 34) * 0.72)
     };
   }
+
+  // ---------- guest speech bubbles + desk-queue patience (五五分流) ----------
+  // Push a timed speech bubble that overrides the ambient one for `dur` seconds.
+  guestSay(g, text, dur) {
+    if (!g) return;
+    g.bubble = { text, t: dur || 3 };
+  }
+
+  // Accumulate impatience while a guest is stuck waiting at the desk (either to
+  // check in or to pay). When tolerance runs out, resolve a 50/50 split:
+  // 50% storm off, 50% tough it out and stay/pay at half price.
+  applyDeskPatience(g, dt) {
+    const waiting = ['queueing', 'checkinReady', 'returnQueue', 'payReady'].includes(g.state);
+    if (g.fleeing || g.leaving || !waiting) {
+      g.waitDesk = 0; g.warnedWait = false; g.toughed = false;
+      return;
+    }
+    g.waitDesk = (g.waitDesk || 0) + dt;
+    const paying = (g.state === 'returnQueue' || g.state === 'payReady');
+    const tol = (g.deskPatience || 13) * (g.toughed ? 0.5 : 1);
+    if (!g.warnedWait && g.waitDesk > tol * 0.65) {
+      g.warnedWait = true;
+      this.guestSay(g, paying ? '喂，我要結帳啊…' : '怎麼還沒輪到我…', 2.4);
+    }
+    if (g.waitDesk >= tol) this.resolveImpatience(g, paying);
+  }
+
+  resolveImpatience(g, paying) {
+    const w = this.world;
+    // First time: 50% chance to tough it out (force-stay / still pay) at half price.
+    if (!g.toughed && Math.random() < 0.5) {
+      g.toughed = true; g.overtime = true; g.halfPay = true;
+      g.warnedWait = false; g.waitDesk = 0;
+      this.guestSay(g, '算了，我再忍一下…（只付半價）', 3);
+      this.log(g.profile.title + ' 不耐煩了 // 硬撐半價。', '#ffb000');
+      return;
+    }
+    // Otherwise they walk out.
+    if (g.type === 'brat' && !paying) {
+      const grab = 6 + Math.floor(Math.random() * 6);
+      w.money = Math.max(0, w.money - grab);
+      this.guestSay(g, '不等了！這個我拿走囉～', 2.6);
+      this.log('小鬼頭等不及 // 偷走 $' + grab + ' 後離開。', '#ff8c00');
+    } else if (paying) {
+      this.guestSay(g, '不付了，告辭！', 2.6);
+      this.log(g.profile.title + ' 久候未結帳 // 不付錢就走了。', '#ff8c00');
+    } else {
+      this.guestSay(g, '我不想等了，走了！', 2.6);
+      this.log(g.profile.title + ' 等太久 // 直接離開。', '#ffb000');
+    }
+    g.leaving = true; g.fleeing = false;
+    g.path = null; g.pi = 0; g.goal = null; g.goalKey = null;
+  }
+
+  // Text shown in the bubble: a live event bubble wins, else an ambient line by state.
+  guestBubbleText(g) {
+    if (g.bubble && g.bubble.t > 0) return g.bubble.text;
+    if (g.leaving) return null;
+    if (g.fleeing) return '有鬼啊！我要去通報！';
+    if (g.scare > 40) {
+      return g.type === 'timidWoman' ? '好可怕…有東西在動…'
+        : (g.type === 'brat' ? '啊啊啊！有鬼！' : '這地方不太對勁…');
+    }
+    switch (g.state) {
+      case 'queueing': return '排隊等入住中…';
+      case 'checkinReady': return '麻煩幫我安排房間。';
+      case 'toRoom': return '我要入住' + (g.assignedRoomLabel || '房間') + '了。';
+      case 'staying': return g.ambientStay || '在房裡休息。';
+      case 'returnQueue': return '退房了，去結個帳。';
+      case 'payReady': return (!g.everScared && g.type !== 'brat')
+        ? '我要結帳，還有小費要給你。' : '我要結帳。';
+    }
+    return null;
+  }
+
+  drawGuestBubble(ctx, g) {
+    const text = this.guestBubbleText(g);
+    if (!text) return;
+    ctx.save();
+    ctx.font = '9px "Courier New", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const padX = 5, bw = ctx.measureText(text).width + padX * 2, h = 14;
+    const bx = g.x - bw / 2, by = g.y - 46;
+    const urgent = g.leaving || g.fleeing || g.scare > 40 || (g.bubble && g.bubble.t > 0 && /不|走|可怕|有鬼/.test(text));
+    const border = urgent ? 'rgba(255,140,90,.85)' : 'rgba(125,255,176,.7)';
+    const fg = urgent ? '#ffd2b0' : '#d6ffe6';
+    ctx.fillStyle = 'rgba(2,10,7,.86)';
+    ctx.strokeStyle = border; ctx.lineWidth = 1;
+    if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by - h / 2, bw, h, 4); ctx.fill(); ctx.stroke(); }
+    else { ctx.fillRect(bx, by - h / 2, bw, h); ctx.strokeRect(bx, by - h / 2, bw, h); }
+    // little tail pointing down to the guest
+    ctx.beginPath();
+    ctx.moveTo(g.x - 3, by + h / 2 - 0.5);
+    ctx.lineTo(g.x + 3, by + h / 2 - 0.5);
+    ctx.lineTo(g.x, by + h / 2 + 4);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(2,10,7,.86)'; ctx.fill();
+    ctx.fillStyle = fg; ctx.fillText(text, g.x, by);
+    ctx.restore();
+  }
+
   updateArrivals(dt) {
     const w = this.world, ent = w.entranceDoor, ap = w.exitApproach;
     if (w.arrival) {
@@ -3915,6 +4020,20 @@ class Component extends DCLogic {
         g.invulnerable = Math.max(0, g.invulnerable - dt);
         continue;
       }
+      // tick down any active speech bubble
+      if (g.bubble) { g.bubble.t -= dt; if (g.bubble.t <= 0) g.bubble = null; }
+      // a guest who gave up walks straight to the exit and despawns
+      if (g.leaving) {
+        this.setGuestGoal(g, w.exitApproach, 'leave');
+        this.follow(g, dt, profile.panicRunSpeed || profile.moveSpeed || 40);
+        if (Math.hypot(g.x - w.cx(w.exitApproach.c), g.y - w.cy(w.exitApproach.r)) < w.TILE) {
+          w.guests.splice(i, 1); w.turnedAway++;
+        }
+        continue;
+      }
+      // desk-queue impatience → 50/50 walk out or tough it out at half price
+      this.applyDeskPatience(g, dt);
+      if (g.leaving) continue; // resolved into a walkout this frame
       const inDeskQueue = ['queueing','checkinReady','returnQueue','payReady'].includes(g.state);
       if (!g.fleeing && g.state === 'toRoom' && g.assignedRoomTarget) {
         this.setGuestGoal(g, g.assignedRoomTarget, 'room:' + g.assignedRoomLabel);
@@ -3922,6 +4041,8 @@ class Component extends DCLogic {
         if (Math.hypot(g.x - w.cx(g.assignedRoomTarget.c), g.y - w.cy(g.assignedRoomTarget.r)) < w.TILE * 0.55) {
           g.state = 'staying';
           g.path = null; g.pi = 0; g.goal = null; g.goalKey = null;
+          const stayLines = ['在房裡休息。', '我想去大廳休息一下。', '這房間真不錯。', '好好睡一覺吧…'];
+          g.ambientStay = stayLines[Math.floor(Math.random() * stayLines.length)];
         }
       }
       if (!g.fleeing && g.state === 'staying') {
@@ -3930,6 +4051,7 @@ class Component extends DCLogic {
         if (g.progress >= 1) {
           g.state = 'returnQueue';
           g.path = null; g.pi = 0; g.goal = null; g.goalKey = null;
+          this.guestSay(g, '住得真舒服，去結個帳。', 3);
           this.log('ROOM COMPLETE // ' + profile.title + ' RETURNING TO DESK FOR PAYMENT.', '#7fd6ff');
         }
       }
