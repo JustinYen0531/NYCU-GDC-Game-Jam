@@ -1,0 +1,447 @@
+﻿diff --git a/The Last Door Hotel.dc.html b/The Last Door Hotel.dc.html
+index ec80798..21f7238 100644
+--- a/The Last Door Hotel.dc.html	
++++ b/The Last Door Hotel.dc.html	
+@@ -29,7 +29,7 @@
+ 
+       <!-- top status strip -->
+       <div style="display:flex; align-items:center; justify-content:space-between; border:1px solid #1a3d1a; background:#020704; padding:5px 14px; font-size:19px; letter-spacing:1px; text-shadow:0 0 6px rgba(51,255,0,.4);">
+-        <span onClick="{{ onHeaderClick }}" style="color:#1f8f1f; cursor:pointer; user-select:none;">THE&nbsp;LAST&nbsp;DOOR // NIGHT-WATCH TERMINAL&nbsp;<span style="color:#33ff00;">v1.3</span></span>
++        <span onClick="{{ onHeaderClick }}" style="color:#1f8f1f; cursor:pointer; user-select:none;">LV&nbsp;{{ hud.level }} // MAP&nbsp;{{ hud.mapTier }} // DOOR&nbsp;TIER&nbsp;{{ hud.doorTier }}</span>
+         <span style="font-size:26px; color:#33ff00; letter-spacing:3px;">{{ hud.clock }}&nbsp;<span style="color:#1f521f; font-size:16px;">[{{ hud.phase }}]</span></span>
+         <span style="color:{{ hud.alertColor }}; min-width:230px; text-align:right; font-size:18px;">{{ hud.alert }}<span style="animation:caret 1s steps(1) infinite;">_</span></span>
+       </div>
+@@ -94,7 +94,7 @@
+                     <polyline points="0,6.5 8,6.5 11,1.5 15,11.5 19,6.5 38,6.5 46,6.5 49,1.5 53,11.5 57,6.5 76,6.5 84,6.5 87,1.5 91,11.5 95,6.5 114,6.5 122,6.5 125,1.5 129,11.5 133,6.5 152,6.5 160,6.5" fill="none" stroke="#ff4040" stroke-width="1.1" style="filter:drop-shadow(0 0 2px #ff4040);"/>
+                   </svg>
+                 </span>
+-                <span style="color:#ff4040; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.stdCount }}</span>
++                <span style="color:#ff4040; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.basicCount }}</span>
+               </div>
+ 
+               <div style="display:flex; align-items:center; gap:5px; height:15px;">
+@@ -106,7 +106,7 @@
+                     <polyline points="0,6.5 10,6.5 12,3.5 14,9.5 16,6.5 26,6.5 36,6.5 38,3.5 40,9.5 42,6.5 52,6.5 62,6.5 64,3.5 66,9.5 68,6.5 78,6.5 88,6.5 90,3.5 92,9.5 94,6.5 104,6.5 114,6.5 116,3.5 118,9.5 120,6.5 130,6.5 140,6.5 142,3.5 144,9.5 146,6.5 156,6.5 160,6.5" fill="none" stroke="#ff8c00" stroke-width="1.1" style="filter:drop-shadow(0 0 2px #ff8c00);"/>
+                   </svg>
+                 </span>
+-                <span style="color:#ff8c00; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.autoCount }}</span>
++                <span style="color:#ff8c00; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.rashCount }}</span>
+               </div>
+ 
+               <div style="display:flex; align-items:center; gap:5px; height:15px;">
+@@ -118,7 +118,7 @@
+                     <polyline points="0,6.5 18,6.5 20,0.5 22,12.5 24,6.5 42,6.5 44,0.5 46,12.5 48,6.5 66,6.5 68,0.5 70,12.5 72,6.5 90,6.5 92,0.5 94,12.5 96,6.5 114,6.5 116,0.5 118,12.5 120,6.5 138,6.5 140,0.5 142,12.5 144,6.5 160,6.5" fill="none" stroke="#ffd000" stroke-width="1.1" style="filter:drop-shadow(0 0 2px #ffd000);"/>
+                   </svg>
+                 </span>
+-                <span style="color:#ffd000; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.linkCount }}</span>
++                <span style="color:#3bd6ff; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.sensorCount }}</span>
+               </div>
+ 
+               <div style="display:flex; align-items:center; gap:5px; height:15px;">
+@@ -130,7 +130,7 @@
+                     <polyline points="0,6.5 6,6.5 8,4.5 10,8.5 12,6.5 18,6.5 24,6.5 26,4.5 28,8.5 30,6.5 36,6.5 42,6.5 44,4.5 46,8.5 48,6.5 54,6.5 60,6.5 62,4.5 64,8.5 66,6.5 72,6.5 78,6.5 80,4.5 82,8.5 84,6.5 90,6.5 96,6.5 98,4.5 100,8.5 102,6.5 108,6.5 114,6.5 116,4.5 118,8.5 120,6.5 126,6.5 132,6.5 134,4.5 136,8.5 138,6.5 144,6.5 150,6.5 152,4.5 154,8.5 156,6.5 160,6.5" fill="none" stroke="#3bd6ff" stroke-width="1.1" style="filter:drop-shadow(0 0 2px #3bd6ff);"/>
+                   </svg>
+                 </span>
+-                <span style="color:#3bd6ff; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.exitCount }}</span>
++                <span style="color:#ffd000; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.rotateCount }}</span>
+               </div>
+ 
+               <div style="display:flex; align-items:center; gap:5px; height:15px;">
+@@ -142,7 +142,7 @@
+                     <polyline points="0,6.5 14,6.5 16,3.5 18,9.5 20,6.5 34,6.5 36,3.5 38,9.5 40,6.5 54,6.5 56,3.5 58,9.5 60,6.5 74,6.5 76,3.5 78,9.5 80,6.5 94,6.5 96,3.5 98,9.5 100,6.5 114,6.5 116,3.5 118,9.5 120,6.5 134,6.5 136,3.5 138,9.5 140,6.5 154,6.5 160,6.5" fill="none" stroke="#b061ff" stroke-width="1.1" style="filter:drop-shadow(0 0 2px #b061ff);"/>
+                   </svg>
+                 </span>
+-                <span style="color:{{ hud.panicColor }}; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.panicPct }}%</span>
++                <span style="color:#b061ff; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.chainCount }}</span>
+               </div>
+ 
+               <div style="display:flex; align-items:center; gap:5px; height:15px;">
+@@ -154,7 +154,7 @@
+                     <polyline points="0,6.5 160,6.5" fill="none" stroke="#3a3a3a" stroke-width="1.1"/>
+                   </svg>
+                 </span>
+-                <span style="color:#3a3a3a; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">--</span>
++                <span style="color:{{ hud.panicColor }}; font-size:12px; min-width:28px; text-align:right; letter-spacing:0;">{{ hud.panicPct }}%</span>
+               </div>
+ 
+             </div>
+@@ -200,7 +200,7 @@
+             <div style="position:absolute; inset:0; pointer-events:none; background:radial-gradient(120% 120% at 50% 50%, rgba(0,0,0,0) 52%, rgba(0,0,0,.6) 100%); border-radius:10px;"></div>
+             <!-- door prompt -->
+             <sc-if value="{{ hud.showPrompt }}" hint-placeholder-val="{{ false }}">
+-              <div style="position:absolute; left:50%; bottom:14px; transform:translateX(-50%); background:#020704; border:1px solid #33ff00; color:#33ff00; padding:5px 16px; font-size:20px; letter-spacing:2px; text-shadow:0 0 8px #33ff00; box-shadow:0 0 16px rgba(51,255,0,.4);">[E] {{ hud.doorPrompt }}</div>
++              <div style="position:absolute; left:50%; bottom:14px; transform:translateX(-50%); background:#020704; border:1px solid #33ff00; color:#33ff00; padding:5px 16px; font-size:20px; letter-spacing:2px; text-shadow:0 0 8px #33ff00; box-shadow:0 0 16px rgba(51,255,0,.4);">{{ hud.doorPrompt }}</div>
+             </sc-if>
+           </div>
+         </div>
+@@ -271,61 +271,21 @@
+       <video src="./?憭批輒_頛?敺芰?.mp4" autoplay loop muted playsinline preload="metadata" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;"></video>
+       <!-- readability veil (top + bottom gradient to anchor title & buttons) -->
+       <div style="position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(180deg, rgba(2,8,10,.62) 0%, rgba(0,0,0,0) 24%, rgba(0,0,0,0) 58%, rgba(2,8,12,.78) 100%), radial-gradient(120% 90% at 50% 30%, rgba(0,0,0,0) 55%, rgba(0,0,0,.4) 100%);"></div>
+-
+-      <style>
+-        .guest-roster-item .guest-detail { display:none; }
+-        .guest-roster-item:hover .guest-detail { display:flex; }
+-      </style>
+-      <!-- compact guest roster; details appear only while hovering a name -->
+-      <div style="position:absolute; left:18px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:8px; z-index:14;">
+-        <sc-for list="{{ titleGuestCards }}" as="guestCard" hint-placeholder-count="3">
+-          <div class="guest-roster-item" style="position:relative; width:132px;">
+-            <div style="cursor:help; height:30px; box-sizing:border-box; display:flex; gap:7px; align-items:center; padding:3px 8px 3px 4px; background:rgba(3,12,7,.64); border:1px solid {{ guestCard.border }}; border-radius:999px; box-shadow:0 6px 16px rgba(0,0,0,.24); -webkit-backdrop-filter:blur(7px); backdrop-filter:blur(7px);">
+-              <div style="width:22px; height:22px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid {{ guestCard.border }}; color:{{ guestCard.accent }}; font-size:15px; text-shadow:0 0 7px {{ guestCard.glow }};">{{ guestCard.icon }}</div>
+-              <div style="font-family:'Cinzel',serif; font-size:12px; color:#e4f7e8; letter-spacing:.5px; white-space:nowrap;">{{ guestCard.title }}</div>
+-            </div>
+-
+-              <div class="guest-detail" style="position:absolute; left:142px; top:50%; transform:translateY(-50%); width:306px; box-sizing:border-box; padding:11px 13px; flex-direction:column; gap:5px; pointer-events:none; background:linear-gradient(135deg, rgba(2,14,8,.88), rgba(5,22,14,.72)); border:1px solid {{ guestCard.border }}; border-radius:10px; box-shadow:0 14px 34px rgba(0,0,0,.48); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);">
+-                <div style="font-family:'Cinzel',serif; font-size:16px; color:#e4f7e8; letter-spacing:1px;">{{ guestCard.title }}</div>
+-                <div style="font-size:14px; color:{{ guestCard.accent }}; line-height:1.1;">{{ guestCard.subtitle }}</div>
+-                <div style="font-size:13px; color:#86c79a; line-height:1.2;">{{ guestCard.vision }}</div>
+-                <div style="font-size:13px; color:#72b785; line-height:1.22;">{{ guestCard.checkIn }}</div>
+-                <div style="font-size:13px; color:#72b785; line-height:1.22;">{{ guestCard.behavior }}</div>
+-                <div style="font-size:13px; color:#ffcf8a; line-height:1.22;">{{ guestCard.ghost }}</div>
+-              </div>
+-          </div>
+-        </sc-for>
+-      </div>
+-
+-      <!-- right roster: inspectors -->
+-      <div style="position:absolute; right:24px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:18px; text-align:right; z-index:5;">
+-        <div style="display:flex; gap:10px; align-items:center; flex-direction:row-reverse; background:rgba(3,12,7,.78); border:1px solid #4d2e1c; padding:8px 12px; width:266px;">
+-          <div style="width:36px; height:36px; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid #6b4a2a; color:#ffb000; font-size:22px; text-shadow:0 0 8px #ffb000;">&#9876;</div>
+-          <div><div style="font-family:'Cinzel',serif; font-size:16px; color:#e8d8c0; letter-spacing:1px;">THE OBSERVER</div><div style="font-size:15px; color:#a08050; line-height:1.1;">They watch. They take notes.</div></div>
+-        </div>
+-        <div style="display:flex; gap:10px; align-items:center; flex-direction:row-reverse; background:rgba(3,12,7,.78); border:1px solid #4d2e1c; padding:8px 12px; width:266px;">
+-          <div style="width:36px; height:36px; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid #6b4a2a; color:#ffb000; font-size:22px; text-shadow:0 0 8px #ffb000;">&#9876;</div>
+-          <div><div style="font-family:'Cinzel',serif; font-size:16px; color:#e8d8c0; letter-spacing:1px;">THE EXAMINER</div><div style="font-size:15px; color:#a08050; line-height:1.1;">They question. They find flaws.</div></div>
+-        </div>
+-        <div style="display:flex; gap:10px; align-items:center; flex-direction:row-reverse; background:rgba(3,12,7,.78); border:1px solid #6b2020; padding:8px 12px; width:266px;">
+-          <div style="width:36px; height:36px; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid #8a3030; color:#ff5555; font-size:22px; text-shadow:0 0 8px #ff3333;">&#9876;</div>
+-          <div><div style="font-family:'Cinzel',serif; font-size:16px; color:#f0c8c8; letter-spacing:1px;">THE ENFORCER</div><div style="font-size:15px; color:#b06060; line-height:1.1;">They punish. They take everything.</div></div>
+-        </div>
+-      </div>
+-
+       <!-- floating title (no panel) -->
+-      <div style="position:absolute; left:50%; top:16%; transform:translateX(-50%); z-index:6; text-align:center; pointer-events:none;">
++      <div style="position:absolute; left:50%; top:18%; transform:translateX(-50%); z-index:6; text-align:center; pointer-events:none;">
+         <div style="font-family:'Cinzel',serif; font-weight:700; font-size:46px; color:#dff7e6; letter-spacing:5px; text-shadow:0 0 4px rgba(0,0,0,.95), 0 0 22px rgba(80,255,140,.65);">THE LAST DOOR</div>
+         <div style="font-family:'Cinzel',serif; font-size:18px; color:#9fe6b8; letter-spacing:14px; margin:2px 0 8px; text-shadow:0 0 4px rgba(0,0,0,.95), 0 0 14px rgba(80,255,140,.5);">&#183; HOTEL &#183;</div>
++        <div style="font-family:'Cinzel',serif; font-size:16px; color:#86c79a; letter-spacing:2px; margin:12px 0 12px; text-shadow:0 0 4px rgba(0,0,0,.95), 0 0 10px rgba(80,255,140,.35);">Every door could become someone's last straw.</div>
+         <div style="height:1px; width:340px; margin:0 auto; background:linear-gradient(90deg, transparent, #2a6b3a, transparent);"></div>
+       </div>
+ 
+-      <!-- small controls floating on a translucent glass strip -->
+-      <div class="title-control-float" data-ui="title-controls" style="position:absolute; left:50%; top:34%; transform:translate(-50%,-50%); z-index:12; padding:7px 9px; border:1px solid rgba(139,211,157,.28); background:rgba(2,12,8,.54); box-shadow:0 12px 34px rgba(0,0,0,.42), inset 0 1px 0 rgba(219,255,226,.08); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); display:flex; gap:6px; align-items:center; justify-content:center; border-radius:12px;">
+-        <div class="title-control-button" onClick="{{ onOpenLevelSelect }}" onMouseEnter="{{ onHoverOn }}" onMouseLeave="{{ onHoverOff }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:14px; line-height:1; letter-spacing:1.4px; color:#d7ffe3; background:rgba(29,92,49,.52); border:1px solid rgba(102,224,134,.72); box-shadow:0 0 10px rgba(51,255,136,.1); padding:5px 10px; text-shadow:0 0 5px rgba(51,255,136,.28); transition:.15s; border-radius:999px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d; text-shadow:none;">NEW GAME</div>
+-        <div class="title-control-button" onClick="{{ onContinue }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:14px; line-height:1; letter-spacing:1.4px; color:#9fcfaf; background:rgba(10,24,17,.32); border:1px solid rgba(72,112,81,.66); padding:5px 10px; transition:.15s; border-radius:999px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d;">CONTINUE</div>
+-        <div class="title-control-button" onClick="{{ onOptions }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:14px; line-height:1; letter-spacing:1.4px; color:#9fcfaf; background:rgba(10,24,17,.32); border:1px solid rgba(72,112,81,.66); padding:5px 10px; transition:.15s; border-radius:999px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d;">OPTIONS</div>
+-        <div class="title-control-button" onClick="{{ onExit }}" style="cursor:pointer; font-family:'VT323', monospace; font-size:14px; line-height:1; letter-spacing:1.4px; color:#e5a8a8; background:rgba(43,13,13,.32); border:1px solid rgba(132,68,68,.66); padding:5px 10px; transition:.15s; border-radius:999px; white-space:nowrap;" style-hover="background:#ff3333; color:#04110d;">EXIT</div>
++      <!-- simplified vertical central menu without wrapping panel background to prevent overlap -->
++      <div class="title-control-float" data-ui="title-controls" style="position:absolute; left:50%; top:58%; transform:translate(-50%,-50%); z-index:12; width:260px; display:flex; flex-direction:column; gap:12px; align-items:stretch;">
++        <div class="title-control-button" onClick="{{ onOpenLevelSelect }}" onMouseEnter="{{ onHoverOn }}" onMouseLeave="{{ onHoverOff }}" style="cursor:pointer; font-family:'Cinzel', serif; font-size:17px; font-weight:600; line-height:1; letter-spacing:3px; color:#d7ffe3; background:rgba(29,92,49,.42); border:1px solid rgba(102,224,134,.6); box-shadow:0 4px 10px rgba(0,0,0,.4); padding:13px 20px; text-shadow:0 0 5px rgba(51,255,136,.28); text-align:center; transition:.2s ease; border-radius:6px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d; border-color:#33ff00; text-shadow:none; box-shadow:0 0 15px rgba(51,255,0,0.4); transform:translateY(-1px);">START GAME</div>
++        <div class="title-control-button" onClick="{{ onContinue }}" style="cursor:pointer; font-family:'Cinzel', serif; font-size:17px; font-weight:600; line-height:1; letter-spacing:3px; color:#9fcfaf; background:rgba(10,24,17,.32); border:1px solid rgba(72,112,81,.5); box-shadow:0 4px 10px rgba(0,0,0,.4); padding:13px 20px; text-align:center; transition:.2s ease; border-radius:6px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d; border-color:#33ff00; text-shadow:none; box-shadow:0 0 15px rgba(51,255,0,0.4); transform:translateY(-1px);">CONTINUE</div>
++        <div class="title-control-button" onClick="{{ onOpenTutorial }}" style="cursor:pointer; font-family:'Cinzel', serif; font-size:17px; font-weight:600; line-height:1; letter-spacing:3px; color:#9fcfaf; background:rgba(10,24,17,.32); border:1px solid rgba(72,112,81,.5); box-shadow:0 4px 10px rgba(0,0,0,.4); padding:13px 20px; text-align:center; transition:.2s ease; border-radius:6px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d; border-color:#33ff00; text-shadow:none; box-shadow:0 0 15px rgba(51,255,0,0.4); transform:translateY(-1px);">TUTORIAL</div>
++        <div class="title-control-button" onClick="{{ onOptions }}" style="cursor:pointer; font-family:'Cinzel', serif; font-size:17px; font-weight:600; line-height:1; letter-spacing:3px; color:#9fcfaf; background:rgba(10,24,17,.32); border:1px solid rgba(72,112,81,.5); box-shadow:0 4px 10px rgba(0,0,0,.4); padding:13px 20px; text-align:center; transition:.2s ease; border-radius:6px; white-space:nowrap;" style-hover="background:#33ff00; color:#04110d; border-color:#33ff00; text-shadow:none; box-shadow:0 0 15px rgba(51,255,0,0.4); transform:translateY(-1px);">OPTIONS</div>
++        <div class="title-control-button" onClick="{{ onExit }}" style="cursor:pointer; font-family:'Cinzel', serif; font-size:17px; font-weight:600; line-height:1; letter-spacing:3px; color:#e5a8a8; background:rgba(43,13,13,.32); border:1px solid rgba(132,68,68,.5); box-shadow:0 4px 10px rgba(0,0,0,.4); padding:13px 20px; text-align:center; transition:.2s ease; border-radius:6px; white-space:nowrap;" style-hover="background:#ff3333; color:#04110d; border-color:#ff3333; text-shadow:none; box-shadow:0 0 15px rgba(255,51,51,0.4); transform:translateY(-1px);">EXIT</div>
+       </div>
+ 
+       <sc-if value="{{ showLevelSelect }}" hint-placeholder-val="{{ false }}">
+@@ -373,19 +333,142 @@
+ 
+       <!-- options panel -->
+       <sc-if value="{{ showOptions }}" hint-placeholder-val="{{ false }}">
+-        <div onClick="{{ onOptions }}" style="position:absolute; inset:0; background:rgba(0,0,0,.7); display:flex; align-items:center; justify-content:center;">
+-          <div style="border:1px solid #33ff00; background:#040a06; padding:24px 30px; width:440px; box-shadow:0 0 40px rgba(51,255,0,.3);">
+-            <div style="font-size:24px; color:#33ff00; letter-spacing:3px; margin-bottom:14px;">OPERATOR&nbsp;BRIEFING</div>
+-            <div style="font-size:18px; color:#7dffb0; line-height:1.5;">
+-              You are the keeper of THE LAST DOOR. Run between doors and lock them by hand.<br><br>
+-              &#8226; Keep your <span style="color:#e8ffe8;">daughter's ghost</span> away from guests.<br>
+-              &#8226; Scared guests turn into new ghosts &mdash; <span style="color:#ffb000;">panic rises</span>.<br>
+-              &#8226; Brave guests flee and summon the <span style="color:#ff3333;">Inspector</span>.<br>
+-              &#8226; Survive until <span style="color:#33ff00;">06:00</span>.<br><br>
+-              <span style="color:#5f9f6f;">Difficulty &amp; visuals are tunable in the Tweaks panel.</span>
++        <style>
++          .guest-roster-item .guest-detail { display:none; }
++          .guest-roster-item:hover .guest-detail { display:flex; }
++        </style>
++        <div onClick="{{ onOptions }}" style="position:absolute; inset:0; background:rgba(0,0,0,.75); display:flex; align-items:center; justify-content:center; z-index:80; -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);">
++          
++          <!-- Tabbed Terminal Container -->
++          <div onClick="{{ onOptionCardClick }}" style="position:relative; width:720px; height:420px; border:2px solid #33ff00; background:linear-gradient(180deg, #020c07 0%, #000402 100%); box-shadow:0 0 50px rgba(51,255,0,.25), inset 0 0 30px rgba(0,0,0,0.9); display:flex; font-family:'VT323', monospace; color:#33ff00; border-radius:8px; overflow:visible;">
++            
++            <!-- Left Sidebar (Tabs) -->
++            <div style="width:160px; flex:none; border-right:1px solid rgba(51,255,136,.25); background:rgba(2,12,6,.4); display:flex; flex-direction:column; justify-content:space-between; box-sizing:border-box;">
++              <div style="display:flex; flex-direction:column; align-items:stretch;">
++                <div style="font-family:'Cinzel', serif; font-size:14px; font-weight:700; color:#33ff00; letter-spacing:2px; padding:18px 14px 12px; border-bottom:1px solid rgba(51,255,136,.15); text-shadow:0 0 6px rgba(51,255,136,.4);">OPTIONS</div>
++                
++                <div onClick="{{ onSelectTabRules }}" style="cursor:pointer; padding:12px 14px; font-family:'Cinzel', serif; font-size:13px; letter-spacing:1px; color:{{ tabRulesColor }}; background:{{ tabRulesBg }}; border-bottom:1px solid rgba(51,255,136,0.1); transition:all 0.15s;" style-hover="color:#33ff00; background:rgba(51,255,136,0.06); text-shadow:0 0 4px #33ff00;">RULES</div>
++                
++                <div onClick="{{ onSelectTabTutorial }}" style="cursor:pointer; padding:12px 14px; font-family:'Cinzel', serif; font-size:13px; letter-spacing:1px; color:{{ tabTutorialColor }}; background:{{ tabTutorialBg }}; border-bottom:1px solid rgba(51,255,136,0.1); transition:all 0.15s;" style-hover="color:#33ff00; background:rgba(51,255,136,0.06); text-shadow:0 0 4px #33ff00;">TUTORIAL</div>
++                
++                <div onClick="{{ onSelectTabControls }}" style="cursor:pointer; padding:12px 14px; font-family:'Cinzel', serif; font-size:13px; letter-spacing:1px; color:{{ tabControlsColor }}; background:{{ tabControlsBg }}; border-bottom:1px solid rgba(51,255,136,0.1); transition:all 0.15s;" style-hover="color:#33ff00; background:rgba(51,255,136,0.06); text-shadow:0 0 4px #33ff00;">CONTROLS</div>
++              </div>
++              
++              <div onClick="{{ onOptions }}" style="cursor:pointer; padding:14px; font-family:'Cinzel', serif; font-size:13px; letter-spacing:2px; color:#ff5555; text-align:center; border-top:1px solid rgba(51,255,136,.15); transition:all 0.15s; background:rgba(43,13,13,.15);" style-hover="background:#ff3333; color:#020c07; text-shadow:none;">CLOSE</div>
+             </div>
+-            <div style="margin-top:16px; font-size:18px; color:#1f8f1f;">[ click anywhere to close ]</div>
++            
++            <!-- Right Content Area -->
++            <div style="flex:1; padding:20px 24px; display:flex; flex-direction:column; overflow:visible; justify-content:flex-start; box-sizing:border-box;">
++              
++              <!-- Tab 1: RULES -->
++              <sc-if value="{{ showTabRules }}" hint-placeholder-val="{{ true }}">
++                <div style="display:flex; flex-direction:column; height:100%;">
++                  <div style="font-size:20px; color:#33ff00; letter-spacing:2px; margin-bottom:12px; border-bottom:1px dashed rgba(51,255,136,0.25); padding-bottom:6px; font-family:'Cinzel', serif; text-shadow:0 0 6px #33ff00;">OPERATOR&nbsp;BRIEFING</div>
++                  <div style="font-size:16px; color:#7dffb0; line-height:1.45; letter-spacing:0.5px;">
++                    You are the keeper of THE LAST DOOR. Run between doors and lock them by hand.<br><br>
++                    &#8226; Keep your <span style="color:#e8ffe8; text-shadow:0 0 4px #e8ffe8;">daughter's ghost</span> away from guests.<br>
++                    &#8226; Scared guests turn into new ghosts &mdash; <span style="color:#ffb000; text-shadow:0 0 4px #ffb000;">panic rises</span>.<br>
++                    &#8226; Brave guests flee and summon the <span style="color:#ff3333; text-shadow:0 0 4px #ff3333;">Inspector</span>.<br>
++                    &#8226; Survive until <span style="color:#33ff00; text-shadow:0 0 4px #33ff00;">06:00</span>.<br><br>
++                    <span style="color:#5f9f6f; font-size:14px;">[Difficulty &amp; visuals are tunable in the Tweaks panel during gameplay]</span>
++                  </div>
++                </div>
++              </sc-if>
++              
++              <!-- Tab 2: TUTORIAL -->
++              <sc-if value="{{ showTabTutorial }}" hint-placeholder-val="{{ false }}">
++                <div style="display:flex; flex-direction:column; height:100%; overflow:visible;">
++                  <div style="font-size:20px; color:#33ff00; letter-spacing:2px; margin-bottom:12px; border-bottom:1px dashed rgba(51,255,136,0.25); padding-bottom:6px; font-family:'Cinzel', serif; text-shadow:0 0 6px #33ff00;">DATABASE // INTEL ARCHIVE</div>
++                  
++                  <div style="display:flex; gap:20px; flex:1; overflow:visible;">
++                    
++                    <!-- Guests Column -->
++                    <div style="flex:1; display:flex; flex-direction:column; gap:8px; overflow:visible;">
++                      <div style="font-family:'Cinzel', serif; font-size:12px; color:#4ea66d; letter-spacing:1px; font-weight:600; margin-bottom:4px; text-shadow:0 0 4px rgba(78,166,109,0.3);">HOTEL GUESTS</div>
++                      <sc-for list="{{ titleGuestCards }}" as="guestCard" hint-placeholder-count="3">
++                        <div class="guest-roster-item" style="position:relative; width:220px; z-index:15;">
++                          <div style="cursor:help; display:flex; gap:8px; align-items:center; background:rgba(3,12,7,.6); border:1px solid {{ guestCard.border }}; padding:6px 10px; border-radius:4px; transition:all 0.2s;" style-hover="border-color:{{ guestCard.accent }}; background:rgba(4,20,12,.8); transform:translateX(3px);">
++                            <div style="width:26px; height:26px; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid {{ guestCard.border }}; color:{{ guestCard.accent }}; font-size:16px; text-shadow:0 0 5px {{ guestCard.glow }}; font-family:'Cinzel', serif; font-weight:bold; background:rgba(0,0,0,0.25);">{{ guestCard.icon }}</div>
++                            <div style="display:flex; flex-direction:column; text-align:left;">
++                              <div style="font-family:'Cinzel',serif; font-size:13px; color:#e4f7e8; letter-spacing:0.5px; font-weight:600;">{{ guestCard.title }}</div>
++                              <div style="font-size:11px; color:{{ guestCard.accent }}; line-height:1; opacity:0.85; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:150px;">{{ guestCard.subtitle }}</div>
++                            </div>
++                          </div>
++                          <!-- popup details on hover -->
++                          <div class="guest-detail" style="position:absolute; left:228px; top:50%; transform:translateY(-50%); width:260px; box-sizing:border-box; padding:10px 12px; flex-direction:column; gap:4px; pointer-events:none; background:linear-gradient(135deg, rgba(2,16,10,.96), rgba(5,26,16,.9)); border:1px solid {{ guestCard.border }}; border-radius:6px; box-shadow:0 10px 24px rgba(0,0,0,.6); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); z-index:60;">
++                            <div style="font-family:'Cinzel',serif; font-size:15px; color:#e4f7e8; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:2px; margin-bottom:2px;">{{ guestCard.title }}</div>
++                            <div style="font-size:12px; color:{{ guestCard.accent }}; font-weight:bold; margin-bottom:2px;">{{ guestCard.subtitle }}</div>
++                            <div style="font-size:11px; color:#cfe8cf; line-height:1.25; display:flex; gap:4px;"><span style="color:#72b785; flex-shrink:0;">[閬?]</span> <span>{{ guestCard.vision }}</span></div>
++                            <div style="font-size:11px; color:#cfe8cf; line-height:1.25; display:flex; gap:4px;"><span style="color:#72b785; flex-shrink:0;">[?亙?]</span> <span>{{ guestCard.checkIn }}</span></div>
++                            <div style="font-size:11px; color:#cfe8cf; line-height:1.25; display:flex; gap:4px;"><span style="color:#72b785; flex-shrink:0;">[銵]</span> <span>{{ guestCard.behavior }}</span></div>
++                            <div style="font-size:11px; color:#ffd399; line-height:1.25; display:flex; gap:4px;"><span style="color:#ffcf8a; flex-shrink:0;">[?狩]</span> <span>{{ guestCard.ghost }}</span></div>
++                          </div>
++                        </div>
++                      </sc-for>
++                    </div>
++                    
++                    <!-- Vertical Divider -->
++                    <div style="width:1px; background:rgba(51,255,136,0.15); margin:4px 0;"></div>
++                    
++                    <!-- Inspectors Column -->
++                    <div style="flex:1; display:flex; flex-direction:column; gap:8px; overflow:visible;">
++                      <div style="font-family:'Cinzel', serif; font-size:12px; color:#a36c4b; letter-spacing:1px; font-weight:600; margin-bottom:4px; text-shadow:0 0 4px rgba(163,108,75,0.3);">INSPECTORS</div>
++                      <sc-for list="{{ titleInspectorCards }}" as="insCard" hint-placeholder-count="3">
++                        <div class="guest-roster-item" style="position:relative; width:220px; z-index:15;">
++                          <div style="cursor:help; display:flex; gap:8px; align-items:center; background:rgba(3,12,7,.6); border:1px solid {{ insCard.border }}; padding:6px 10px; border-radius:4px; transition:all 0.2s;" style-hover="border-color:{{ insCard.accent }}; background:rgba(20,12,6,.8); transform:translateX(-3px);">
++                            <div style="width:26px; height:26px; flex:none; display:flex; align-items:center; justify-content:center; border:1px solid {{ insCard.border }}; color:{{ insCard.accent }}; font-size:16px; text-shadow:0 0 5px {{ insCard.glow }}; font-family:'Cinzel', serif; font-weight:bold; background:rgba(0,0,0,0.25);">{{ insCard.icon }}</div>
++                            <div style="display:flex; flex-direction:column; text-align:left;">
++                              <div style="font-family:'Cinzel',serif; font-size:13px; color:#e4f7e8; letter-spacing:0.5px; font-weight:600;">{{ insCard.title }}</div>
++                              <div style="font-size:11px; color:{{ insCard.accent }}; line-height:1; opacity:0.85; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:150px;">{{ insCard.subtitle }}</div>
++                            </div>
++                          </div>
++                          <!-- popup details on hover -->
++                          <div class="guest-detail" style="position:absolute; right:228px; top:50%; transform:translateY(-50%); width:260px; box-sizing:border-box; padding:10px 12px; flex-direction:column; gap:4px; pointer-events:none; background:linear-gradient(135deg, rgba(2,16,10,.96), rgba(5,26,16,.9)); border:1px solid {{ insCard.border }}; border-radius:6px; box-shadow:0 10px 24px rgba(0,0,0,.6); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); z-index:60;">
++                            <div style="font-family:'Cinzel',serif; font-size:15px; color:#e4f7e8; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:2px; margin-bottom:2px;">{{ insCard.title }}</div>
++                            <div style="font-size:12px; color:{{ insCard.accent }}; font-weight:bold; margin-bottom:2px;">{{ insCard.subtitle }}</div>
++                            <div style="font-size:11px; color:#cfe8cf; line-height:1.25; display:flex; gap:4px;"><span>{{ insCard.desc }}</span></div>
++                          </div>
++                        </div>
++                      </sc-for>
++                    </div>
++                    
++                  </div>
++                </div>
++              </sc-if>
++              
++              <!-- Tab 3: CONTROLS -->
++              <sc-if value="{{ showTabControls }}" hint-placeholder-val="{{ false }}">
++                <div style="display:flex; flex-direction:column; height:100%;">
++                  <div style="font-size:20px; color:#33ff00; letter-spacing:2px; margin-bottom:12px; border-bottom:1px dashed rgba(51,255,136,0.25); padding-bottom:6px; font-family:'Cinzel', serif; text-shadow:0 0 6px #33ff00;">CONTROL MODULE</div>
++                  <div style="font-size:15px; color:#7dffb0; line-height:1.4; display:flex; flex-direction:column; gap:10px;">
++                    <div style="display:flex; align-items:center; gap:8px;">
++                      <span style="background:#143a14; border:1px solid #33ff00; color:#33ff00; padding:2px 8px; border-radius:4px; font-weight:bold; font-size:14px; min-width:130px; text-align:center;">W, A, S, D / ????</span>
++                      <span>Move operator around hotel rooms &amp; corridors</span>
++                    </div>
++                    <div style="display:flex; align-items:center; gap:8px;">
++                      <span style="background:#143a14; border:1px solid #33ff00; color:#33ff00; padding:2px 8px; border-radius:4px; font-weight:bold; font-size:14px; min-width:130px; text-align:center;">E</span>
++                      <span>Lock / Unlock the door operator is standing next to</span>
++                    </div>
++                    <div style="display:flex; align-items:center; gap:8px;">
++                      <span style="background:#143a14; border:1px solid #33ff00; color:#33ff00; padding:2px 8px; border-radius:4px; font-weight:bold; font-size:14px; min-width:130px; text-align:center;">SHIFT + E</span>
++                      <span>Force fast interaction / Open entrance door quickly</span>
++                    </div>
++                    <div style="display:flex; align-items:center; gap:8px;">
++                      <span style="background:#143a14; border:1px solid #33ff00; color:#33ff00; padding:2px 8px; border-radius:4px; font-weight:bold; font-size:14px; min-width:130px; text-align:center;">1 , 2 , 3 , 4 , 5</span>
++                      <span>Deploy items (Cloth, Blindfold, Phase, Lock, Whistle)</span>
++                    </div>
++                    <div style="display:flex; align-items:center; gap:8px;">
++                      <span style="background:#143a14; border:1px solid #33ff00; color:#33ff00; padding:2px 8px; border-radius:4px; font-weight:bold; font-size:14px; min-width:130px; text-align:center;">LEFT CLICK</span>
++                      <span>Trigger button interfaces / Use inventory slots</span>
++                    </div>
++                  </div>
++                </div>
++              </sc-if>
++              
++            </div>
++            
+           </div>
++          
+         </div>
+       </sc-if>
+ 
+@@ -564,6 +647,7 @@ class Component extends DCLogic {
+     this.state = { 
+       screen: (props.startScreen === 'game' ? 'playing' : 'title'), 
+       showOptions: false, 
++      optionsTab: 'rules',
+       showLevelSelect: false, 
+       showDevConsole: false, 
+       currentLevel: 1, 
+@@ -1651,7 +1735,7 @@ class Component extends DCLogic {
+     for (const d of w.doors) {
+       const cx = (d.c + 0.5) * T, cy = (d.r + 0.5) * T;
+       const horiz = d.axis ? d.axis === 'h' : (w.grid[d.r - 1] && w.grid[d.r - 1][d.c] !== 'wall') && (w.grid[d.r + 1] && w.grid[d.r + 1][d.c] !== 'wall');
+-      const col = d.type === 'auto' ? C.auto : d.type === 'linked' ? C.linked : d.type === 'entrance' ? C.entrance : C.std;
++      const col = this.doorColor(d,C);
+       ctx.save();
+       if (d.open) {
+         ctx.globalAlpha = 0.55; ctx.strokeStyle = col; ctx.lineWidth = 2;
+@@ -1664,6 +1748,7 @@ class Component extends DCLogic {
+         else ctx.fillRect(cx - 4, cy - T / 2 + 2, 8, T - 4);
+         if (d.locked) { ctx.shadowBlur = 0; ctx.strokeStyle = '#0a0404'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(cx - 3, cy - 3); ctx.lineTo(cx + 3, cy + 3); ctx.moveTo(cx + 3, cy - 3); ctx.lineTo(cx - 3, cy + 3); ctx.stroke(); }
+       }
++      if(d.forcePulse>0){ctx.globalAlpha=d.forcePulse;ctx.strokeStyle='#ff3333';ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx,cy,6+d.forcePulse*8,0,7);ctx.stroke();}
+       ctx.restore();
+     }
+ 
+@@ -1756,7 +1841,7 @@ class Component extends DCLogic {
+   hud() {
+     const w = this.world;
+     const dur = this.props.nightSeconds ?? 180;
+-    if (!w) return { clock: '22:00', phase: 'NIGHT', alert: 'STANDBY', alertColor: '#1f8f1f', panicPct: 0, panicBar: '', panicColor: '#33ff00', stdCount: '0', autoCount: '0', linkCount: '0', exitCount: '0', statusText: 'OK', showPrompt: false, doorPrompt: '', endStats: '', loseTitle: '', loseMsg: '', ghosts: 0, guests: 0, pw0: 1, pw1: 1, pw2: 1, pw3: 1, pw4: 1, pw5: 0.15, pw6: 0.15 };
++    if(!w)return{clock:'22:00',phase:'NIGHT',level:'01',mapTier:'I',doorTier:'I',alert:'STANDBY',alertColor:'#1f8f1f',panicPct:0,panicBar:'',panicColor:'#33ff00',basicCount:'0',rashCount:'0',sensorCount:'0',rotateCount:'0',chainCount:'0',statusText:'OK',showPrompt:false,doorPrompt:'',endStats:'',loseTitle:'',loseMsg:'',ghosts:0,guests:0,pw0:1,pw1:1,pw2:1,pw3:1,pw4:1,pw5:.15,pw6:.15};
+     const frac = Math.min(1, w.t / dur);
+     const hour = 22 + frac * 8; const h = Math.floor(hour) % 24; const m = Math.floor((hour % 1) * 60);
+     const pad = (n) => (n < 10 ? '0' : '') + n;
+@@ -1772,10 +1857,8 @@ class Component extends DCLogic {
+     else if (w.ghosts.length > 0) { alert = w.ghosts.length + ' LOOSE APPARITION(S)'; ac = '#ffb000'; }
+     else if (w.guests.some(g => g.scare > 25)) { alert = 'GUEST DISTURBED'; ac = '#ffb000'; }
+     // nearest door prompt
+-    let prompt = '', show = false;
+-    let bd = 1e9, best = null;
+-    for (const d of w.doors) { if (d.type === 'auto' || d.type === 'entrance') continue; const dist = Math.hypot((d.c + 0.5) * w.TILE - w.player.x, (d.r + 0.5) * w.TILE - w.player.y); if (dist < bd) { bd = dist; best = d; } }
+-    if (best && bd < w.TILE * 1.7) { show = true; prompt = best.open ? 'CLOSE DOOR' : best.locked ? 'UNLOCK DOOR' : 'LOCK DOOR'; }
++    const best=this.nearestDoor(),show=!!best;
++    let prompt='';if(best){const action=best.type==='rotating'?'ROTATE':best.type==='chain'?'TOGGLE CHAIN':best.open?'CLOSE':'OPEN';prompt='[E] '+action+'  [SHIFT+E] '+(best.locked?'UNLOCK':'LOCK');}
+     // power segments
+     const pwr = w.power; const seg = (th) => pwr >= th ? 1 : 0.12;
+     // lose strings
+@@ -1783,10 +1866,10 @@ class Component extends DCLogic {
+     if (w.loseReason === 'caught') { lt = 'DISCOVERED'; lm = 'The inspector found her. They take everything.'; }
+     else if (w.loseReason === 'panic') { lt = 'PANDEMONIUM'; lm = 'The hotel descended into supernatural chaos.'; }
+     return {
+-      clock: pad(h) + ':' + pad(m), phase: 'NIGHT',
++      clock:pad(h)+':'+pad(m),phase:'NIGHT',level:pad(w.config.level),mapTier:['','I','II','III'][w.config.mapTier],doorTier:['','I','II','III','IV','V'][w.config.doorTier],
+       alert, alertColor: ac,
+       panicPct: Math.round(w.panic), panicBar: bar, panicColor: pc,
+-      stdCount: cnt('standard'), autoCount: cnt('auto'), linkCount: cnt('linked'), exitCount: cnt('entrance'),
++      basicCount:cnt('basic'),rashCount:cnt('rashomon'),sensorCount:cnt('sensor'),rotateCount:cnt('rotating'),chainCount:cnt('chain'),
+       statusText: w.screenGlitch > 0 ? 'DISTORTION' : (w.panic > 50 ? 'UNSTABLE' : 'STABLE'),
+       showPrompt: show, doorPrompt: prompt,
+       endStats: w.endStats || '', loseTitle: lt, loseMsg: lm,
+@@ -1824,7 +1907,7 @@ class Component extends DCLogic {
+         this.log("DEV: INSPECTOR DISMISSED", "#33ff00");
+       } else {
+         const w = this.world;
+-        this.world.inspector = { x: w.cx(w.inspectorSpawn.c), y: w.cy(w.inspectorSpawn.r), r: 7, target: null, path: null, pi: 0, stuck: 0, dashCd: 0, dashT: 0, caught: 0, speedMul: 1, warned: false };
++        this.world.inspector = { x:w.cx(w.inspectorSpawn.c),y:w.cy(w.inspectorSpawn.r),r:7,target:null,path:null,pi:0,stuck:0,dashCd:0,dashT:0,caught:0,speedMul:1,warned:false,hostile:true,forceProgress:0 };
+         this.log("DEV: INSPECTOR SPAWNED", "#ff3333");
+       }
+     }
+@@ -1849,6 +1932,7 @@ class Component extends DCLogic {
+ 
+   renderVals() {
+     const s = this.state;
++    const currentTab = s.optionsTab || 'rules';
+     return {
+       stageScale: 'scale(' + s.scale + ')',
+       scanOpacity: this.props.crtIntensity ?? 0.35,
+@@ -1856,11 +1940,54 @@ class Component extends DCLogic {
+       isWon: s.screen === 'won',
+       isLost: s.screen === 'lost',
+       showOptions: s.showOptions,
++      optionsTab: currentTab,
++      showTabRules: currentTab === 'rules',
++      showTabTutorial: currentTab === 'tutorial',
++      showTabControls: currentTab === 'controls',
++      tabRulesColor: currentTab === 'rules' ? '#33ff00' : '#4ea66d',
++      tabRulesBg: currentTab === 'rules' ? 'rgba(51,255,136,0.1)' : 'transparent',
++      tabTutorialColor: currentTab === 'tutorial' ? '#33ff00' : '#4ea66d',
++      tabTutorialBg: currentTab === 'tutorial' ? 'rgba(51,255,136,0.1)' : 'transparent',
++      tabControlsColor: currentTab === 'controls' ? '#33ff00' : '#4ea66d',
++      tabControlsBg: currentTab === 'controls' ? 'rgba(51,255,136,0.1)' : 'transparent',
++      onSelectTabRules: () => this.setState({ optionsTab: 'rules' }),
++      onSelectTabTutorial: () => this.setState({ optionsTab: 'tutorial' }),
++      onSelectTabControls: () => this.setState({ optionsTab: 'controls' }),
++      onOptionCardClick: (e) => { e.stopPropagation(); },
+       showLevelSelect: s.showLevelSelect,
+       selectedLevel: s.selectedLevel,
+       selectedLevelMeta: this.getSelectedLevelMeta(s.selectedLevel),
+       levelSelectCards: this.getLevelSelectCards(),
+       titleGuestCards: this.getTitleGuestCards(),
++      titleInspectorCards: [
++        {
++          title: 'THE OBSERVER',
++          subtitle: 'They watch. They take notes.',
++          icon: '??,
++          accent: '#ffb000',
++          glow: 'rgba(255,176,0,.7)',
++          border: '#4d2e1c',
++          desc: '閫撖嚗??閮?銝???箝?狩???撐?????撟單?蝬剜?蝛拙???
++        },
++        {
++          title: 'THE EXAMINER',
++          subtitle: 'They question. They find flaws.',
++          icon: '??,
++          accent: '#ffb000',
++          glow: 'rgba(255,176,0,.7)',
++          border: '#4d2e1c',
++          desc: '銝餉?嚗璈?交?????亦?暹????銝???嚗????湧???摨艾?
++        },
++        {
++          title: 'THE ENFORCER',
++          subtitle: 'They punish. They take everything.',
++          icon: '??,
++          accent: '#ff5555',
++          glow: 'rgba(255,85,85,.7)',
++          border: '#6b2020',
++          desc: '?瑟???蝯扔BOSS??閬??湔?文??蝯?嚗??06:00??瘣颱蒂餈湧隞?
++        }
++      ],
+       showDevConsole: s.showDevConsole,
+       canvasRef: this.canvasRef,
+       miniRef: this.miniRef,
+@@ -1877,10 +2004,11 @@ class Component extends DCLogic {
+       onCloseLevelSelect: () => this.setState({ showLevelSelect: false }),
+       onContinue: () => this.startGame(s.currentLevel || 1),
+       onStartSelectedLevel: () => this.startGame(s.selectedLevel || 1),
+-      onOptions: () => this.setState({ showOptions: !s.showOptions }),
++      onOptions: () => this.setState({ showOptions: !s.showOptions, optionsTab: 'rules' }),
++      onOpenTutorial: () => this.setState({ showOptions: true, optionsTab: 'tutorial' }),
+       onExit: () => { this.log('THERE IS NO WAY DOWN THE MOUNTAIN TONIGHT.', '#ff3333'); },
+       onRestart: () => this.startGame(),
+-      onToTitle: () => { this.buildWorld(); this.setState({ screen: 'title' }); },
++      onToTitle:()=>{this.buildWorld(s.currentLevel||1);this.setState({screen:'title',showLevelSelect:false});},
+       onHoverOn: () => {}, onHoverOff: () => {},
+       onHeaderClick: () => {
+         this.devClickCount = (this.devClickCount || 0) + 1;

@@ -371,6 +371,53 @@
     </div>
   </sc-if>
 
+  <!-- ======================= TERMINAL DIALOGUE OVERLAY ======================= -->
+  <sc-if value="{{ isDialogue }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.65); display:flex; align-items:center; justify-content:center; backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);">
+      <div onClick="{{ onDialogueClick }}" style="position:relative; width:min(680px, 90%); height:min(440px, 80%); background:#020704; border:2px solid #33ff00; box-shadow:0 0 40px rgba(51,255,0,0.45); font-family:'VT323', monospace; display:flex; flex-direction:column; padding:20px; box-sizing:border-box; color:#33ff00; text-shadow:0 0 4px #33ff00; user-select:none; border-radius:6px;">
+        <!-- Scanline effect unique to terminal dialogue -->
+        <div style="position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,20,5,.3) 3px, rgba(0,20,5,.3) 4px); z-index:201; border-radius:4px;"></div>
+        
+        <!-- Top header bar -->
+        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #1a3d1a; padding-bottom:10px; margin-bottom:15px; font-size:22px; letter-spacing:2px; color:#7dffb0; z-index:202;">
+          <div>[ SECURE COMM TERMINAL // LEVEL {{ dialogueLevel }} ]</div>
+          <div style="font-size:16px; color:#ff5555; cursor:pointer;" onClick="{{ onDialogueSkipClick }}">[ ESC / SKIP ]</div>
+        </div>
+
+        <!-- Dialogue screen/chat log -->
+        <div style="flex:1; display:flex; flex-direction:column; overflow-y:auto; gap:12px; border:1px solid #1a3d1a; background:#010402; padding:15px; border-radius:4px; box-shadow:inset 0 0 15px rgba(0,0,0,0.95); margin-bottom:15px; z-index:202;">
+          <sc-for list="{{ dialogueHistoryLines }}" as="hist">
+            <div style="display:flex; flex-direction:column; gap:2px;">
+              <div style="font-size:15px; font-weight:bold; color:{{ hist.color }};">[ {{ hist.role }} ] {{ hist.name }}:</div>
+              <div style="font-size:22px; color:#e0ffe0; line-height:1.2; word-break:break-all; padding-left:10px;">{{ hist.text }}</div>
+            </div>
+          </sc-for>
+
+          <!-- Current line typing -->
+          <sc-if value="{{ hasCurrentDialogue }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; flex-direction:column; gap:2px;">
+              <div style="font-size:16px; font-weight:bold; color:{{ currentDialogueColor }};">[ {{ currentDialogueRole }} ] {{ currentDialogueName }}:</div>
+              <div style="font-size:22px; color:#33ff00; line-height:1.2; word-break:break-all; padding-left:10px;">
+                {{ dialogueCurrentText }}<span style="display:inline-block; width:8px; height:16px; background:#33ff00; margin-left:4px; animation:dialogueCursorBlink 1s infinite; vertical-align:middle;"></span>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+
+        <!-- Bottom bar -->
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:16px; color:#1f8f1f; z-index:202;">
+          <div>SYSTEM STATUS: ONLINE // INTRO TRANSMISSION</div>
+          <div style="color:#7dffb0; font-size:18px; animation:dialoguePulse 1.5s infinite;">[ CLICK OR ANY KEY TO CONTINUE ]</div>
+        </div>
+      </div>
+    </div>
+    
+    <style>
+      @keyframes dialogueCursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+      @keyframes dialoguePulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+    </style>
+  </sc-if>
+
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
@@ -381,6 +428,195 @@
   &quot;crtIntensity&quot;: { &quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 0.35, &quot;min&quot;: 0, &quot;max&quot;: 0.7, &quot;step&quot;: 0.05, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Visuals&quot; },
   &quot;startScreen&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;title&quot;, &quot;options&quot;: [&quot;title&quot;, &quot;game&quot;], &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Visuals&quot; }
 }">
+const LEVEL_DIALOGUES = {
+  1: [
+    { speaker: 'KEEPER', name: '老爺', text: '外面的風雪越來越大了……小秋，今晚可別在走廊上慢跑。要是嚇到了客人，爸爸的生意就更難做了。' },
+    { speaker: 'GHOST', name: '小秋', text: '知道啦，爸爸。可是，我今天有乖乖幫你把大門鎖好喔。' },
+    { speaker: 'KEEPER', name: '老爺', text: '妳小時候總是說長大想繼承這間旅館……放心吧，爸爸一定會幫妳守護好這裡的。' },
+    { speaker: 'GHOST', name: '小秋', text: '真的嗎？那我們說好了喔，爸爸最好了！' }
+  ],
+  2: [
+    { speaker: 'KEEPER', name: '老爺', text: '妳這孩子，又把要給客人的糖果藏起來了？等一下客人要投訴了。' },
+    { speaker: 'GHOST', name: '小秋', text: '因為那個伯伯臉太臭了，我才不給他吃呢！我把糖果藏在花盆底下了，爸爸你去拿嘛。' },
+    { speaker: 'KEEPER', name: '老爺', text: '真是拿妳沒辦法……明天不准再調皮了。' }
+  ],
+  3: [
+    { speaker: 'KEEPER', name: '老爺', text: '今天也學著爸爸看名單嗎？' },
+    { speaker: 'GHOST', name: '小秋', text: '對呀，我每天都在看。今天入住了三個客人，我都幫爸爸記住了喔。等我長大了，我一定能成為一個最棒的旅館主人！' },
+    { speaker: 'KEEPER', name: '老爺', text: '好……等妳長大了，這間旅館，爸爸就全部交給妳。' }
+  ],
+  4: [
+    { speaker: 'GUEST', name: '旅客', text: '老闆，昨晚到底是怎麼回事？半夜總是有個女孩子的哭聲，而且隔壁的門一直自己開開關關，我整晚都沒睡好！' },
+    { speaker: 'KEEPER', name: '老爺', text: '十分抱歉，客官。雪山的風雪太猛烈了，這棟別墅有些年頭，木門老舊受風壓影響才會那樣。今晚我會加強所有房門的鎖，絕不會再打擾到您。' },
+    { speaker: 'GUEST', name: '旅客', text: '真是晦氣……' },
+    { speaker: 'KEEPER', name: '老爺', text: '今晚……一定要把門鎖得更緊才行。' }
+  ],
+  5: [
+    { speaker: 'INSPECTOR', name: '稽查員', text: '老頭，最近這一帶不太太平，有好幾起旅客失蹤的通報。聽說你這裡半夜總有怪聲，我得進去搜查搜查。' },
+    { speaker: 'KEEPER', name: '老爺', text: '官爺，這兒荒郊野外，風雪大，門窗作響是常有的事。老漢一人在此經營，向來奉公守法，絕對沒什麼不乾淨的東西。' },
+    { speaker: 'INSPECTOR', name: '稽查員', text: '是嗎？最好如此。如果讓我發現你藏了什麼不該藏的『髒東西』，你和你的旅館就準備一起完蛋吧。' }
+  ],
+  6: [
+    { speaker: 'OFFICER', name: '警官', text: '老先生，打擾了。最近有兩名在雪山徒步的女學生失蹤，有人目擊她們最後往你這間別墅的方向走來。你有見過她們嗎？' },
+    { speaker: 'KEEPER', name: '老爺', text: '警官，我這兒除了偶爾路過的行商，很少有年輕女學生來。也許她們在暴風雪中迷失了方向……' },
+    { speaker: 'OFFICER', name: '警官', text: '是嗎？那你別墅的門鎖怎麼裝得比監獄還多？' },
+    { speaker: 'KEEPER', name: '老爺', text: '只是防野獸罷了。' }
+  ],
+  7: [
+    { speaker: 'GHOST', name: '小秋', text: '……雪花落，門兒關，乖乖寶寶睡得安……' },
+    { speaker: 'KEEPER', name: '老爺', text: '小秋！妳……妳怎麼會唱這首歌？這是我太太……在妳五歲去世前，只對妳哼過的歌……' },
+    { speaker: 'GHOST', name: '小秋', text: '因為我是爸爸的乖女兒呀，爸爸記憶裡的所有事情，我都記得一清二楚喔。我還記得你在我七歲那年，因為我跌倒哭泣，背著我在雪地裡走回旅館呢。' },
+    { speaker: 'KEEPER', name: '老爺', text: '是啊……妳都記得。是爸爸多心了……' }
+  ],
+  8: [
+    { speaker: 'KEEPER', name: '老爺', text: '今天差點……差點就防不住了……小秋，妳老實告訴爸爸。這幾天失蹤的那些客人……真的不是因為妳嗎？' },
+    { speaker: 'GHOST', name: '小秋', text: '爸爸，我……我不是故意的……' }
+  ],
+  9: [
+    { speaker: 'GHOST', name: '小秋', text: '爸爸，我控制不住我自己……每當那些活人靠近我，我的身體就像不是我的一樣，拼命想要吸食他們的生氣……我好害怕，如果我不這麼做，我的靈魂就會像雪一樣溶化消逝……我不想死，爸爸，我真的不想死！' },
+    { speaker: 'KEEPER', name: '老爺', text: '傻孩子……爸爸懂了。這不是妳的錯，是這場詛咒的錯。別怕，爸爸會繼續幫妳掩護，只要我們小心一點就沒事了。' }
+  ],
+  10: [
+    { speaker: 'INSPECTOR', name: '調查官', text: '林老頭，我們追蹤這股極大的怨氣很久了。你別再自欺欺人了，你護著的根本不是你女兒的冤魂，而是一個靠吸乾活人精氣來維持存在的惡鬼！' },
+    { speaker: 'KEEPER', name: '老爺', text: '胡說八道！她只是個孩子！她是我女兒！她連客人的糖果都會藏起來，她怎麼可能害人！' },
+    { speaker: 'INSPECTOR', name: '調查官', text: '林老頭，你聽清楚。你真正的女兒林小秋，早在三年前那場雪崩中就凍死了。你身邊的這個鬼，只是借用你女兒的名字活著的殺人犯。明天，軍隊會帶淨化陣來，如果你還要阻擋，我們連你一起處決。' },
+    { speaker: 'KEEPER', name: '老爺', text: '三年前……就死了……？' }
+  ],
+  11: [
+    { speaker: 'KEEPER', name: '老爺', text: '如果小秋早在三年前就死了……那現在天天叫我爸爸的，到底是誰？我的女兒……妳到底在哪裡？' },
+    { speaker: 'GHOST', name: '小秋', text: '爸爸，你在看什麼呢？照片裡的人，不是我嗎？' }
+  ],
+  12: [
+    { speaker: 'KEEPER', name: '老爺', text: '小秋，妳還記得妳十歲生日那天，爸爸帶妳去鎮上買的那隻紅色風箏嗎？那天風很大，風箏飛得好高，妳笑得好開心。' },
+    { speaker: 'GHOST', name: '小秋', text: '當然記得呀！那隻風箏飛得好高好高，後來線斷了，爸爸還跑了幾里路幫我撿回來呢。我一直都好好收著呢，爸爸。' },
+    { speaker: 'KEEPER', name: '老爺', text: '……是嗎。妳記得真清楚。可是，小秋……我從來沒有給妳買過風箏。那是妳的好朋友……小雨的風箏。' },
+    { speaker: 'GHOST', name: '小秋', text: '……爸爸？' }
+  ],
+  13: [
+    { speaker: 'INSPECTOR', name: '調查官', text: '老頭，看看這個吧。當年雪崩時，你女兒為了保護她凍僵的好朋友小雨，把自己的大衣讓給了她。你女兒死了，但小雨活了下來——只是，小雨在極度恐懼與怨恨中化為惡鬼。她為了能永遠留在人間，死後第一件事，就是把你女兒的靈魂吞噬，讓她化為暫時的鬼，最終徹底消亡。' },
+    { speaker: 'INSPECTOR', name: '調查官', text: '你天天保護的這個鬼，就是害死你女兒的真兇。她讀取了你女兒的記憶，只為了利用你的父愛，把你當作替她打掩護的遮雨棚！' },
+    { speaker: 'KEEPER', name: '老爺', text: '不……不！！小秋……小秋啊！！' }
+  ],
+  14: [
+    { speaker: 'GHOST', name: '小秋', text: '爸爸，外面的風雪好大，我們把門鎖上吧？就像以前一樣……' },
+    { speaker: 'KEEPER', name: '老爺', text: '小雨……孩子……妳不是她。' },
+    { speaker: 'GHOST', name: '小雨', text: '我只是想活下去！為什麼大家都想讓我消失！難道我想活著也有錯嗎？！' }
+  ],
+  15: [
+    { speaker: 'KEEPER', name: '老爺', text: '今晚，一切都該結束了。我不能再讓其他女孩子受害，也不能……讓我女兒的靈魂白白消亡。' },
+    { speaker: 'GHOST', name: '小雨', text: '林老頭！我恨你！你明明答應過要把旅館交給我的！！' }
+  ],
+  16: [
+    { speaker: 'SYSTEM', name: '結局 // 多年後', text: '這是一棟荒廢已久的舊旅館別墅，積雪壓塌了屋頂，四下死寂無聲。' },
+    { speaker: 'SYSTEM', name: '結局 // 多年後', text: '一個披著破舊斗篷的空靈身影，在暴風雪中緩緩走回了這裡——那是小雨。' },
+    { speaker: 'SYSTEM', name: '結局 // 多年後', text: '她看著那扇腐爛但依然微微敞開、從未被鎖上的大門，發出了一聲長長的嘆息。' },
+    { speaker: 'SYSTEM', name: '結局 // 多年後', text: '在佈滿灰塵的櫃檯上，躺著老爺生前留下的最後日記，紙面上的字跡顫抖而落寞：' },
+    { speaker: 'KEEPER', name: '老爺的日記', text: '『小秋……不，孩子。自從那一晚放手後，我每夜都在愧疚中度過。我無法原諒妳害死了我女兒，卻又無法抹去我對妳的思念。』' },
+    { speaker: 'KEEPER', name: '老爺的日記', text: '『這間旅館，本就是我答應給妳的繼承遺願。如果有一天妳在風雪中累了，回來吧。』' },
+    { speaker: 'KEEPER', name: '老爺 the Last Keeper', text: '『門我沒有鎖，不用敲了。』' },
+    { speaker: 'SYSTEM', name: '結局 // 多年後', text: '她緊緊抱著這本日記，在空無一人的廢墟大廳裡，第一次痛哭出聲。' }
+  ]
+};
+
+const LEVEL_INGAME_WHISPERS = {
+  1: [
+    [
+      { speaker: 'GHOST', name: '小秋', text: '爸爸，你看得見我嗎？' },
+      { speaker: 'KEEPER', name: '老爺', text: '爸爸一直看著妳呢，小秋。別擔心。' }
+    ],
+    [
+      { speaker: 'GHOST', name: '小秋', text: '嘻嘻，大門鎖好了，我們很安全！' }
+    ]
+  ],
+  2: [
+    [
+      { speaker: 'GHOST', name: '小秋', text: '爸爸，我又把糖果藏起來了喔～' },
+      { speaker: 'KEEPER', name: '老爺', text: '調皮鬼，趕快放回去，客人要等不及了。' }
+    ]
+  ],
+  3: [
+    [
+      { speaker: 'GHOST', name: '小秋', text: '今天的客人好多喔，要給他們住哪一間呢？' },
+      { speaker: 'KEEPER', name: '老爺', text: '交給爸爸安排，妳在旁邊乖乖看著就好。' }
+    ]
+  ],
+  4: [
+    [
+      { speaker: 'GHOST', name: '小秋', text: '那些人在找我嗎？我聽到他們在叫我的名字...' },
+      { speaker: 'KEEPER', name: '老爺', text: '沒事的小秋，只是外面的風雪太大。門我已經鎖了。' }
+    ]
+  ],
+  5: [
+    [
+      { speaker: 'INSPECTOR', name: '稽查員', text: '這間旅館有些異樣... 似乎藏著某些怨靈波長。' },
+      { speaker: 'KEEPER', name: '老爺', text: '官爺，這長只是深山風雪的雜音，不必大驚小怪。' }
+    ],
+    [
+      { speaker: 'GHOST', name: '小秋', text: '爸爸，門外的那個男人一直在看我們，我害怕...' }
+    ]
+  ],
+  6: [
+    [
+      { speaker: 'GHOST', name: '小秋', text: '爸爸，今天外面來了好多拿著照片的人……' },
+      { speaker: 'KEEPER', name: '老爺', text: '沒事的小秋，他們只是過路的旅客，別出聲。' }
+    ]
+  ],
+  7: [
+    [
+      { speaker: 'GHOST', name: '小秋', text: '雪花落，門兒關，乖乖寶寶睡得安……' },
+      { speaker: 'KEEPER', name: '老爺', text: '這首歌……到底是誰教妳的？' }
+    ]
+  ],
+  8: [
+    [
+      { speaker: 'KEEPER', name: '老爺', text: '客房的床單上怎麼會有血跡……小秋，妳有事瞞著爸爸嗎？' },
+      { speaker: 'GHOST', name: '小秋', text: '爸爸，我……我不是故意的。' }
+    ]
+  ],
+  9: [
+    [
+      { speaker: 'GHOST', name: '小秋', text: '爸爸，我好害怕，我的手好像在慢慢融化……' },
+      { speaker: 'KEEPER', name: '老爺', text: '不會的，爸爸這就把所有的門鎖上，沒人能傷害妳！' }
+    ]
+  ],
+  10: [
+    [
+      { speaker: 'INSPECTOR', name: '調查官', text: '林老頭，這是最後通牒，把那個害人的惡鬼交出來！' },
+      { speaker: 'KEEPER', name: '老爺', text: '她是我的女兒！滾出我的旅館！' }
+    ]
+  ],
+  11: [
+    [
+      { speaker: 'KEEPER', name: '老爺', text: '這張合照上的小秋……為什麼跟妳長得不一樣？' },
+      { speaker: 'GHOST', name: '小秋', text: '爸爸，你在說什麼呢？我就是小秋呀……' }
+    ]
+  ],
+  12: [
+    [
+      { speaker: 'KEEPER', name: '老爺', text: '那隻紅色風箏，其實是小雨的，對吧？' },
+      { speaker: 'GHOST', name: '小秋', text: '爸爸……你在說什麼風箏，我聽不懂……' }
+    ]
+  ],
+  13: [
+    [
+      { speaker: 'INSPECTOR', name: '調查官', text: '林老頭，認清現實吧，真正的林小秋三年前就死了！' },
+      { speaker: 'KEEPER', name: '老爺', text: '不……不可能！你們在騙我！' }
+    ]
+  ],
+  14: [
+    [
+      { speaker: 'GHOST', name: '小雨', text: '林老頭，既然被你看穿了……那就乖乖把精氣交給我吧！' },
+      { speaker: 'KEEPER', name: '老爺', text: '孩子……妳終究不是她。' }
+    ]
+  ],
+  15: [
+    [
+      { speaker: 'KEEPER', name: '老爺', text: '今晚，這一切罪孽與欺騙，都將在這場大雪中終結。' },
+      { speaker: 'GHOST', name: '小雨', text: '林老頭！我恨你！你明明答應過這間旅館是我的！' }
+    ]
+  ]
+};
+
 class Component extends DCLogic {
   constructor(props) {
     super(props);
@@ -409,6 +645,15 @@ class Component extends DCLogic {
     this._onKey = (e) => {
       const k = e.key.toLowerCase();
       this.keys[k] = true;
+      if (this.state.screen === 'dialogue') {
+        e.preventDefault();
+        if (e.key === 'escape') {
+          this.skipDialogue();
+        } else {
+          this.handleDialogueInteraction();
+        }
+        return;
+      }
       if (k === '`') {
         this.devClickCount = (this.devClickCount || 0) + 1;
         if (this.devClickCount >= 5) {
@@ -430,6 +675,7 @@ class Component extends DCLogic {
     this._raf = requestAnimationFrame((t) => this.loop(t));
   }
   componentWillUnmount() {
+    if (this.dialogueTimer) clearInterval(this.dialogueTimer);
     window.removeEventListener('keydown', this._onKey);
     window.removeEventListener('keyup', this._onKeyUp);
     window.removeEventListener('resize', this._onResize);
@@ -631,6 +877,45 @@ class Component extends DCLogic {
   // ---------- update ----------
   update(dt) {
     const w = this.world;
+    if (w.introTimer !== undefined && w.introTimer > 0) {
+      w.introTimer = Math.max(0, w.introTimer - dt);
+      w.flash = Math.max(0, w.flash - dt);
+      w.screenGlitch = Math.max(0, w.screenGlitch - dt);
+      return;
+    }
+    
+    // In-game dialogue whispers (comm terminal broadcast) logic
+    if (w.whisperTimer !== undefined) {
+      w.whisperTimer -= dt;
+      if (w.whisperTimer <= 0) {
+        const groups = LEVEL_INGAME_WHISPERS[w.config.level];
+        if (groups && groups.length > 0) {
+          const group = groups[Math.floor(Math.random() * groups.length)];
+          w.whisperQueue = [...group];
+          w.whisperDelay = 0.1;
+        }
+        w.whisperTimer = 22.0 + Math.random() * 8.0;
+      }
+    }
+    if (w.whisperQueue && w.whisperQueue.length > 0) {
+      w.whisperDelay -= dt;
+      if (w.whisperDelay <= 0) {
+        const nextWhisper = w.whisperQueue.shift();
+        let color = '#7dffb0';
+        if (nextWhisper.speaker === 'GHOST') {
+          color = '#ffb0d0';
+          this.playSFX('sigh');
+        } else if (nextWhisper.speaker === 'INSPECTOR') {
+          color = '#ff5555';
+          this.playSFX('error');
+        } else if (nextWhisper.speaker === 'GUEST') {
+          color = '#ffd060';
+        }
+        this.log(`[${nextWhisper.name}] ${nextWhisper.text}`, color);
+        w.whisperDelay = 3.5;
+      }
+    }
+
     const dur = this.props.nightSeconds ?? 180;
     w.t += dt;
     w.flash = Math.max(0, w.flash - dt);
@@ -1013,7 +1298,44 @@ class Component extends DCLogic {
       onDevTimeSkip: () => this.devTimeSkip(),
       onDevSpawnInspector: () => this.devSpawnInspector(),
       onDevCalmDaughter: () => this.devCalmDaughter(),
-      onDevClearGhosts: () => this.devClearGhosts()
+      onDevClearGhosts: () => this.devClearGhosts(),
+      isDialogue: s.screen === 'dialogue',
+      dialogueLevel: s.dialogueLevel,
+      dialogueCurrentText: s.dialogueCurrentText,
+      dialogueHistoryLines: (s.dialogueHistory || []).map(h => {
+        let color = '#7dffb0';
+        if (h.speaker === 'GHOST') color = '#ffb0d0';
+        else if (h.speaker === 'INSPECTOR') color = '#ff5555';
+        else if (h.speaker === 'GUEST') color = '#ffd060';
+        else if (h.speaker === 'SYSTEM') color = '#a3ffa3';
+        return {
+          role: h.speaker,
+          name: h.name,
+          text: h.text,
+          color: color
+        };
+      }),
+      hasCurrentDialogue: s.screen === 'dialogue' && LEVEL_DIALOGUES[s.dialogueLevel] && LEVEL_DIALOGUES[s.dialogueLevel][s.dialogueIndex] !== undefined,
+      currentDialogueRole: (() => {
+        const line = LEVEL_DIALOGUES[s.dialogueLevel] && LEVEL_DIALOGUES[s.dialogueLevel][s.dialogueIndex];
+        return line ? line.speaker : '';
+      })(),
+      currentDialogueName: (() => {
+        const line = LEVEL_DIALOGUES[s.dialogueLevel] && LEVEL_DIALOGUES[s.dialogueLevel][s.dialogueIndex];
+        return line ? line.name : '';
+      })(),
+      currentDialogueColor: (() => {
+        const line = LEVEL_DIALOGUES[s.dialogueLevel] && LEVEL_DIALOGUES[s.dialogueLevel][s.dialogueIndex];
+        if (!line) return '#888888';
+        if (line.speaker === 'KEEPER') return '#7dffb0';
+        if (line.speaker === 'GHOST') return '#ffb0d0';
+        if (line.speaker === 'INSPECTOR') return '#ff5555';
+        if (line.speaker === 'GUEST') return '#ffd060';
+        if (line.speaker === 'SYSTEM') return '#a3ffa3';
+        return '#888888';
+      })(),
+      onDialogueClick: () => this.handleDialogueInteraction(),
+      onDialogueSkipClick: (e) => { e.stopPropagation(); this.skipDialogue(); }
     };
   }
 }

@@ -1,0 +1,29 @@
+﻿
+FullName                                                     
+--------                                                     
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\01_門與鎖頭\無法開門聲.wav   
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\01_門與鎖頭\解鎖門聲.wav    
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\01_門與鎖頭\鎖門聲.wav     
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\01_門與鎖頭\關門聲.wav     
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\02_靈異與鬼魂\傳送成功聲.wav  
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\02_靈異與鬼魂\穿透牆壁聲.wav  
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\02_靈異與鬼魂\變鬼聲.mp3    
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\02_靈異與鬼魂\鬼呼聲.wav    
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\03_旅客與稽查員\大膽男人驚呼.wav
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\03_旅客與稽查員\心跳聲.mp3   
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\03_旅客與稽查員\稽查破門聲.wav 
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\03_旅客與稽查員\稽查衝刺聲.wav 
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\03_旅客與稽查員\膽小女人尖叫.wav
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\04_系統與介面\主機開啟聲.wav  
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\04_系統與介面\勝利凱旋聲.wav  
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\04_系統與介面\失敗陰鬱聲.wav  
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\04_系統與介面\按鍵盤聲.wav   
+C:\Users\user\Desktop\NYCU Game Jam\音效資產\04_系統與介面\錯誤提示音.wav  
+C:\Users\user\Desktop\NYCU Game Jam\音樂資產\常態關卡音樂.mp3          
+C:\Users\user\Desktop\NYCU Game Jam\音樂資產\登陸頁面音樂.mp3          
+C:\Users\user\Desktop\NYCU Game Jam\音樂資產\稽查員Boss音樂.mp3       
+C:\Users\user\Desktop\NYCU Game Jam\大廳(未循環)動畫.mp4            
+C:\Users\user\Desktop\NYCU Game Jam\遊戲大廳_無縫循環動畫.mp4          
+C:\Users\user\Desktop\NYCU Game Jam\遊戲大廳_輕量循環動畫.mp4          
+
+
