@@ -30,10 +30,6 @@
       display:block; position:fixed; inset:-25%; z-index:0; pointer-events:none;
       background:#020302 url('./示意圖/遊戲畫面背景169.png') center center / 100% 100% no-repeat;
     }
-    .computer-view .computer-screen-mask {
-      display:block; position:fixed; left:16.85vw; top:12.05vh; width:65.7vw; height:49.8vh;
-      z-index:0; pointer-events:none; background:#010101; border-radius:3px;
-    }
     .computer-view .game-runtime {
       inset:auto; left:16.85vw; top:12.05vh; width:100vw; height:100vh;
       transform:scale(.657,.498); transform-origin:top left; z-index:1;
@@ -42,7 +38,6 @@
   </style>
 
   <div class="computer-room-view"></div>
-  <div class="computer-screen-mask"></div>
   <div class="game-runtime">
 
   <!-- ======================= GAME STAGE ======================= -->
@@ -5338,7 +5333,7 @@ class Component extends DCLogic {
         }
       ],
       shellClass: s.screen === 'title' ? '' : 'computer-view',
-      stageScale: 'scale(' + s.scale + ')',
+      stageScale: 'scale(' + (s.screen === 'title' ? s.scale : Math.max(1.2, s.scale * 1.25).toFixed(3)) + ')',
       scanOpacity: this.props.crtIntensity ?? 0.35,
       isTitle: s.screen === 'title',
       isWon: s.screen === 'won',
