@@ -3692,6 +3692,7 @@ class Component extends DCLogic {
   // check in or to pay). When tolerance runs out, resolve a 50/50 split:
   // 50% storm off, 50% tough it out and stay/pay at half price.
   applyDeskPatience(g, dt) {
+    const MIN_DESK_PATIENCE = 15;
     const waiting = ['queueing', 'checkinReady', 'returnQueue', 'payReady'].includes(g.state);
     if (g.fleeing || g.leaving || !waiting) {
       g.waitDesk = 0; g.warnedWait = false; g.toughed = false;
@@ -3699,7 +3700,8 @@ class Component extends DCLogic {
     }
     g.waitDesk = (g.waitDesk || 0) + dt;
     const paying = (g.state === 'returnQueue' || g.state === 'payReady');
-    const tol = (g.deskPatience || 13) * (g.toughed ? 0.5 : 1);
+    // Every guest must allow a full service window before abandoning check-in or payment.
+    const tol = Math.max(MIN_DESK_PATIENCE, g.deskPatience || 0) * (g.toughed ? 0.5 : 1);
     if (!g.warnedWait && g.waitDesk > tol * 0.65) {
       g.warnedWait = true;
       this.guestSay(g, paying ? '喂，我要結帳啊…' : '怎麼還沒輪到我…', 2.4);
