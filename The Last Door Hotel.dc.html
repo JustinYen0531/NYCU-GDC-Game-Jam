@@ -21,28 +21,11 @@
   @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 </style>
 </helmet>
-<div class="game-shell {{ shellClass }}" style="position:fixed; inset:0; background:radial-gradient(120% 100% at 50% 34%, rgba(160,255,196,.16) 0%, rgba(64,170,110,.14) 18%, #07140f 44%, #020705 72%, #000 100%); font-family:'VT323', ui-monospace, monospace; color:#7dffb0; overflow:hidden;">
-  <style>
-    .computer-room-view { display:none; }
-    .game-runtime { position:fixed; inset:0; overflow:hidden; }
-    .computer-view { background:#020302; }
-    .computer-view .computer-room-view {
-      display:block; position:fixed; inset:-25%; z-index:0; pointer-events:none;
-      background:#020302 url('./示意圖/遊戲畫面背景169.png') center center / 100% 100% no-repeat;
-    }
-    .computer-view .game-runtime {
-      inset:auto; left:16.85vw; top:12.05vh; width:100vw; height:100vh;
-      transform:scale(.657,.498); transform-origin:top left; z-index:1;
-      background:#010101; border-radius:3px; box-shadow:none;
-    }
-  </style>
-
-  <div class="computer-room-view"></div>
-  <div class="game-runtime">
+<div style="position:fixed; inset:0; background:radial-gradient(120% 100% at 50% 34%, rgba(160,255,196,.16) 0%, rgba(64,170,110,.14) 18%, #07140f 44%, #020705 72%, #000 100%); font-family:'VT323', ui-monospace, monospace; color:#7dffb0; overflow:hidden;">
 
   <!-- ======================= GAME STAGE ======================= -->
-  <div class="game-stage-center" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
-    <div class="game-stage-scale" style="transform:{{ stageScale }}; transform-origin:center center; width:1252px; filter:brightness(1.17) contrast(1.07) saturate(1.08);">
+  <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
+    <div style="transform:{{ stageScale }}; transform-origin:center center; width:1252px; filter:brightness(1.17) contrast(1.07) saturate(1.08);">
 
       <!-- top status strip -->
       <div style="display:flex; align-items:center; justify-content:space-between; border:1px solid #295536; background:linear-gradient(180deg, rgba(8,24,16,.94), rgba(2,9,6,.96)); box-shadow:0 0 18px rgba(120,255,176,.08); padding:5px 14px; font-size:19px; letter-spacing:1px; text-shadow:0 0 10px rgba(125,255,176,.46);">
@@ -1241,7 +1224,6 @@
     </style>
   </sc-if>
 
-  </div>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
@@ -5332,8 +5314,7 @@ class Component extends DCLogic {
           desc: '執法者：終極BOSS。撞見他直接判定遊戲結束，必須在06:00前存活並迴避他。'
         }
       ],
-      shellClass: s.screen === 'title' ? '' : 'computer-view',
-      stageScale: 'scale(' + (s.screen === 'title' ? s.scale : Math.max(1.2, s.scale * 1.25).toFixed(3)) + ')',
+      stageScale: 'scale(' + s.scale + ')',
       scanOpacity: this.props.crtIntensity ?? 0.35,
       isTitle: s.screen === 'title',
       isWon: s.screen === 'won',
